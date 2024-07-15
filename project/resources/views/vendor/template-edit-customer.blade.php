@@ -190,7 +190,7 @@
                                 <div class="col-sm-4">
                                     <?php
                                     $days_allowed = [];
-                                    $days=$orderTemplate->days_allowed;
+                                    $days = $orderTemplate->days_allowed ?? [];
                                     foreach ($days AS $allowed)
                                         {
                                             $days_allowed[$allowed]=$allowed;
