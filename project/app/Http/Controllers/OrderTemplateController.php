@@ -138,7 +138,7 @@ class OrderTemplateController extends Controller
                 'avg_service_time' => $input['avg_service_time'],
                 'is_active' => $input['is_active'],
                 'special_notes' => $input['special_notes'],
-                'name_for_sams' => $input['name_for_sams'],
+                'name_for_sams' => $input['name_for_sams'] ?? '',
                 'payment_method' => $input['payment_method'],
             ]
         );
@@ -429,6 +429,50 @@ class OrderTemplateController extends Controller
         return $input['deleteids_arr'];
     }
 
+    public function getJobDates($template, $startDate, $endDate) {
+        $jobDates = [];
+        $interval = null;
+
+        // Determine the interval based on the repeat type and the corresponding apart values
+        switch ($template->repeat) {
+            case 'Daily':
+                $interval = new \DateInterval('P' . ($template->days_apart ?? 1) . 'D');
+                break;
+            case 'Weekly':
+                $interval = new \DateInterval('P' . ($template->weeks_apart ?? 1) . 'W');
+                break;
+            case 'Monthly':
+                $interval = new \DateInterval('P' . ($template->months_apart ?? 1) . 'M');
+                break;
+            case 'Quarterly':
+                $interval = new \DateInterval('P3M');
+                break;
+            case 'Semi-Annual':
+                $interval = new \DateInterval('P6M');
+                break;
+            case 'Yearly':
+                $interval = new \DateInterval('P1Y');
+                break;
+            default:
+                // Unsupported repeat type
+                return $jobDates;
+        }
+
+        $currentDate = $startDate->copy();
+
+        while ($currentDate->lte($endDate)) {
+            // Convert days_allowed to integers if they are stored as strings
+            $daysAllowed = array_map('intval', $template->days_allowed);
+
+            if (in_array($currentDate->dayOfWeekIso, $daysAllowed)) {
+                $jobDates[] = $currentDate->copy();
+            }
+            $currentDate->add($interval);
+        }
+
+        return $jobDates;
+    }
+
     public function makeRecurringOrder(Request $request)
     {
         $template = OrderTemplate::whereId($request->order_template_id)->first();
@@ -457,127 +501,201 @@ class OrderTemplateController extends Controller
             $products = implode(',', $products);
             $quantities = implode(',', $quantities);
             if ($request->order_template_type == OrderTemplate::NEXT_MONTH) {
-            	$start = date('Y-m-d');
-                $end_date = date('Y-m-d',strtotime($start. ' + 30 days'));
-                $start_date = Carbon::parse($start);
-                $days_allowed = $template->days_allowed;
-                $i = 0;
-                $incrementData=$start_date;
-                while ($incrementData <= $end_date) {
-                    $incrementData = date('Y-m-d', strtotime("+" . $i . " day", strtotime($start)));
-                    $dayList = $this->getDateRange($start, $end_date, $template->days_apart,$days_allowed);
-                    if (in_array($incrementData, $dayList)) {
-                        $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
-                    }
-
-                    $i++;
+                // puvii added
+                if ($template->repeat === 'On Call') {
+                    Session::flash('error', 'You can only create jobs on a single date for "On Call" templates.');
+                    return redirect('/vendor/order-template/' . $template->id);
                 }
-                Session::flash('message', 'Next calender orders has been successfully created');
-                return Redirect('/vendor/order-template-history/'.$template->client_id.'/'.$template->id);
+
+                $nextMonthStart = Carbon::now()->addMonthNoOverflow()->startOfMonth();
+                $nextMonthEnd = Carbon::now()->addMonthNoOverflow()->endOfMonth();
+                
+                // Check if schedule_from is before or equal to the start date of the next month
+                $scheduleFrom = Carbon::parse($template->schedule_from);
+
+                if ($scheduleFrom->gt($nextMonthStart)) {
+                    Session::flash('error', 'Please select a date before or on the schedule from date.');
+                    return redirect('/vendor/order-template/' . $template->id);
+                }
+
+                $jobDates = $this->getJobDates($template, $nextMonthStart, $nextMonthEnd);
+
+                foreach ($jobDates as $date) {
+                    $this->generateRepeatOrders($template, $quantities, $products, $date, $cost, $prices);
+                }
+
+                Session::flash('message', 'Jobs for next month generated successfully.');
+                return Redirect('/vendor/order-template-history/' . $template->client_id . '/' . $template->id);
+                // puvii added
+
+            	// $start = date('Y-m-d');
+                // $end_date = date('Y-m-d',strtotime($start. ' + 30 days'));
+                // $start_date = Carbon::parse($start);
+                // $days_allowed = $template->days_allowed;
+                // $i = 0;
+                // $incrementData=$start_date;
+                // while ($incrementData <= $end_date) {
+                //     $incrementData = date('Y-m-d', strtotime("+" . $i . " day", strtotime($start)));
+                //     $dayList = $this->getDateRange($start, $end_date, $template->days_apart,$days_allowed);
+                //     if (in_array($incrementData, $dayList)) {
+                //         $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
+                //     }
+
+                //     $i++;
+                // }
+                // Session::flash('message', 'Next calender orders has been successfully created');
+                // return Redirect('/vendor/order-template-history/'.$template->client_id.'/'.$template->id);
             }
             elseif ($request->order_template_type == OrderTemplate::RANGE) {
-                $dates = explode('-', $request->dates);
-                $start_date = date('Y-m-d', strtotime($dates[0]));
-                $end_date = date('Y-m-d', strtotime($dates[1]));
-                $days_allowed = $template->days_allowed;
-                $i = 0;
-                if($scheduleFrom <=$end_date)
-                {
-                $incrementData=$start_date;
-                while ($incrementData <= $end_date) { 
-                    $incrementData = date('Y-m-d', strtotime("+" . $i . " day", strtotime($start_date)));
-                    if ($template->days_apart != '') 
-                    {
-                        $dayList = $this->getDateRange($start_date, $end_date, $template->days_apart,$days_allowed);
-                        if (in_array($incrementData, $dayList)) {
-                            $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
-                        }
-                   } 
-                    // switch ($template->repeat) {
-                    //     case 'Daily':
-                    //         if ($template->days_apart != '') {
-                    //             $dayList = $this->getDateRange($start_date, $end_date, $template->days_apart,$days_allowed);
-                    //             if (in_array($incrementData, $dayList)) {
-                    //                 $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
-                    //             }
-                    //         }
-                    //         break;
-
-                    //     case 'Weekly':
-
-                    //         if ($template->weeks_apart != '') {
-                    //         	 $Weeks = $this->getWeeklyDateRange($start_date, $end_date, $template->weeks_apart,$days_allowed);
-                    //             if (in_array($incrementData, $Weeks)) {
-                    //                 $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
-                    //             }
-                    //         }
-                    //         break;
-
-                    //     case 'Monthly':
-                    //         if ($template->months_apart != '') {
-                    //             $monthList = $this->getMonthRange($start_date, $end_date, $template->months_apart,$days_allowed);
-                    //             if (in_array($incrementData, $monthList)) {
-                    //                 $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
-                    //             }
-                    //         }
-
-                    //         break;
-
-                    //     case 'Quarterly':
-                    //         $monthList = $this->getQuarterlyRange($start_date, $end_date, $days_allowed);
-                    //         if (in_array($incrementData, $monthList)) {
-                    //             $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
-                    //         }
-                    //         break;
-
-                    //     case 'Semi-Annual':
-                    //         $monthList = $this->getSemiAnnualRange($start_date, $end_date, $days_allowed);
-                    //         if (in_array($incrementData, $monthList)) {
-                    //             $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
-                    //         }
-                    //         break;
-
-                    //     case 'Yearly':
-                    //         $monthList = $this->getYearlyRange($start_date, $end_date, $days_allowed);
-                    //         if (in_array($incrementData, $monthList)) {
-                    //             $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
-                    //         }
-                    //         break;
-                    // }
-
-                    $i++; 
-
+                // puvii added
+                if ($template->repeat === 'On Call') {
+                    Session::flash('error', 'You can only create jobs on a single date for "On Call" templates.');
+                    return redirect('/vendor/order-template/' . $template->id);
                 }
-                  Session::flash('message', 'Date range orders has been successfully created');
-                  return Redirect('/vendor/order-template-history/'.$template->client_id.'/'.$template->id);
-                } 
-                else 
-                {
-                  Session::flash('error', 'Please select date range after schedule from date.');
-                  return Redirect('/vendor/order-template/'.$template->id);
-            	}
+
+                $dates = explode('-', $request->dates);
+                $nextMonthStart = Carbon::parse($dates[0]);
+                $nextMonthEnd = Carbon::parse($dates[1]);
+                
+                // Check if schedule_from is before or equal to the start date of the next month
+                $scheduleFrom = Carbon::parse($template->schedule_from);
+
+                if ($scheduleFrom->gt($nextMonthStart)) {
+                    Session::flash('error', 'Please select a date before or on the schedule from date.');
+                    return redirect('/vendor/order-template/' . $template->id);
+                }
+
+                $jobDates = $this->getJobDates($template, $nextMonthStart, $nextMonthEnd);
+
+                foreach ($jobDates as $date) {
+                    $this->generateRepeatOrders($template, $quantities, $products, $date, $cost, $prices);
+                }
+
+                Session::flash('message', 'Jobs for selected range generated successfully.');
+                return Redirect('/vendor/order-template-history/' . $template->client_id . '/' . $template->id);
+                // puvii added
+
+                // $dates = explode('-', $request->dates);
+                // $start_date = date('Y-m-d', strtotime($dates[0]));
+                // $end_date = date('Y-m-d', strtotime($dates[1]));
+                // $days_allowed = $template->days_allowed;
+                // $i = 0;
+                // if($scheduleFrom <=$end_date)
+                // {
+                // $incrementData=$start_date;
+                // while ($incrementData <= $end_date) { 
+                //     $incrementData = date('Y-m-d', strtotime("+" . $i . " day", strtotime($start_date)));
+                //     if ($template->days_apart != '') 
+                //     {
+                //         $dayList = $this->getDateRange($start_date, $end_date, $template->days_apart,$days_allowed);
+                //         if (in_array($incrementData, $dayList)) {
+                //             $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
+                //         }
+                //    } 
+                //     switch ($template->repeat) {
+                //         case 'Daily':
+                //             if ($template->days_apart != '') {
+                //                 $dayList = $this->getDateRange($start_date, $end_date, $template->days_apart,$days_allowed);
+                //                 if (in_array($incrementData, $dayList)) {
+                //                     $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
+                //                 }
+                //             }
+                //             break;
+
+                //         case 'Weekly':
+
+                //             if ($template->weeks_apart != '') {
+                //             	 $Weeks = $this->getWeeklyDateRange($start_date, $end_date, $template->weeks_apart,$days_allowed);
+                //                 if (in_array($incrementData, $Weeks)) {
+                //                     $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
+                //                 }
+                //             }
+                //             break;
+
+                //         case 'Monthly':
+                //             if ($template->months_apart != '') {
+                //                 $monthList = $this->getMonthRange($start_date, $end_date, $template->months_apart,$days_allowed);
+                //                 if (in_array($incrementData, $monthList)) {
+                //                     $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
+                //                 }
+                //             }
+
+                //             break;
+
+                //         case 'Quarterly':
+                //             $monthList = $this->getQuarterlyRange($start_date, $end_date, $days_allowed);
+                //             if (in_array($incrementData, $monthList)) {
+                //                 $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
+                //             }
+                //             break;
+
+                //         case 'Semi-Annual':
+                //             $monthList = $this->getSemiAnnualRange($start_date, $end_date, $days_allowed);
+                //             if (in_array($incrementData, $monthList)) {
+                //                 $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
+                //             }
+                //             break;
+
+                //         case 'Yearly':
+                //             $monthList = $this->getYearlyRange($start_date, $end_date, $days_allowed);
+                //             if (in_array($incrementData, $monthList)) {
+                //                 $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
+                //             }
+                //             break;
+                //     }
+
+                //     $i++; 
+
+                // }
+                //   Session::flash('message', 'Date range orders has been successfully created');
+                //   return Redirect('/vendor/order-template-history/'.$template->client_id.'/'.$template->id);
+                // } 
+                // else 
+                // {
+                //   Session::flash('error', 'Please select date range after schedule from date.');
+                //   return Redirect('/vendor/order-template/'.$template->id);
+            	// }
             }
             elseif ($request->order_template_type == OrderTemplate::SINGlE_DATE) {
-            	$date=explode('/',$request->date);
-            	$date=$date[2]."-".$date[0]."-".$date[1];
-            	 if($scheduleFrom <=$date)
-            	 {
-	            	if (empty($request->date)) {
-	                    Session::flash('error', 'There is no date selected to generate repeat orders, please select a date and retry');
-	                    return Redirect('/vendor/order-template/'.$template->id);
-	                } else {
-	  
-	                       $date = date('Y-m-d', strtotime($date));
-	                       $this->generateRepeatOrders($template, $quantities, $products, $date, $cost, $prices);
+                $date = explode('/', $request->date); // 06/30/2024
+                $date = $date[2] . "-" . $date[0] . "-" . $date[1]; // 2024-06-26 => Y-m-d
 
-	                    Session::flash('message', 'Single day order has been successfully created');
-	                    return Redirect('/vendor/order-template-history/'.$template->client_id.'/'.$template->id);
-	                }
-            	 } else 
-                 {
-                  Session::flash('error', 'Please select date after schedule from date.');
-                  return Redirect('/vendor/order-template/'.$template->id);
-            	 }
+                if ($scheduleFrom <= $date) {
+                    if (empty($request->date)) {
+                        Session::flash('error', 'There is no date selected to generate repeat jobs, please select a date and retry');
+                        return Redirect('/vendor/order-template/' . $template->id);
+                    } else {
+                        $date = date('Y-m-d', strtotime($date));
+
+                        $this->generateRepeatOrders($template, $quantities, $products, $date, $cost, $prices);
+
+                        Session::flash('message', 'Single day job has been successfully created');
+                        return Redirect('/vendor/order-template-history/' . $template->client_id . '/' . $template->id);
+                    }
+                } else {
+                    Session::flash('error', 'Please select date after schedule from date.');
+                    return Redirect('/vendor/order-template/' . $template->id);
+                }
+            	// $date=explode('/',$request->date);
+            	// $date=$date[2]."-".$date[0]."-".$date[1];
+            	//  if($scheduleFrom <=$date)
+            	//  {
+	            // 	if (empty($request->date)) {
+	            //         Session::flash('error', 'There is no date selected to generate repeat orders, please select a date and retry');
+	            //         return Redirect('/vendor/order-template/'.$template->id);
+	            //     } else {
+	  
+	            //            $date = date('Y-m-d', strtotime($date));
+	            //            $this->generateRepeatOrders($template, $quantities, $products, $date, $cost, $prices);
+
+	            //         Session::flash('message', 'Single day order has been successfully created');
+	            //         return Redirect('/vendor/order-template-history/'.$template->client_id.'/'.$template->id);
+	            //     }
+            	//  } else 
+                //  {
+                //   Session::flash('error', 'Please select date after schedule from date.');
+                //   return Redirect('/vendor/order-template/'.$template->id);
+            	//  }
 
             }
             else {
@@ -988,14 +1106,16 @@ class OrderTemplateController extends Controller
 		
 	    if(isset($_GET['orderType']))
 		{
-			$jobType = str_replace('=', '', $_GET['jobType']);
+			// $jobType = str_replace('=', '', $_GET['jobType']);
+            $jobType = str_replace('=', '', $_GET['jobType'] ?? '');
 			if ($jobType) {
 			   $orders->where('orders.job_type', $jobType);
 			}
 		}	
 		if(isset($_GET['jobName']))
 		{
-			$jobName = str_replace('=', '', $_GET['jobName']);
+			// $jobName = str_replace('=', '', $_GET['jobName']);
+            $jobName = str_replace('=', '', $_GET['jobName'] ?? '');
 			if ($jobName) {
 				$orders->whereRaw('LOWER(orders.job_name) LIKE  "%'.trim(strtolower($jobName)).'%"');  
 			}
@@ -1003,7 +1123,8 @@ class OrderTemplateController extends Controller
 		
 		if(isset($_GET['orderType']))
 		{
-			$orderType = str_replace('=', '', $_GET['orderType']);
+			// $orderType = str_replace('=', '', $_GET['orderType']);
+            $orderType = str_replace('=', '', $_GET['orderType'] ?? '');
 			if ($orderType) {
 				$orders->where('orders.order_type', $orderType);
 			}

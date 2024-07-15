@@ -18,10 +18,13 @@ class OrderTemplate extends Model
         $this->attributes['days_allowed'] = json_encode($value);
     }
 
-    public function getDaysAllowedAttribute($value)
-    {
-
-       return $this->attributes['days_allowed'] = json_decode($value);
+    public function getDaysAllowedAttribute($value) {
+        if (is_string($value)) {
+            return $this->attributes['days_allowed'] = json_decode($value);
+        }
+    
+        return $this->attributes['days_allowed'] = $value;
+        // return $this->attributes['days_allowed'] = json_decode($value);
     }
 
     public function client()
@@ -33,7 +36,7 @@ class OrderTemplate extends Model
 
         if(!empty($this->attributes['days_allowed'])){
             $temp = [];
-            $days = json_decode($this->attributes['days_allowed']);
+            $days = json_decode($this->attributes['days_allowed']) ?? [];
 
             foreach ($days as $day){
                 if ($day == 1) {

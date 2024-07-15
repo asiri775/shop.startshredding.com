@@ -189,6 +189,7 @@
                                 <label class="control-label col-sm-3" for="province">Days Allowed * </label>
                                 <div class="col-sm-4">
                                     <?php
+                                    $days_allowed = [];
                                     $days=$orderTemplate->days_allowed;
                                     foreach ($days AS $allowed)
                                         {
