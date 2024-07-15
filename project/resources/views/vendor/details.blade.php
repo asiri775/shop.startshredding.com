@@ -84,25 +84,32 @@ $urlTime = '';
                             <div class="row pb-5 p-5">
                                 <div class="col-md-6">
                                     @php
-                                        $created = date_create($orderinquiry->created_at);
-                                        $created = date_format($created, 'm/d/Y');
+                                        $created_at = $orderinquiry->created_at ?? null;
+                                        if($created_at != null){
+                                            $created = date_create($created_at);
+                                            $created = date_format($created, 'm/d/Y');
+                                        }else{
+                                            $created = '#NA';
+                                        }
+                                        // $created = date_create($orderinquiry->created_at);
+                                        // $created = date_format($created, 'm/d/Y');
                                     @endphp
                                     <p class="font-weight-bold mb-4"><strong>Order Inquiry Details</strong></p>
                                     <p class="mb-1"><span class="text-muted">Order Id : </span> <?= $order->id ?></p>
                                     <p class="mb-1"><span class="text-muted">Service Type : </span>
-                                        <?= $orderinquiry->service_type ?></p>
+                                        <?= $orderinquiry->service_type ?? '#NA' ?></p>
                                     <p class="mb-1"><span class="text-muted">Shredding Type: </span>
-                                        <?= $orderinquiry->shredding_type ?></p>
+                                        <?= $orderinquiry->shredding_type ?? '#NA' ?></p>
                                     <p class="mb-1"><span class="text-muted">Packing Container: </span>
-                                        <?= $orderinquiry->packing_container ?></p>
+                                        <?= $orderinquiry->packing_container ?? '#NA' ?></p>
                                     <p class="mb-1"><span class="text-muted">Quantity : </span>
-                                        <?= $orderinquiry->quantity ?></p>
+                                        <?= $orderinquiry->quantity ?? '#NA' ?></p>
                                     <p class="mb-1"><span class="text-muted">Additional Info : </span>
-                                        <?= $orderinquiry->additional_info ?></p>
+                                        <?= $orderinquiry->additional_info ?? '#NA' ?></p>
                                     <p class="mb-1"><span class="text-muted">Start Date : </span>
-                                        <?= $orderinquiry->start_date ?></p>
+                                        <?= $orderinquiry->start_date ?? '#NA' ?></p>
                                     <p class="mb-1"><span class="text-muted">Promo Code : </span>
-                                        <?= $orderinquiry->promo_code ?></p>
+                                        <?= $orderinquiry->promo_code ?? '#NA' ?></p>
                                     <p class="mb-1"><span class="text-muted">Created : </span> <?= $created ?></p>
                                 </div>
                             </div>
