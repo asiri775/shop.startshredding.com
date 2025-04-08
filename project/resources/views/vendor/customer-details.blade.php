@@ -25,7 +25,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <div class="page-title row">
-        <h2>{{$client->first_name." ".$client->last_name}}</h2>
+        <h2>{{$client->first_name." ".$client->last_name}}</h2> 
     </div>
     @if(Session::has('message'))
         <div class="alert alert-success alert-dismissable">
@@ -105,6 +105,7 @@
                                 <div class="tab-pane mt-3" id="3">
                                 </div>
                             </div>
+                            <a href="/vendor/customer/{{$client->id}}/add-job" class="btn btn-success float-right my-2">Add New Job</a>
                         </div>
                     </div>
                 </div>

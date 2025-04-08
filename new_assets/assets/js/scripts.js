@@ -12,7 +12,7 @@
             // Bind elements that are included inside search overlay
             searchField: '#overlay-search',
             closeButton: '.overlay-close',
-            suggestions: '#overlay-suggestions',
+            suggestions: '.overlay-suggestions',
             brand: '.brand',
              // Callback that will be run when you hit ENTER button on search box
             onSearchSubmit: function(searchString) {

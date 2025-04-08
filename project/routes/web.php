@@ -257,6 +257,7 @@ Route::post('admin/banner/large', 'PageSettingsController@largebanner');
 Route::post('admin/pagesettings/about', 'PageSettingsController@about');
 Route::post('admin/pagesettings/faq', 'PageSettingsController@faq');
 Route::post('admin/pagesettings/contact', 'PageSettingsController@contact');
+Route::post('admin/pagesettings/service', 'PageSettingsController@service');  
 Route::resource('/admin/pagesettings', 'PageSettingsController');
 
 Route::resource('/admin/products', 'ProductController');
@@ -296,8 +297,13 @@ Route::get('/admin/orders', 'OrderController@index');
 Route::get('/admin/orders/show/{id}', 'OrderController@show');
 Route::post('/admin/orders/bulkMailSend', 'OrderController@sendBulkEmail');
 Route::resource('admin/job-types', 'JobTypeController');
+
 Route::get('/vendor/orders/status/{id}/{status}', 'VendorOrdersController@status');
 Route::resource('/vendor/orders', 'VendorOrdersController');
+
+Route::get('/vendor/jobs/status/{id}/{status}', 'VendorJobsController@status');
+Route::resource('/vendor/jobs', 'VendorJobsController');
+
 Route::any('/getAjCities', 'OrderController@getCities');
 Route::post('/admin/orders/searchResults', 'OrderController@searchResults');
 // Route::post('/payment', 'PaymentController@store')->name('payment.submit');
@@ -516,7 +522,15 @@ Route::get('/shop-order-summary', 'IndexController@orderSummary')->name('home.su
 // Service Agreement
 
 Route::post('/save_signature', 'ServiceAgreementController@save_sign');
-Route::post('/complete_sa', 'ServiceAgreementController@complete_sa')->name('home.complete_sa');
+Route::post('/complete_sa', 'ServiceAgreementController@complete_sa')->name('home.complete_sa'); // old end point
+Route::post('/complete-step-one', 'ServiceAgreementController@completeStepOne')->name('home.complete.step.one'); // Step One
+Route::get('/complete-step-two/{token}', 'ServiceAgreementController@completeStepTwo')->name('home.complete.step.two');
+Route::post('/complete-step-two', 'ServiceAgreementController@completeStepTwo')->name('home.complete.step.two');
+
+
+Route::get('/form-wizard/{token}', 'ServiceAgreementController@showForm');
+Route::post('/form-wizard', 'ServiceAgreementController@submitForm')->name('form.wizard.submit');
+
 Route::get('/confirm_service/{token}', 'ServiceAgreementController@confirm_link')->name('confirm.service');
 
 // Client Credit Card

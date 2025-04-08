@@ -56,7 +56,7 @@
                     name: 'DB Server'
                 }, {
                     data: seriesData[1],
-                    color: $.Pages.getColor('master-light'),
+                    color: $.Pages.getColor('contrast-low'),
                     name: 'Web Server'
                 }]
             });
@@ -109,7 +109,7 @@
 
         //Get from JSON data and build
 
-        d3.json('http://pages.revox.io/json/min_sales_chart.json', function(data) {
+        d3.json('https://52015.backpocket.ca/backend/assets/js/min_sales_chart.json', function(data) {
 
             // Widget-15
             nv.addGraph(function() {
@@ -150,41 +150,6 @@
                     $('.widget-16-chart .nvd3 circle.nv-point').attr("r", "4");
                 }, 500);
             });
-
-            // Widget-7
-            nv.addGraph(function() {
-                var chart = nv.models.lineChart()
-                    .x(function(d) {
-                        return d[0]
-                    })
-                    .y(function(d) {
-                        return d[1]
-                    })
-                    .color(['#fff'])
-                    .margin({
-                        top: 10,
-                        right: -10,
-                        bottom: 20,
-                        left: -10
-                    })
-                    .showXAxis(false)
-                    .showYAxis(false)
-                    .showLegend(false)
-                    .interactive(false);
-
-                d3.select('.widget-7-chart svg')
-                    .datum(data.premarket)
-                    .call(chart);
-
-                nv.utils.windowResize(chart.update);
-
-                return chart;
-            }, function() {
-                setTimeout(function() {
-                    $('.widget-7-chart .nvd3 circle.nv-point:nth-child(4)').attr("r", "5");
-                }, 500);
-            });
-
 
             // Widget-8
             nv.addGraph(function() {
@@ -235,9 +200,10 @@
             });
         });
 
+
         // Widget 13
         var mapplicWidget = $('.widget-13-map').mapplic({
-            source: 'http://pages.revox.io/json/dashboard-map.json',
+            source: 'https://52015.backpocket.ca/backend/assets/js/dashboard-map.json',
             height: 465,
             sidebar: false,
             minimap: false,
@@ -272,13 +238,9 @@
             window.location.hash = hash;
         });
 
-        // tiles
-        $(".widget-3 .metro").liveTile();
-        $(".widget-7 .metro").liveTile();
-
 
         //NVD3 Charts
-        d3.json('http://pages.revox.io/json/charts.json', function(data) {
+        d3.json('https://52015.backpocket.ca/backend/assets/js/charts.json', function(data) {
 
             // line chart
             (function() {
@@ -368,51 +330,6 @@
                 });
             })();
 
-            // line chart2
-            (function() {
-                nv.addGraph(function() {
-                    var chart = nv.models.lineChart()
-                        .x(function(d) {
-                            return d[0]
-                        })
-                        .y(function(d) {
-                            return d[1] / 100
-                        })
-                        .color([
-                            $.Pages.getColor('success')
-                        ])
-                        .forceY([0, 2])
-                        .useInteractiveGuideline(true)
-
-                    .margin({
-                            top: 60,
-                            right: -10,
-                            bottom: -10,
-                            left: -10
-                        })
-                        .showLegend(false);
-
-
-                    d3.select('.widget-4-chart svg')
-                        .datum(data.nvd3.productRevenue)
-                        .transition().duration(500)
-                        .call(chart);
-
-
-                    nv.utils.windowResize(function() {
-
-                        chart.update();
-
-                    });
-
-                    $('.widget-4-chart').data('chart', chart);
-
-                    return chart;
-                }, function() {
-
-                });
-            })();
-
             // Widget 15
 
             (function() {
@@ -440,7 +357,7 @@
                         name: "New users"
                     }, {
                         data: seriesData[1],
-                        color: $.Pages.getColor('master-lighter'),
+                        color: $.Pages.getColor('contrast-lower'),
                         name: "Returning users"
 
                     }]
@@ -498,7 +415,7 @@
                         name: "New users"
                     }, {
                         data: seriesData[1],
-                        color: $.Pages.getColor('master-lighter'),
+                        color: $.Pages.getColor('contrast-lower'),
                         name: "Returning users"
 
                     }]
@@ -521,103 +438,6 @@
                     graph.configure({
                         width: $(container).width(),
                         height: 200
-                    });
-
-                    graph.render()
-                });
-
-                $(container).data('chart', graph);
-
-            })();
-
-
-            // widget 5
-            (function() {
-                var container = '.widget-5-chart';
-
-                var seriesData = [
-                    [],
-                    []
-                ];
-                var random = new Rickshaw.Fixtures.RandomData(7);
-                for (var i = 0; i < 7; i++) {
-                    random.addData(seriesData);
-                }
-
-                var graph = new Rickshaw.Graph({
-                    element: document.querySelector(container),
-                    renderer: 'bar',
-                    series: [{
-                        data: [{
-                            x: 0,
-                            y: 10
-                        }, {
-                            x: 1,
-                            y: 8
-                        }, {
-                            x: 2,
-                            y: 5
-                        }, {
-                            x: 3,
-                            y: 9
-                        }, {
-                            x: 4,
-                            y: 5
-                        }, {
-                            x: 5,
-                            y: 8
-                        }, {
-                            x: 6,
-                            y: 10
-                        }],
-                        color: $.Pages.getColor('danger')
-                    }, {
-                        data: [{
-                            x: 0,
-                            y: 0
-                        }, {
-                            x: 1,
-                            y: 2
-                        }, {
-                            x: 2,
-                            y: 5
-                        }, {
-                            x: 3,
-                            y: 1
-                        }, {
-                            x: 4,
-                            y: 5
-                        }, {
-                            x: 5,
-                            y: 2
-                        }, {
-                            x: 6,
-                            y: 0
-                        }],
-                        color: $.Pages.getColor('master-light')
-                    }]
-
-                });
-
-
-                var MonthBarsRenderer = Rickshaw.Class.create(Rickshaw.Graph.Renderer.Bar, {
-                    barWidth: function(series) {
-
-                        return 7;
-                    }
-                });
-
-
-                graph.setRenderer(MonthBarsRenderer);
-
-
-                graph.render();
-
-
-                $(window).resize(function() {
-                    graph.configure({
-                        width: $(container).width(),
-                        height: $(container).height()
                     });
 
                     graph.render()

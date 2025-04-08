@@ -119,55 +119,9 @@ saveJPGButton.addEventListener("click", () => {
     alert("Please provide a signature first.");
   } else {
     const dataURL = signaturePad.toDataURL("image/jpeg");
-    var client_name = document.getElementById('client_name').value;
-    if(client_name == ""){
-      alert("Please insert the name.");
-    }
-    else {
-      document.getElementById('save_flag').value = '1';
-      var csrf = window.parent.document.getElementById('csrf').value;
-      var order_id = window.parent.document.getElementById('order_id').value;
-      var formData = new FormData();
-      formData.append("image", dataURL);
-      formData.append("client_name", client_name);
-      formData.append("order_id", order_id);
-      formData.append("_token", csrf);
-
-      var xhr = new XMLHttpRequest();
-      xhr.onload = function() {
-        
-        // result = JSON.parse(this.responseText);
-        if(this.status == 200){
-          window.parent.document.getElementById('save_flag').value = 1;
-          console.log(this.responseText);
-          alert('Signature saved succeessfully');
-        }
-        else {
-          
-          alert('Signature save failed');
-        }
-        
-      }
-      xhr.open("POST", "/save_signature");
-      xhr.send(formData);
-      
-    }
-    // download(dataURL, "signature.jpg");
+    download(dataURL, "signature.jpg");
   }
 });
-
-function getCookie(c_name) {
-  if(document.cookie.length > 0) {
-      c_start = document.cookie.indexOf(c_name + "=");
-      if(c_start != -1) {
-          c_start = c_start + c_name.length + 1;
-          c_end = document.cookie.indexOf(";", c_start);
-          if(c_end == -1) c_end = document.cookie.length;
-          return unescape(document.cookie.substring(c_start,c_end));
-      }
-  }
-  return "";
-}
 
 saveSVGButton.addEventListener("click", () => {
   if (signaturePad.isEmpty()) {

@@ -176,11 +176,11 @@
                                     <br>
                                 </div>
                             </div>
-                            <input type="hidden" value="{{$street_no}}" name="street" id="street">
-                            <input type="hidden" value="{{$city}}" name="city" id="city">
-                            <input type="hidden" value="{{$province}}" name="province" id="province">
-                            <input type="hidden" value="{{$country}}" name="country" id="country">
-                            <input type="hidden" value="{{$zip}}" name="zip" id="zip">
+                            <input type="hidden" value="{{$edit_address->street}}" name="street" id="street">
+                            <input type="hidden" value="{{$edit_address->city}}" name="city" id="city">
+                            <input type="hidden" value="{{$edit_address->province}}" name="province" id="province">
+                            <input type="hidden" value="{{$edit_address->country}}" name="country" id="country">
+                            <input type="hidden" value="{{$edit_address->zip}}" name="zip" id="zip">
                             <input type="hidden" value="{{$edit_address->address}}" name="address" id="location">
                             <input type="hidden" name="uniqueid" value="{{Session::get('uniqueid')}}">
                             <input type="hidden" name="latitude" id="latitude" value="{{$edit_address->latitude }}"/>

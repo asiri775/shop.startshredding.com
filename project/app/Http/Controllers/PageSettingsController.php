@@ -266,6 +266,23 @@ class PageSettingsController extends Controller
     }
 
 
+    public function service(Request $request)
+
+    {
+        $page = PageSettings::findOrFail(1);
+        
+        $input = $request->all();
+        if ($request->c_status == ""){
+            $input['c_status'] = 0;
+        }
+        $feedback= $page->update($input);
+        //print_r($feedback);die; 
+
+        Session::flash('message', 'Terms and Conditions Content Updated Successfully.');
+        return redirect('admin/pagesettings');
+    } 
+
+
     /**
      * Remove the specified resource from storage.
      *

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <meta charset="utf-8" />
@@ -13,41 +12,43 @@
 <meta content="" name="description" />
 <meta content="" name="author" />
 <link href="{{ URL::asset('new_assets/assets/plugins/pace/pace-theme-flash.css')}}" rel="stylesheet" type="text/css" />
-<link href="{{ URL::asset('new_assets/assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet"
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
       type="text/css" />
-<link href="{{ URL::asset('new_assets/assets/plugins/font-awesome/css/font-awesome.css')}}" rel="stylesheet"
-      type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css" rel="stylesheet" type="text/css" />
 <link href="{{ URL::asset('new_assets/assets/plugins/jquery-scrollbar/jquery.scrollbar.css')}}" rel="stylesheet"
       type="text/css" media="screen" />
 <link href="{{ URL::asset('new_assets/assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css"
       media="screen" />
-<link href="{{ URL::asset('new_assets/assets/plugins/switchery/css/switchery.min.css')}}" rel="stylesheet"
-      type="text/css" media="screen" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="{{ URL::asset('new_assets/assets/plugins/nvd3/nv.d3.min.css')}}" rel="stylesheet" type="text/css"
       media="screen" />
 <link href="{{ URL::asset('new_assets/assets/plugins/mapplic/css/mapplic.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ URL::asset('new_assets/assets/plugins/rickshaw/rickshaw.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ URL::asset('new_assets/assets/plugins/bootstrap-datepicker/css/datepicker3.css')}}" rel="stylesheet"
       type="text/css" media="screen">
-<link href="{{ URL::asset('new_assets/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css')}}"
-      rel="stylesheet" type="text/css" />
-<link
-        href="{{ URL::asset('new_assets/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css')}}"
+<link href="https://cdn.jsdelivr.net/npm/datatables-bootstrap@0.0.1/css/dataTables.bootstrap.min.css"  rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('new_assets/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css')}}"
         rel="stylesheet" type="text/css" />
-<link href="{{ URL::asset('new_assets/assets/plugins/datatables-responsive/css/datatables.responsive.css')}}"
-      rel="stylesheet" type="text/css" media="screen" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/datatables-responsive/3.0.3/dataTables.responsive.js" rel="stylesheet" type="text/css" media="screen" />
 <link href="{{ URL::asset('new_assets/assets/plugins/jquery-metrojs/MetroJs.css')}}" rel="stylesheet" type="text/css"
       media="screen" />
-<link href="{{ URL::asset('new_assets/pages/css/pages-icons.css')}}" rel="stylesheet" type="text/css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" type="text/css">
 <link href="{{ URL::asset('new_assets/pages/css/pages.css')}}" class="main-stylesheet" rel="stylesheet"
       type="text/css" />
-
 <link href="{{ URL::asset('new_assets/assets/plugins/pace/pace-theme-flash.css')}}" rel="stylesheet" type="text/css" />
-<link href="{{ URL::asset('new_assets/assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css"
-      media="screen" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="{{ URL::asset('/home_assets/images/form-wizard/pages.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ URL::asset('/home_assets/images/form-wizard/style.css') }}" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.3.4/signature_pad.min.js"></script>
 <style>
+   #signature-pad 
+   {
+    width: 100%;
+    max-width: 600px;
+    height: 200px;
+    border: 1px solid black;
+    display: block;
+    }
     .top-right1 {
         position: absolute !important;
         /* top: 1px; */
@@ -76,6 +77,19 @@
     padding: 0.2rem 1rem;
   }
 
+  .input-group-text{
+       line-height: 21px;
+  }
+
+   #signature-pad 
+   {
+      width: 100%;
+      max-width: 600px;
+      height: 200px;
+      border: 1px solid black;
+      display: block;
+  }
+
 </style>
 
 <script src="{{ URL::asset('/new_assets/assets/plugins/popper/umd/popper.min.js')}}" type="text/javascript"></script>
@@ -102,80 +116,12 @@
              </div>
           </div>
           <div class="d-flex align-items-center">
-            <!-- <a href="" class="header-icon btn-icon-link mr-3 d-lg-inline-block d-none lh-25">
-              <span class="icon-phone1"></span>
-              <span>(416) 255-1500</span>
-            </a> -->
-            <!--a href="" class="header-icon btn-icon-link mr-3 d-lg-inline-block d-none lh-25">
-              <span class="icon-mail1"></span>
-              <span>info@startshredding.com</span>
-            </a-->
-            <!-- START User Info-->
-            <!-- <div class="pull-left p-r-10 fs-14 font-heading d-lg-inline-block d-none">
-              <span class="semi-bold">Smith</span> <span class="">Nest</span>
-            </div>
-            <div class="dropdown pull-right d-lg-block">
-              <button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false" aria-label="profile dropdown">
-                <span class="thumbnail-wrapper d32 circular inline">
-                  <img src="/home_assets/images/form-wizard/avatar.jpg" alt="" data-src="/home_assets/images/form-wizard/avatar.jpg"
-                    data-src-retina="/home_assets/images/form-wizard/avatar_small2x.jpg" width="32" height="32">
-                </span>
-              </button>
-              <div class="dropdown-menu dropdown-menu-right profile-dropdown" role="menu">
-                <a href="#" class="dropdown-item"><span class="fs-11">Signed in as</span><br /><span class="fs-14"><b>Smith Aunsberg</b></span></a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">Your Profile</a>
-                <a href="#" class="dropdown-item">Change Password</a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">Help</a>
-                <a href="#" class="dropdown-item">Logout</a>
-              </div>
-            </div> -->
             <!-- END User Info-->
           </div>
         </div>
       </div>
     </div>
     <!--End top-bar-->
-
-    <!-- <div class="main-menu shadow-sm v-2">
-      <div class="container-fluid">
-        <div class="menu-bar header-sm-height main-menu-bar" data-pages-init='horizontal-menu' data-hide-extra-li="2">
-          <a href="#" class="btn-link header-icon toggle-sidebar d-lg-none right" data-toggle="horizontal-menu">
-            <i class="pg-icon">close</i>
-          </a>
-          <div class="m-search d-flex d-lg-none">
-            <a href="#" class="search-link d-lg-none fs-11"
-            data-toggle="search"><i class="icon-search1 text-light mr-2"></i>Search Invoice or Job#</a>
-             <div class="input-group w-100 p-2"> 
-               <input type="text" class="form-control" placeholder="Search Invoice or Job#"> 
-               <div class="input-group-text btn"><i class="icon-search1 text-white"></i></div> 
-              </div>
-            </div>
-          <ul>
-            <li class=" active">
-              <a href="index.html">Dashboard</a>
-            </li>
-            <li>
-              <a href="service_history.html"><span class="title">Service History</span></a>
-            </li>
-            <li>
-              <a href="invoices.html"><span class="title">Invoices</span></a>
-            </li>
-            <li>
-              <a href="book_service.html"><span class="title">Book Service</span></a>
-            </li>
-            <li>
-              <a href="support.html"><span class="title">Support</span></a>
-            </li>
-           </ul>
-           <div class="m-ac">
-            <h5 class="all-caps fs-15 text-white m-ac-text">Account balance <span class="bold fs-16 m-ac-bg">$31422.51</span></h5>
-           </div>
-        </div>
-      </div>
-    </div> -->
     <!--End Main-menu-->
   </div>
   <div class="page-container ">
@@ -199,8 +145,9 @@
           <!-- START CONTAINER FLUID -->
           <div class=" container-fluid">
 
-                          
-          <div id="rootwizard" class="m-t-10">
+                      <div id="rootwizard" class="m-t-10">
+                      <form id="wizard-form" action="{{ route('form.wizard.submit') }}" method="POST">   
+                       @csrf
                       <!-- Nav tabs -->
                       <ul class="nav nav-tabs nav-tabs-linetriangle nav-tabs-separator nav-stack-sm" role="tablist" id="top">
                         <li class="nav-item">
@@ -212,14 +159,25 @@
                         <li class="nav-item">
                           <a class="d-flex align-items-center" data-toggle="tab" href="#tab3" data-target="#tab3" role="tab"><i class="icon-credit-card1 fs-14 tab-icon"></i> <span>Credit card information</span></a>
                         </li>
-                        <!--li class="nav-item">
-                          <a class="d-flex align-items-center" data-toggle="tab" href="#tab4" data-target="#tab4" role="tab"><i class="material-icons fs-14 tab-icon">done</i> <span>Summary</span></a>
-                        </li-->
                       </ul>
                       <!-- Tab panes -->
                       <div class="tab-content">
-                        
-                        <div class="tab-pane padding-20 sm-no-padding active slide-left" id="tab1">
+                      @if (session('success'))
+                      <div class="alert alert-success">{{ session('success') }}</div>  
+                      @endif
+
+                      @if ($errors->any())
+                      <div class="alert alert-danger">
+                          <ul>
+                              @foreach ($errors->all() as $error)
+                                  <li>{{ $error }}</li>
+                              @endforeach
+                          </ul>
+                      </div>
+                      @endif
+
+
+                        <div class="tab-pane padding-20 active" id="tab1">
                           <div class="row row-same-height">
                             <div class="client-info sm-m-b-3">
                               <div class="pl-4 pr-4 row-same-height">
@@ -228,17 +186,20 @@
                                     <h3 class="font-montserrat bold fs-16 bold all-caps no-margin">Client info</h3>
                                   </div>
                                 </div>
-                                <div class="row clearfix mb-1 sm-p-0 mt-4">
+                                <div class="row clearfix mb-1 sm-p-0 mt-4" >
                                     <div class="col-md-6">
                                       <div class="form-group form-group-default required">
                                         <label>Company Name</label>
-                                        <input type="text" class="form-control client_info" id="companyName" placeholder="Company Name" value="<?php echo $user->business_name?>" required>
+                                         <input type="hidden"  name="order_id"  value="<?php echo $order->id?>" >
+                                        <input type="text" class="form-control client_info"  name="company_name" id="companyName" placeholder="Company Name" value="<?php echo ($user->business_name)?$user->business_name:old('company_name')?>" >
+                                           @error('company_name') <div class="text-danger">{{ $message }}</div> @enderror
                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                       <div class="form-group form-group-default required">
                                         <label>Contact Name</label>
-                                        <input type="text" class="form-control client_info" id="contactName" placeholder="Contact Name" value="<?php echo $order->customer_name?>" required>
+                                        <input type="text" class="form-control client_info" id="contactName" name="contact_name" placeholder="Contact Name" value="<?php echo ($order->customer_name)?$order->customer_name:old('contact_name')?>" >
+                                         @error('contact_name') <div class="text-danger">{{ $message }}</div> @enderror
                                        </div>
                                     </div>
                                   </div>  
@@ -246,13 +207,16 @@
                                   <div class="col-md-6">
                                     <div class="form-group form-group-default required">
                                       <label>Phone</label>
-                                      <input id="phone" type="tel" pattern="\d{3}\-\d{3}\-\d{4}" class="form-control telephone client_info" data-mask="(999)-999-9999" placeholder="(999)-999-9999" value="<?php echo $order->customer_phone?>"  required />
+                                      <input id="phone" type="tel" pattern="\d{3}\-\d{3}\-\d{4}" name="phone_number" class="form-control telephone client_info" data-mask="(999)-999-9999" placeholder="(999)-999-9999" value="<?php echo ($order->customer_phone)?$order->customer_phone:old('phone_number')?>"   />
+                                      @error('phone_number') <div class="text-danger">{{ $message }}</div> @enderror
+                                      <span id="phone-error" style="color: red;"></span>
                                     </div>
                                   </div>
                                   <div class="col-md-6">
                                     <div class="form-group form-group-default">
                                       <label>Email</label>
-                                      <input type="email" class="form-control" id="email" value="<?php echo $order->customer_email?>"  placeholder="joan@lifeforcephysio.com">
+                                      <input type="email" class="form-control"  name="email" id="email" value="<?php echo ($order->customer_email)?$order->customer_email:old('email')?>"  placeholder="joan@lifeforcephysio.com">
+                                      @error('email') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
                                 </div>
@@ -261,13 +225,15 @@
                                   <div class="col-md-6">
                                     <div class="form-group form-group-default required">
                                       <label>Addresss Line 1</label>
-                                      <input type="text" class="form-control client_info" id="bill-firstName" name="firstName" placeholder="577" value="<?php echo $customer->address?>"  required>
+                                      <input type="text" class="form-control client_info" id="bill-firstName" name="billing_address_1" placeholder="Addresss Line 1" value="<?php echo ($customer->address)?$customer->address:old('billing_address_1')?>" >
+                                         @error('billing_address_1') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
                                   <div class="col-md-6">
                                     <div class="form-group form-group-default">
                                       <label>Addresss Line 2</label>
-                                      <input type="text" class="form-control" id="bill-lastName" name="lastName" placeholder="Burnhamthorpe Road">
+                                      <input type="text" class="form-control" id="bill-lastName" name="billing_address_2" placeholder="Addresss Line 2" value="{{ old('billing_address_2') }}">
+                                      @error('billing_address_2') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
                                 </div>
@@ -275,40 +241,67 @@
                                   <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                       <label>City</label>
-                                      <input type="text" class="form-control client_info" id="bill-city" name="city" value="<?php echo $customer->city?>"  placeholder="Toronto" required>
+                                      <input type="text" class="form-control client_info" id="bill-city" name="billing_city" value="<?php echo ($customer->city)?$customer->city:old('billing_city')?>"  placeholder="City" >
+                                      @error('billing_city') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
                                   <div class="col-md-4">
                                     <div class="form-group form-group-default">
                                       <label>State/Province/Region</label>
-                                      <input type="text" class="form-control " id="bill-state" name="state" value="<?php echo $customer->Province_State?>"  placeholder="Ontario">
+                                      <input type="text" class="form-control " id="bill-state" name="billing_state" value="<?php echo ($customer->Province_State)?$customer->Province_State:old('billing_state')?>"  placeholder="State">
+                                       @error('billing_state') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
                                   <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                       <label>Postal Code</label>
-                                      <input type="text" class="form-control client_info" id="bill-postal" name="postal"  placeholder="M9C 2Y3" value="<?php echo $customer->zip?>" required>
+                                      <input type="text" class="form-control client_info" id="bill-postal" name="billing_postal_code"  placeholder="postal" value="<?php echo ($customer->zip)?$customer->zip:old('billing_postal_code')?>">
+                                       @error('billing_postal_code') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
                                 </div>
-                              <div class="row clearfix mb-2">
-                                <div class="col-md-6">
-                                  <div class="form-group form-group-default required">
-                                    <label>Phone</label>
-                                    <input type="text" class="form-control client_info" id="bill-phoneNumber" name="phoneNumber" value="<?php echo $customer->phone?>" placeholder="(999)-999-9999" >
-                                  </div>
-                                </div>
-                                <div class="col-md-6">
-                                  <div class="form-group form-group-default">
-                                    <label>Email</label>
-                                    <input type="email" class="form-control" id="bill-email" name="email" value="<?php echo $customer->email?>"  placeholder="joan@lifeforcephysio.com">
-                                  </div>
-                                </div>
-                              </div>
+                            
+                              <script type="text/javascript">
+                                function sameBilling()
+                                {
+                                    if ($('#defaultCheck').is(':checked')) {
+                                       $('#shipp-firstName').val($('#bill-firstName').val());
+                                       $('#shipp-lastName').val($('#bill-lastName').val());
+                                       $('#shipp-city').val($('#bill-city').val());
+                                       $('#shipp-state').val($('#bill-state').val());
+                                       $('#shipp-postal').val($('#bill-postal').val());
+                                       $('#shipp-phoneNumber').val($('#bill-phoneNumber').val());
+                                       $('#shipp-email').val($('#bill-email').val());
+                                       
+                                    } else {
+                                      $('#shipp-firstName,#shipp-lastName,#shipp-city,#shipp-state,#shipp-postal,#shipp-phoneNumber,#shipp-email').val('');
+                                    }
+
+                                  }
+
+
+                                  //  function nextPage()
+                                  // {
+                                 
+                                  //     var companyName = $("#companyName").val();
+
+                                  //     if (!companyName) {
+                                  //       $(".form-group").addClass("has-danger");
+                                  //       alert("Field is blank. Submit will be prevented.");
+                                  //       $('#companyName').validationEngine({ focusFirstField: false });
+
+                                  //       return false; // no submission
+                                  //     }
+
+                                  //     alert("Field is filled. The form will submit.");
+                                  //     return true; // form submits
+                                  //   }
+
+                              </script>
                               <div class="serv-check justify-content-between d-inline-flex w-100">
                                 <p class="font-montserrat bold fs-16 bold mt-3 mb-3">Shipping Address</p>
                                 <div class="form-check primary mt-1">
-                                  <input type="checkbox" onclick="checkBox(this)" id="defaultCheck" checked>
+                                  <input type="checkbox" onclick="sameBilling()" id="defaultCheck" checked>
                                   <label for="defaultCheck" class="bold">
                                     Same as Billing
                                   </label>
@@ -318,13 +311,15 @@
                                   <div class="col-md-6">
                                     <div class="form-group form-group-default required">
                                       <label>Addresss Line 1</label>
-                                      <input type="text" class="form-control client_info" id="shipp-firstName" name="firstName" placeholder="577" required>
+                                      <input type="text" class="form-control client_info" id="shipp-firstName" name="shipping_address_1" placeholder="Addresss Line 1" value="{{ old('shipping_address_1') }}">
+                                     @error('shipping_address_1')<div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
                                   <div class="col-md-6">
                                     <div class="form-group form-group-default">
                                       <label>Addresss Line 2</label>
-                                      <input type="text" class="form-control" id="shipp-lastName" name="lastName" placeholder="Burnhamthorpe Road">
+                                      <input type="text" class="form-control" id="shipp-lastName" name="shipping_address_2" placeholder="Addresss Line 2" value="{{ old('shipping_address_2') }}">
+                                      @error('shipping_address_2')<div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
                                 </div>
@@ -332,19 +327,22 @@
                                   <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                       <label>City</label>
-                                      <input type="text" class="form-control client_info" id="shipp-city" name="city" placeholder="Toronto" required>
+                                      <input type="text" class="form-control client_info" id="shipp-city"  name="shipping_city" placeholder="City" value="{{ old('shipping_city') }}">
+                                    @error('shipping_city')<div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
                                   <div class="col-md-4">
                                     <div class="form-group form-group-default">
                                       <label>State/Province/Region</label>
-                                      <input type="text" class="form-control" id="shipp-state" name="state" placeholder="Ontario">
+                                      <input type="text" class="form-control" id="shipp-state" name="shipping_state" placeholder="State" value="{{ old('shipping_state') }}">
+                                     @error('shipping_state')<div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
                                   <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                       <label>Postal Code</label>
-                                      <input type="text" class="form-control client_info" id="shipp-postal" name="postal" placeholder="M9C 2Y3" required>
+                                      <input type="text" class="form-control client_info" id="shipp-postal" name="shipping_postal_code" placeholder="Postal Code" value="{{ old('shipping_postal_code') }}">
+                                     @error('shipping_postal_code')<div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
                                 </div>
@@ -352,13 +350,15 @@
                                 <div class="col-md-6">
                                   <div class="form-group form-group-default required">
                                     <label>Phone</label>
-                                    <input type="text" class="form-control client_info" id="shipp-phoneNumber" name="phoneNumber" value="" placeholder="(999)-999-9999">
+                                    <input type="text" class="form-control client_info" id="shipp-phoneNumber" name="shipping_phone" value="{{ old('shipping_phone') }}" placeholder="(999)-999-9999">
+                                   @error('shipping_phone')<div class="text-danger">{{ $message }}</div> @enderror
                                   </div>
                                 </div>
                                 <div class="col-md-6">
                                   <div class="form-group form-group-default">
                                     <label>Email</label>
-                                    <input type="email" class="form-control" id="shipp-email" name="email" placeholder="joan@lifeforcephysio.com">
+                                    <input type="email" class="form-control" id="shipp-email" name="shipping_email" placeholder="Email" value="{{ old('shipping_email') }}">
+                                   @error('shipping_email')<div class="text-danger">{{ $message }}</div> @enderror
                                   </div>
                                 </div>
                               </div>
@@ -373,18 +373,12 @@
                               </div>
                               <div class="row mb-3 sm-p-0 mt-4"> 
                                 <div class="col-md-6 mb-2">
-                                  <!--label>Pick Up Date</label>
-                                  <div class="input-group date">
-                                    <div id="datepicker" class="input-group date" data-date-format="mm-dd-yyyy">
-                                      <input class="form-control" type="text" readonly />
-                                      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                                  </div>
-                                  </div-->
                                   <h5 class="all-caps fs-14 mt-1 mb-1">Service Date</h5>
                                   <div class="form-group form-group-default input-group col-md-10">
                                     <div class="form-input-group">
                                       <label>Pick Up Date</label>
-                                      <input type="text" class="form-control" placeholder="Pick Up Date" value="{{date('m/d/Y', strtotime($order->booking_date))}}"  id="datepicker-component2" disabled>
+                                      <input type="text" class="form-control" placeholder="Pick Up Date" vname="pick_up_date" value="{{date('m/d/Y', strtotime($order->booking_date))}}"  id="datepicker-component2" disabled>
+                                       @error('pick_up_date')<div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="input-group-append ">
                                       <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -399,7 +393,7 @@
                                         <div class="form-input-group">
                                           <label>From</label>
                                           <div id="selector">
-                                            <select class="form-control input-lg" id="operation_from">
+                                            <select class="form-control input-lg" id="operation_from" name="operation_from">
                                               <option>7.00AM</option>
                                               <option selected="selected">8.00AM</option>
                                               <option>9.00AM</option>
@@ -424,7 +418,7 @@
                                         <div class="form-input-group">
                                           <label>To</label>
                                           <div id="selector">
-                                            <select class="form-control input-lg" id="operation_to">
+                                            <select class="form-control input-lg" id="operation_to" name="operation_to">
                                               <option>7.00AM</option>
                                               <option>8.00AM</option>
                                               <option>9.00AM</option>
@@ -506,81 +500,32 @@
                                         </tbody>
                                      </table>
                                     </div>
-                                    <p class="fs-14 mt-5">The Grand Total and Line amounts displayed are estimates based on the quantity displayed. The final amount for invoicing and payment may change
-                                      depending on the final quantity of materials received and if there are any applicable surcharges as outlined in the Terms and Conditions of this agreement.</p>
+                                    <p class="fs-14 mt-3"><?php echo $client_information;?></p>
                                     </div> 
                                    </div>  
                               </div>
-                            </div>
+
                             </div>
                           </div>
+                           
+                    
+
+                          </div>
                         </div>
-                        <div class="tab-pane padding-20 sm-no-padding" id="tab2">
+                    
+                        <div class="tab-pane padding-20 sm-no-padding" id="tab2">  
                           <div class="row row-same-height">
                            <div class="col-md-12">
                                <h3 class="font-montserrat">Terms and Conditions</h3>
-                               <p>This AGREEMENT is entered into between <b>SHREDEX INC.</b>a corporation incorporated under the laws of the Province of Ontario (hereinafter referred to
-                                as “SHREDEX”, “CONTRACTOR”, “Company”, “Supplier”, “Seller”, “Service Provider”, or “Vendor”), and Life Force Physiotherapy (hereinafter referred to
-                                as the “Client” or “Customer”). The laws of the Province of Ontario shall control this Agreement and any documents to which it is appended.</p>
-                             <ol>
-                               <li><span class="font-montserrat bold">Scheduling</span>
-                                 <p>In order to reduce costs to our clients, our routes are scheduled for maximum efficiency. We will make every attempt to provide service to you at a
-                                  time that is most convenient, however we can only guarantee that service will be done between our operating hours of 8am to 5pm, unless certain
-                                  times are specifically requested. You may contact our dispatch office on the day of your pick up to request a narrower time window, for your
-                                  convenience. If additional material is presented to us upon our arrival at your facility, we will do our best to complete the entire job on the same
-                                  day. However, if our prior commitments to other clients prevent us from completing the job, we will re-schedule a pickup of your additional items on
-                                  another day. Please note that this will result in additional costs for travel and shredding time.</p>
-                               </li>
-                               <li><span class="font-montserrat bold">Definition of File Boxes</span>
-                                 <p>When rates are provided based on a per ‘file box’ basis, we refer to boxes that measure 15”D x 10”W x 12” H. If your boxes are not the same
-                                  dimension, you will be notified by our driver if there will be changes to your rates, depending on the size of the boxes.</p>
-                               </li>
-                               <li><span class="font-montserrat bold">Location of Documents</span>
-                                 <p>Unless specified in the Pickup Confirmation document, Quotes are provided with the understanding that your documents/materials will be located
-                                  in an area that will be readily accessible to our employees upon arrival. Materials should be at ground floor level, no greater than 30 feet from the
-                                  doorway access, or loading dock area. If documents are not within these parameters, our staff will inform you immediately if any additional charges
-                                  will occur, prior to commencing service. A Labour Charge of $2.00 per box will be applied for every 10 steps either up or down, if boxes need to be
-                                  manually moved to ground level.</p>
-                               </li>
-                               <li><span class="font-montserrat bold">Quoted Rates</span>
-                                 <p>We offer competitive pricing based on volume, scheduled date of pickup, and the type of service required. If there is a change in the parameters of
-                                  the service you requested (ie. Change in quantity of material, or additional labour required to collect materials), you will be notified by our Customer
-                                  Service Representative prior to commencement of the job. Changes in your service may result in higher or lower pricing than your quoted rate.
-                                  </p>
-                               </li>
-                               <li><span class="font-montserrat bold">Payment Terms</span>
-                                 <p>Our payment terms for non-contract clients are COD. We accept Visa and Mastercard, as well as a company or personal cheque. Cash payments
-                                  are accepted, but please note that our drivers cannot make change, therefore exact payment will be required. A $25.00 NSF Fee will apply for
-                                  Credit Card Payments that are declined. A $50.00 NSF Fee is applicable for cheque payments that are returned for insufficient funds. In addition,
-                                  the Client shall be liable for the <b>shredEX</b>'s expenses for the collection of any unpaid debt including but not limited to termination fees, interest
-                                  expenses, court filing fees and legal costs.</p>
-                               </li>
-                               <li><span class="font-montserrat bold">Cancellation Fee</span>
-                                 <p>A Cancellation Fee of $125.00 or 50% of the service order value (whichever is greater) will apply for any service cancelled with less than 24 hours
-                                  notice. For Mobile Shredding Service the Cancellation Fee of $250.00 or 100% of the Service Order Value, applies if the service is cancelled with
-                                  less than 72 hours notice.</p>
-                               </li>
-                               <li><span class="font-montserrat bold">Parking Tickets</span>
-                                 <p><b>shredEX</b> will make every effort to legally park for the duration of the service. However, the Client agrees to pay for any parking tickets incurred by
-                                 <b>shredEX</b> while providing service to the Client, plus a $25.00 administration fee.</p>
-                               </li>
-                               <li><span class="font-montserrat bold">Payments and Invoices</span>
-                                 <p>The Client agrees to pay <b>shredEX</b> for all services rendered. If the Client is delinquent in payment of fees or any other charges due under this
-                                  agreement for more than thirty one (31) days, the Client agrees to pay and administration of $7.50 per month per overdue invoice or calculated as
-                                  an interest at the rate of 28% per annum, whichever is greater. This fee is continually applied monthly until the balance is paid in full. A $25.00 NSF
-                                  Fee will apply for Credit Card or Electronic Fund Transfer Payments that are declined. A $50.00 NSF Fee is applicable for cheque payments that
-                                  are returned for insufficient funds.</p>
-                                  <p class="bold">If you have any questions regarding this Agreement, please contact your Account Manager at 416-255-1500 or send an email to <a href="mailto:info@shredex.ca">info@shredex.ca</a>
-                                  </p>
-                               </li>
-                             </ol>
+                                <?php echo $terms_and_conditions;?>
                              <div class="row">
                               <div class="col-12 mt-3">
                                 <div class="form-check primary m-t-0 ml-2 text-right">
-                                  <input type="checkbox" value="1" id="checkbox-agree" required>
+                                  <input type="checkbox" value="1" id="checkbox-agree" name="terms_accepted">
                                   <label for="checkbox-agree" class="fs-16 bold font-montserrat">The undersigned hereby agrees to this agreement, on behalf of the
                                     Client.
                                   </label>
+                                   @error('terms_accepted')<div class="text-danger">{{ $message }}</div> @enderror
                                   <div id="checkbox-agree-valid"></div>
                                 </div>
                               </div>
@@ -617,21 +562,19 @@
                                                 <option value="{{$i}}">CARD# {{$card_details[$i]->card_number}}</option>
                                               @endfor
                                             </select>
-                                            <!-- <div class="radio radio-primary radio-circle">
-                                                <input type="raio" checked="checked" value="1" id="checkbox9">
-                                                <label for="checkbox9" style="font-size: 10px !important;">CARD# **** **** **** 7829</label>
-                                            </div> -->
                                         </div>
                                     </div>
                                     <div class="form-group form-group-default required m-t-25">
                                       <label>Card holder's name</label>
-                                      <input type="text" class="form-control card_info" id="card_holder_name" placeholder="Name on the card" required>
+                                      <input type="text" class="form-control card_info" id="card_holder_name"  name="credit_card_name" placeholder="Name on the card" value="{{ old('credit_card_name') }}">
+                                       @error('credit_card_name')<div class="text-danger">{{ $message }}</div> @enderror
                                       <div id="card-name-valid"></div>
                                     </div>
                                     <div class="form-group form-group-default required">
                                       <label>Card number</label>
-                                      <!--input type="text" class="form-control" placeholder="8888-8888-8888-8888" required-->
-                                      <input type="text" class="form-control card-no card_info" name="card-num" placeholder="8888 8888 8888 8888" size="18" id="cr_no" minlength="19" maxlength="19" required>
+                                      
+                                      <input type="text" class="form-control card-no card_info" id="cardNumber" name="credit_card_number" placeholder="Enter credit card number"  id="cr_no" minlength="16" maxlength="19" value="{{ old('credit_card_number') }}">
+                        @error('credit_card_number')<div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                       <div class="card-date mb-3 w-100">
                                          <div class="row no-margin">
@@ -641,7 +584,7 @@
                                               <div class="form-input-group">
                                                 <label class="fade">Month</label>
                                                 <div id="selector">
-                                                  <select class="form-control input-lg card_info" id="exp_month">
+                                                  <select class="form-control input-lg card_info" id="exp_month"  name="credit_card_expire_month">
                                                     <option value="1">Jan (01)</option>
                                                     <option value="2">Feb (02)</option>
                                                     <option value="3">Mar (03)</option>
@@ -656,6 +599,7 @@
                                                     <option value="12">Dec (12)</option>
                                                  </select>
                                                  <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                                  @error('credit_card_expire_month')<div class="text-danger">{{ $message }}</div> @enderror
                                                  </div>
                                                </div>
                                             </div>
@@ -666,7 +610,7 @@
                                               <div class="form-input-group">
                                                 <label class="fade">Year</label>
                                                 <div id="selector">
-                                                  <select class="form-control input-lg card_info" id="exp_year">
+                                                  <select class="form-control input-lg card_info" id="exp_year" name="credit_card_expire_year">
                                                     <option selected="selected">2022</option>
                                                     <option>2023</option>
                                                     <option>2024</option>
@@ -678,6 +622,7 @@
                                                     <option>2030</option>
                                                  </select>
                                                  <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                                  @error('credit_card_expire_year')<div class="text-danger">{{ $message }}</div> @enderror
                                                  </div>
                                                </div>
                                             </div>
@@ -685,29 +630,188 @@
                                           <div class="col-md-2 p-0">
                                             <label class="fs-14 m-25 sm-ml-0"><b>CCV Code</b></label>
                                               <div class="form-group required">
-                                                <input class="form-control mh-55 m-25 sm-ml-0 card_info" type="password" id="ccv" name="ccv" placeholder="000" size="1" minlength="3" maxlength="3" required>
+                                                <input class="form-control mh-55 m-25 sm-ml-0 card_info" type="password" id="ccv" name="credit_card_ccv" placeholder="000" size="1" minlength="3" maxlength="3" required>
                                               </div>
                                           </div>
                                         </div>
                                        </div>
                                     </div>
                                     <input name="csrf" id="csrf" value="{{ csrf_token() }}" hidden>
-                                <!-- </form> -->
+                             
                               </div>
                               <div class="row">
                                 <div class="sign-pad-iframe">
                                   <div class="iframe-container ml-5 ml-m-3">
-                                    <iframe id="myFrame" src="/new_assets/signature.html"></iframe>
+                                     <label>Signature:</label>
+                                    <div class="border p-2 mb-3" style="width: 100%; max-width: 250px; ">
+                                        <canvas id="signature-pad" class="border w-100" height="200" width="200" style="width: 100%;"></canvas>
+                                    </div>
+                                    <button type="button" class="btn btn-danger" id="clear">Clear</button>
+                                    <input type="hidden" name="signature" id="signature-data">
+                                     @error('signature')<div class="text-danger">{{ $message }}</div> @enderror
                                   </div>
                                 </div>
                                 <div class="sign-note">
-                                  <p class="fs-14">By digitally Signing this Agreement, and electronically entering your name on this form, you hereby attest to being authorized to provide the Credit Card information above, and hereby authorize <b>SHREDEX INC.</b> to post charges for services rendered, including any Cancellation Fees, Late Fee and any additional charges as outlined in the Terms and Conditions of this Agreement</p>
-                                </div> 
-                              </div>
-                            </div>
+                                  <p class="fs-14"><?php echo $credit_card_infromation;?></p>
+                            </div> 
                           </div>
-                          </div>
-                          </div>
+                      </div>
+                   </div>
+                </div>
+            </div>
+
+    
+<script>
+$(document).ready(function () {
+    $(".next").click(function () {
+        $(this).closest(".step").addClass("d-none").next().removeClass("d-none");
+    });
+
+    $(".prev").click(function () {
+        $(this).closest(".step").addClass("d-none").prev().removeClass("d-none");
+    });
+});
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var canvas = document.getElementById("signature-pad");
+
+        // Ensure the canvas exists
+        if (!canvas) {
+            console.error("Signature pad canvas not found!");
+            return;
+        }
+
+        var signaturePad = new SignaturePad(canvas, {
+            backgroundColor: 'rgba(255, 255, 255, 1)', // White background
+            penColor: "black" // Pen color
+        });
+
+    function resizeCanvas() {
+        var parentWidth = canvas.parentElement.clientWidth; // Get parent div width
+        if (parentWidth === 0) parentWidth = 250; // Set default if parent is hidden
+        
+        canvas.width = parentWidth;
+        canvas.height = 150;
+    }
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+        // Clear Signature
+        document.getElementById("clear").addEventListener("click", function () {
+            signaturePad.clear();
+        });
+
+        // Handle form submission
+        document.querySelector("form").addEventListener("submit", function (e) {
+            if (signaturePad.isEmpty()) {
+                alert("Please provide a signature.");
+                e.preventDefault();
+            } else {
+                document.getElementById("signature-data").value = signaturePad.toDataURL("image/png");
+            }
+        });
+    });
+</script>
+<script>
+        $(document).ready(function () {
+            $("#phone").on("input", function () {
+                var phone = $(this).val();
+                
+                // Allow only numbers and format the input
+                phone = phone.replace(/\D/g, ''); // Remove non-numeric characters
+
+                if (phone.length > 0) {
+                    phone = phone.substring(0, 10); // Limit to 10 digits
+                    phone = phone.replace(/^(\d{3})(\d{0,3})(\d{0,4})$/, function (match, p1, p2, p3) {
+                        return "(" + p1 + (p2 ? ")-" + p2 : "") + (p3 ? "-" + p3 : "");
+                    });
+                }
+
+                $(this).val(phone);
+            });
+
+            $("#myForm").submit(function (e) {
+                var phone = $("#phone").val();
+                var phonePattern = /^\(\d{3}\)-\d{3}-\d{4}$/; // Regex for (999)-999-9999 format
+
+                if (!phonePattern.test(phone)) {
+                    e.preventDefault(); // Stop form submission
+                    $("#phone-error").text("Please enter a valid phone number in (999)-999-9999 format.");
+                } else {
+                    $("#phone-error").text(""); // Clear error message
+                }
+            });
+        });
+    </script>
+      <script>
+        $(document).ready(function () {
+            // Luhn Algorithm for credit card validation
+            function luhnCheck(cardNumber) {
+                let sum = 0;
+                let alternate = false;
+                cardNumber = cardNumber.replace(/\D/g, ''); // Remove non-numeric characters
+                
+                for (let i = cardNumber.length - 1; i >= 0; i--) {
+                    let num = parseInt(cardNumber[i], 10);
+                    
+                    if (alternate) {
+                        num *= 2;
+                        if (num > 9) num -= 9;
+                    }
+                    
+                    sum += num;
+                    alternate = !alternate;
+                }
+                
+                return (sum % 10 === 0);
+            }
+
+            // Validate card format
+            function validateCardNumber(cardNumber) {
+                cardNumber = cardNumber.replace(/\D/g, '');
+
+                const cardPattern = /^(?:4[0-9]{12}(?:[0-9]{3})?|       # Visa
+                                      5[1-5][0-9]{14}|                  # MasterCard
+                                      3[47][0-9]{13}|                   # American Express
+                                      6(?:011|5[0-9]{2})[0-9]{12}|      # Discover
+                                      3(?:0[0-5]|[68][0-9])[0-9]{11}|   # Diners Club
+                                      (?:2131|1800|35\d{3})\d{11})$/x;  # JCB
+
+                return cardPattern.test(cardNumber) && luhnCheck(cardNumber);  
+            }
+
+            // Allow only numbers while typing
+            $("#cardNumber").on("input", function () {
+                $(this).val($(this).val().replace(/\D/g, '')); 
+            });
+
+            // Validate on Enter key press
+            $("#cardNumber").on("keypress", function (e) {
+                if (e.which === 13) { // Check if Enter key is pressed
+                    e.preventDefault(); // Prevent form submission
+
+                    let cardNumber = $(this).val();
+                    if (!validateCardNumber(cardNumber)) {
+                        $("#card-error").text("Invalid credit card number.");
+                    } else {
+                        $("#card-error").text(""); // Clear error message
+                    }
+                }
+            });
+
+            // Validate on form submission (optional)
+            $("#wizard-form").submit(function (e) {
+                let cardNumber = $("#cardNumber").val();
+                if (!validateCardNumber(cardNumber)) {
+                    e.preventDefault();
+                    $("#card-error").text("Invalid credit card number.");
+                }
+            });
+        });
+    </script>
+
                          <!--div class="tab-pane slide-left padding-20 sm-no-padding" id="tab4">
                           <h1>Thank you.</h1>
                           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et bibendum diam. Nunc facilisis nibh vitae sagittis luctus. Suspendisse aliquet purus nec vestibulum molestie. Maecenas sollicitudin efficitur ornare. Maecenas odio leo, lobortis eget libero id, dictum tincidunt libero.</p>
@@ -715,12 +819,12 @@
                         <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
                           <ul class="pager wizard no-style">
                             <li class="next">
-                              <button aria-label="" class="btn btn-primary btn-cons from-left pull-right" type="button">
-                                <span><a href="#top">Next</a></span>
+                              <button aria-label="" class="btn btn-primary btn-cons from-left pull-right" onclick="nextPage();" id="form-next" type="button">
+                                <span><a href="#top" >Next</a></span>
                               </button>
                             </li>
                             <li class="next finish hidden">
-                            <form id="myForm" action="{{route('home.complete_sa')}}" method="POST">
+                           <!-- <form id="myForm" action="{{route('home.complete_sa')}}" method="POST">
                               {{ csrf_field() }}
                                 <input name="company_name" id="form_companyName" hidden>
                                 <input name="contact_name" id="form_contactName" hidden>
@@ -753,24 +857,28 @@
                                 <button aria-label="" id="confirm_form" class="btn btn-primary btn-cons from-left pull-right" type="submit">
                                   <span>Confirm</span>
                                 </button>
-                              </form>
+                              </form> -->
                               <input name="save_flag" id="save_flag" hidden>
                               <input name="csrf" id="csrf" value="{{ csrf_token() }}" hidden>
                             </li>
-                            <li class="previous first hidden">
-                              <button aria-label="" class="btn btn-default btn-cons from-left pull-right" type="button">
-                                <span>First</span>
-                                </button>
-                            </li>
+                           <li class="submit finish">
+                            <button aria-label="" class="btn btn-success btn-cons from-left pull-right" type="submit">
+                                <span><a href="#top">Submit</a></span>
+                              </button>
+                          </li>
+
                             <li class="previous">
                               <button aria-label="" class="btn btn-default btn-cons from-left pull-right" type="button">
                                 <span><a href="#top">Previous</a></span>
                               </button>
                             </li>
+
+
                           </ul>
                         </div>
                       </div>
                     </div>
+                      </form>
   
           </div>
           <!-- END CONTAINER FLUID -->
@@ -782,7 +890,7 @@
       <div class="container-fluid  container-fixed-lg footer">
         <div class="copyright sm-text-center text-center">
           <p class="small-text text-black m-0">
-            Copyright © 2022 <b>StartShredding Inc.</b> <br/> All Rights Reserved.
+            Copyright © <?php echo date('Y'); ?> <b>StartShredding Inc.</b> <br/> All Rights Reserved.
           </p>
           <div class="clearfix"></div>
         </div>
@@ -794,11 +902,11 @@
 
   <!-- BEGIN VENDOR JS -->
 <script src="{{ URL::asset('new_assets/assets/plugins/pace/pace.min.js')}}" type="text/javascript"></script>
-<script src="{{ URL::asset('new_assets/assets/plugins/jquery/jquery-3.2.1.min.js')}}" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
 <script src="{{ URL::asset('new_assets/assets/plugins/modernizr.custom.js')}}" type="text/javascript"></script>
 <script src="{{ URL::asset('new_assets/assets/plugins/jquery-ui/jquery-ui.min.js')}}" type="text/javascript"></script>
 <script src="{{ URL::asset('new_assets/assets/plugins/popper/umd/popper.min.js')}}" type="text/javascript"></script>
-<script src="{{ URL::asset('new_assets/assets/plugins/bootstrap/js/bootstrap.min.js')}}" type="text/javascript">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" type="text/javascript">
 </script>
 <script src="{{ URL::asset('new_assets/assets/plugins/jquery/jquery-easy.js')}}" type="text/javascript"></script>
 <script src="{{ URL::asset('new_assets/assets/plugins/jquery-unveil/jquery.unveil.min.js')}}" type="text/javascript">
@@ -807,11 +915,9 @@
 </script>
 <script src="{{ URL::asset('new_assets/assets/plugins/jquery-actual/jquery.actual.min.js')}}"></script>
 <script src="{{ URL::asset('new_assets/assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js')}}"></script>
-<script src="{{ URL::asset('new_assets/assets/plugins/select2/js/select2.full.min.js')}}" type="text/javascript" src="">
-</script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" type="text/javascript" src=""></script>
 <script src="{{ URL::asset('new_assets/assets/plugins/classie/classie.js')}}" type="text/javascript"></script>
-<script src="{{ URL::asset('new_assets/assets/plugins/switchery/js/switchery.min.js')}}" type="text/javascript">
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js" type="text/javascript"></script>
 <script src="{{ URL::asset('new_assets/assets/plugins/nvd3/lib/d3.v3.js')}}" type="text/javascript"></script>
 <script src="{{ URL::asset('new_assets/assets/plugins/nvd3/nv.d3.min.js')}}" type="text/javascript"></script>
 <script src="{{ URL::asset('new_assets/assets/plugins/nvd3/src/utils.js')}}" type="text/javascript"></script>
@@ -827,7 +933,7 @@
 <script src="{{ URL::asset('new_assets/assets/plugins/rickshaw/rickshaw.min.js')}}"></script>
 <script src="{{ URL::asset('new_assets/assets/plugins/jquery-metrojs/MetroJs.min.js')}}" type="text/javascript"></script>
 <script src="{{ URL::asset('new_assets/assets/plugins/jquery-inputmask/jquery.inputmask.min.js')}}" type="text/javascript"></script>
-<!-- <script src="{{ URL::asset('new_assets/assets/plugins/jquery-metrojs/MetroJs.min.js')}}" type="text/javascript"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js" type="text/javascript"></script> 
 
 
 <script src="{{ URL::asset('new_assets/assets/plugins/jquery-sparkline/jquery.sparkline.min.js')}}"
@@ -835,18 +941,13 @@
 <script src="{{ URL::asset('new_assets/assets/plugins/skycons/skycons.js')}}" type="text/javascript"></script>
 <script src="{{ URL::asset('new_assets/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"
         type="text/javascript"></script>
-<script src="{{ URL::asset('new_assets/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js')}}"
-        type="text/javascript"></script>
-<script
-        src="{{ URL::asset('new_assets/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js')}}"
-        type="text/javascript"></script>
-<script src="{{ URL::asset('new_assets/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js')}}"
-        type="text/javascript"></script>
+<script src="{{ URL::asset('new_assets/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js')}}"   type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables-tabletools/2.1.5/js/TableTools.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/datatables-bootstrap@0.0.1/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
 <script
         src="{{ URL::asset('new_assets/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js')}}"
         type="text/javascript"></script>
-<script src="{{ URL::asset('new_assets/assets/plugins/datatables-responsive/js/datatables.responsive.js')}}"
-        type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables-responsive/3.0.3/dataTables.responsive.min.js"  type="text/javascript"></script>
 <script src="{{ URL::asset('new_assets/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js')}}"
         type="text/javascript"></script>
 <script src="{{ URL::asset('new_assets/assets/js/form_wizard.js')}}"
@@ -864,341 +965,6 @@
 <!-- BEGIN PAGE LEVEL JS -->
 <!-- <script src="assets/js/dashboard.js" type="text/javascript"></script> -->
 <script src="{{ URL::asset('new_assets/assets/js/scripts.js')}}" type="text/javascript"></script>
-<script>
-    $(document).ready(function(){
-      var cardNum = document.getElementById('cr_no');
-      cardNum.onkeyup = function () {
-          if (this.value == this.lastValue) return;
-          var caretPosition = this.selectionStart;
-          var sanitizedValue = this.value.replace(/[^0-9]/gi, '');
-          var parts = [];
-          
-          for (var i = 0, len = sanitizedValue.length; i < len; i += 4) {
-              parts.push(sanitizedValue.substring(i, i + 4));
-          }
-          
-          for (var i = caretPosition - 1; i >= 0; i--) {
-              var c = this.value[i];
-              if (c < '0' || c > '9') {
-                  caretPosition--;
-              }
-          }
-          caretPosition += Math.floor(caretPosition / 4);
-          
-          this.value = this.lastValue = parts.join(' ');
-          this.selectionStart = this.selectionEnd = caretPosition;
-      }
-
-      $('#datepicker-component2').datepicker();
-        $(document).click(function() {
-            $('#here').hide();
-        });
-
-        $('#search').keyup(function(e){
-            //$("#here").remove();
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {'X-CSRF-TOKEN': $('#p').attr('content')}
-            });
-            $('#here').show();
-            var x=$(this).val();
-            //console.log(x);
-            //var x1=$('#p').attr('content');
-
-            $.ajax({
-                type:'POST',
-                url:'{{route("user.search-data")}}',
-                //processData:false,
-                //cache:false,
-                dataType: "JSON",
-                data:{
-                    data :x,
-                },
-                success:function(data){
-                    //console.log(data);
-                    if(data['orders']!=null){
-                        $("#here1").html("");
-                        $("#here1").append("<li style='list-style: none; padding-bottom: 10px;'>ORDERS</li>");
-                        jQuery.each( data['orders'], function( i, val ) {
-                            $("#here1").append("<li style='list-style: none; padding-bottom: 5px;'><a href='/shop-order-details/"+val['id']+ "'>"+val['order_number']+"</a></li>");
-                        });
-                    }else{
-                        $("#here1").html("");
-                        //$("#here1").hide();
-                    }
-
-                    if(data['product']!=null){
-                        $("#here2").html("");
-                        $("#here2").append("<li style='list-style: none; padding-bottom: 10px;'>PRODUCTS</li>");
-                        jQuery.each( data['product'], function( i, val ) {
-                            $("#here2").append("<li style='list-style: none; padding-bottom: 5px;'><a href='/shop-product/"+val['id']+"/"+val['title'] +"'>"+val['title']+"</a></li>");
-                        });
-                    }else{
-                        $("#here2").html("");
-                        //$("#here2").hide();
-                    }
-                },
-                error: function(XMLHttpRequest, status, err) {
-
-                    console.error(XMLHttpRequest);
-                }
-            });
-        });
-        <?php
-          $jsonData = json_encode($card_details);
-          ?>
-        $('#sel_card').change(function(){
-          var i = $('#sel_card').val();
-          console.log(i);
-          var card_details = <?php echo $jsonData; ?>;
-          if(i == "No Card Selected"){
-            $('#card_holder_name').val("");
-            $('#cr_no').val("");
-            $('#exp_month').val("");
-            $('#exp_year').val("");
-            $('#ccv').val("");
-            $('#form_card_holder_name').val("");
-            $('#form_card_number').val("");
-            $('#form_exp_month').val("");
-            $('#form_exp_year').val("");
-            $('#form_ccv').val("");
-          }
-          else {
-            $('#card_holder_name').val(card_details[i].card_holder_name);
-            $('#cr_no').val(card_details[i].card_number);
-            $('#exp_month').val(card_details[i].exp_month);
-            $('#exp_year').val(card_details[i].exp_year);
-            $('#ccv').val(card_details[i].ccv);
-            $('#form_card_holder_name').val($('#card_holder_name').val());
-            $('#form_card_number').val($('#cr_no').val());
-            $('#form_exp_month').val($('#exp_month').val());
-            $('#form_exp_year').val($('#exp_year').val());
-            $('#form_ccv').val($('#ccv').val());
-          }
-
-        });
-        if ($('#defaultCheck').is(':checked')) {
-          $('#shipp-firstName').val($('#bill-firstName').val());
-          $('#shipp-lastName').val($('#bill-lastName').val());
-          $('#shipp-city').val($('#bill-city').val());
-          $('#shipp-state').val($('#bill-state').val());
-          $('#shipp-postal').val($('#bill-postal').val());
-          $('#shipp-phoneNumber').val($('#bill-phoneNumber').val());
-          $('#shipp-email').val($('#bill-email').val());
-          
-        } else {
-          $('#shipp-firstName,#shipp-lastName,#shipp-city,#shipp-state,#shipp-postal,#shipp-phoneNumber,#shipp-email').val('');
-        }
-
-    
-
-  
-
-  
- 
-    function validate_form() {
-        // Perform your validation here
-        var val_flag = true;
-        var client_info = $('.client_info');
-          for(var i = 0; i < client_info.length; i++){
-              if(client_info[i].value == "" || client_info[i].value == undefined){
-                  val_flag = false;
-                  break;
-              }
-          }
-        // Return true if validation passes, otherwise return false
-        return val_flag;
-    }
-
-    function validate() {
-        // Perform your validation here
-        var isValid = true; // For demonstration purposes, always return true
-        if(document.getElementById('save_flag').value != 1){
-          isValid = false;
-        }
-        // Return true if validation passes, otherwise return false
-        return isValid;
-    }
-    var card_info = $('.card_info');
-    function val_card(){
-      var card_flag = true;
-      for(var i = 0; i < card_info.length; i++){
-            if(card_info[i].value == "" || card_info[i].value == undefined ){
-                card_flag = false;
-                break;
-            }
-        }
-        return card_flag;
-    }
-    var iframe = document.getElementById('myFrame');
-
-    // Access the contentDocument of the iframe
-    var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-
-    // Access the element inside the iframe by its ID
-    var client_name = iframeDocument.getElementById('client_name');
-    console.log(client_name);
-  document.getElementById("myForm").addEventListener("submit", function(event) {
-        // Call the validate function
-        var isValid = validate();
-        var val_flag = validate_form();
-        
-        
-        
-        // If validation fails, prevent form submission
-        event.preventDefault();
-        
-        var card_val = val_card();
-        
-        if(card_val != true){
-          alert("You must input card detail correctly");
-          // return false;
-        }
-        else if($('#checkbox-agree').is(':checked') == false){
-            alert('You must check agreement with the terms and policy');
-            // return false;
-        }
-        else if(client_name.value != $('#card_holder_name').val()){
-          alert("The name must be the same as the card holder name");
-          // return false;
-        }
-        else if (!isValid || !val_flag) {
-            
-            if(!isValid){
-              alert('You must save the signature');
-              // return false;
-            }
-            else {
-              alert('You must complete the form');
-              // return false;
-            }
-        }
-        else if($('#sel_card').val() == "No Card Selected"){
-          alert('You must select the card');
-          $('#form_companyName').val($('#companyName').val());
-            $('#form_contactName').val($('#contactName').val());
-            $('#form_phone').val($('#phone').val());
-            $('#form_bill-firstName').val($('#bill-firstName').val());
-            $('#form_bill-city').val($('#bill-city').val());
-            $('#form_bill-postal').val($('#bill-postal').val());
-            $('#form_email').val($('#email').val());
-            $('#form_bill-lastName').val($('#bill-lastName').val());
-            $('#form_bill-phoneNumber').val($('#bill-phoneNumber').val());
-            $('#form_bill-email').val($('#bill-email').val());
-            $('#form_shipp-firstName').val($('#shipp-firstName').val());
-            $('#form_shipp-lastName').val($('#shipp-lastName').val());
-            $('#form_shipp-city').val($('#shipp-city').val());
-            $('#form_shipp-state').val($('#shipp-state').val());
-            $('#form_shipp-postal').val($('#shipp-postal').val());
-            $('#form_shipp-phoneNumber').val($('#shipp-phoneNumber').val());
-            $('#form_shipp-email').val($('#shipp-email').val());
-            $('#form_operation_from').val($('#operation_from').val());
-            $('#form_operation_to').val($('#operation_to').val());
-            $('#form_makeitcount').val($('#makeitcount').val());
-            $('#form_terms_accepted').val("1");
-            $('#form_card_holder_name').val($('#card_holder_name').val());
-            $('#form_card_number').val($('#cr_no').val());
-            $('#form_exp_month').val($('#exp_month').val());
-            $('#form_exp_year').val($('#exp_year').val());
-            $('#form_ccv').val($('#ccv').val());
-            this.submit();
-        }
-         else {
-          $('#form_companyName').val($('#companyName').val());
-            $('#form_contactName').val($('#contactName').val());
-            $('#form_phone').val($('#phone').val());
-            $('#form_bill-firstName').val($('#bill-firstName').val());
-            $('#form_bill-city').val($('#bill-city').val());
-            $('#form_bill-postal').val($('#bill-postal').val());
-            $('#form_email').val($('#email').val());
-            $('#form_bill-lastName').val($('#bill-lastName').val());
-            $('#form_bill-phoneNumber').val($('#bill-phoneNumber').val());
-            $('#form_bill-email').val($('#bill-email').val());
-            $('#form_shipp-firstName').val($('#shipp-firstName').val());
-            $('#form_shipp-lastName').val($('#shipp-lastName').val());
-            $('#form_shipp-city').val($('#shipp-city').val());
-            $('#form_shipp-state').val($('#shipp-state').val());
-            $('#form_shipp-postal').val($('#shipp-postal').val());
-            $('#form_shipp-phoneNumber').val($('#shipp-phoneNumber').val());
-            $('#form_shipp-email').val($('#shipp-email').val());
-            $('#form_operation_from').val($('#operation_from').val());
-            $('#form_operation_to').val($('#operation_to').val());
-            $('#form_makeitcount').val($('#makeitcount').val());
-            $('#form_terms_accepted').val("1");
-            $('#form_card_holder_name').val($('#card_holder_name').val());
-            $('#form_card_number').val($('#cr_no').val());
-            $('#form_exp_month').val($('#exp_month').val());
-            $('#form_exp_year').val($('#exp_year').val());
-            $('#form_ccv').val($('#ccv').val());
-
-            console.log("Form validation successful. Proceeding with form submission.");
-            this.submit();
-        }
-    });
-//For Card Number formatted input
-
-
-//For Date formatted input
-  var expDate = document.getElementById('exp');
-  expDate.onkeyup = function (e) {
-      if (this.value == this.lastValue) return;
-      var caretPosition = this.selectionStart;
-      var sanitizedValue = this.value.replace(/[^0-9]/gi, '');
-      var parts = [];
-      
-      for (var i = 0, len = sanitizedValue.length; i < len; i += 2) {
-          parts.push(sanitizedValue.substring(i, i + 2));
-      }
-      
-      for (var i = caretPosition - 1; i >= 0; i--) {
-          var c = this.value[i];
-          if (c < '0' || c > '9') {
-              caretPosition--;
-          }
-      }
-      caretPosition += Math.floor(caretPosition / 2);
-      
-      this.value = this.lastValue = parts.join('/');
-      this.selectionStart = this.selectionEnd = caretPosition;
-  }
-
-
-function checkBox(){
-  if ($('#defaultCheck').is(':checked')) {
-     $('#shipp-firstName').val($('#bill-firstName').val());
-     $('#shipp-lastName').val($('#bill-lastName').val());
-     $('#shipp-city').val($('#bill-city').val());
-     $('#shipp-state').val($('#bill-state').val());
-     $('#shipp-postal').val($('#bill-postal').val());
-     $('#shipp-phoneNumber').val($('#bill-phoneNumber').val());
-     $('#shipp-email').val($('#bill-email').val());
-     
-  } else {
-    $('#shipp-firstName,#shipp-lastName,#shipp-city,#shipp-state,#shipp-postal,#shipp-phoneNumber,#shipp-email').val('');
-  }
-
-}
-
-$('.tree [data-toggle="popover"  ]').popover({
-    html: true,
-    content: function () {
-        return $(this).prev().html();
-    }
-});
-
-$('#popover-div').popover({
-    html: true,
-    trigger: 'hover',
-    container: '#popover-div',
-    placement: 'bottom',
-    content: function () {
-        return '<div class="popbox">Help Us Make A Difference!<br>Your small micro donation will go towards providing free services and programs for Mental Health.  In addition, this Merchant will also generously match your donation. <br> <br> <a href="https://dryclean.io/makeitcount.php" title="test add link">Click Here </a> to learn more about this program and the Janeen Foundation</div>';
-    }
-});
-
-});
-
-</script>
 <script type="text/javascript">
     $('#phone').inputmask("(999) 999-9999");
     $('#bill-phoneNumber').inputmask("(999) 999-9999");

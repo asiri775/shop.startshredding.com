@@ -37,8 +37,8 @@ $.extend($.fn.dataTableExt.oPagination, {
 
             $(nPaging).addClass('pagination').append(
                 '<ul>' +
-                '<li class="prev disabled"><a href="#"><i class="pg-arrow_left"></i></a></li>' +
-                '<li class="next disabled"><a href="#"><i class="pg-arrow_right"></i></a></li>' +
+                '<li class="prev disabled"><a href="#"><i class="pg-icon">chevron_left</i></a></li>' +
+                '<li class="next disabled"><a href="#"><i class="pg-icon">chevron_right</i></a></li>' +
                 '</ul>'
             );
             var els = $('a', nPaging);

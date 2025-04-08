@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------
-Pages v1.1.0
+Pages v5.0
 Theme : Corporate
 Generated From SCSS
 [Table of contents]
@@ -35,15 +35,18 @@ Generated From SCSS
 29. Print
 30. Demo
 -------------------------------------------------------------------*/
+//Direction
+$direction: ltr; // use `rtl` or `ltr
+@import "../../direction";
 
 // Color functions
 @import "../../color";
 
-// Import Vars
-@import "var";
-
 // Mixins tools
 @import "../../mixins";
+
+// Import Vars
+@import "var";
 
 // Includes of Modules
 @import "../../modules";

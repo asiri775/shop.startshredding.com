@@ -1,5 +1,5 @@
 @extends('admin.includes.master-admin')
-
+<script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
 @section('content')
 
     <div id="page-wrapper">
@@ -31,8 +31,9 @@
                                 <li><a href="#banners" data-toggle="tab" aria-expanded="false">Home Banners</a></li>
                                 <li><a href="#largeBanner" data-toggle="tab" aria-expanded="false">Large Home Banners</a></li>
                                 <li><a href="#about" data-toggle="tab" aria-expanded="false">About Us Page</a></li>
-                                <li><a href="#contact" data-toggle="tab" aria-expanded="false">Contact Us Page</a>
-                                </li>
+                                <li><a href="#contact" data-toggle="tab" aria-expanded="false">Contact Us Page</a></li>
+                                 <li><a href="#service" data-toggle="tab" aria-expanded="false">Service Agreement</a></li>
+                                
                             </ul>
                         </div>
 
@@ -109,6 +110,42 @@
                                         <div class="form-group">
                                             <div class="col-md-6 col-md-offset-3">
                                                 <button id="contact_page_update" type="submit" class="btn btn-success btn-block">Update Contact Page</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                               <div class="tab-pane" id="service">
+                                    <p class="lead">Service Agreement</p>
+                                    <div class="ln_solid"></div>
+                                    <form method="POST" action="{{action('PageSettingsController@service')}}" class="form-horizontal form-label-left">
+                                        {{csrf_field()}}
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="facebook"> Client Information <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                              <textarea rows="4" class="form-control" name="client_information" id="content2" placeholder="Client Information" >{{$pagedata->client_information}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="facebook"> Terms and Conditions <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                              <textarea rows="4" class="form-control" name="terms_and_conditions" id="content3" placeholder="Terms and Conditions" >{{$pagedata->terms_and_conditions}}</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="facebook"> Credit Card Infromation <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                              <textarea rows="4" class="form-control" name="credit_card_infromation" id="content4" placeholder="Credit Card Infromation" >{{$pagedata->credit_card_infromation}}</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="ln_solid"></div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-md-offset-3">
+                                                <button id="terms_and_condition_update" type="submit" class="btn btn-success btn-block">Update Service Agreement</button>
                                             </div>
                                         </div>
                                     </form>
@@ -250,6 +287,8 @@
                                         </div>
                                     </form>
                                 </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -267,8 +306,33 @@
 
 @section('footer')
     <script type="text/javascript">
-        bkLib.onDomLoaded(function() {
-            new nicEditor({fullPanel : true}).panelInstance('content1');
-        });
+        // bkLib.onDomLoaded(function() {
+        //     new nicEditor({fullPanel : true}).panelInstance('content1');
+        // });
+        // bkLib.onDomLoaded(function() {
+        //     new nicEditor({fullPanel : true}).panelInstance('content2');
+        // });
     </script>
+   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>
+            ClassicEditor.create( document.querySelector( '#content1' ) )
+                .catch( error => {
+                    console.error( error );
+                } );
+
+             ClassicEditor.create( document.querySelector( '#content2' ) )
+                .catch( error => {
+                    console.error( error );
+                } );
+
+              ClassicEditor.create( document.querySelector( '#content3' ) )
+                .catch( error => {
+                    console.error( error );
+                } );
+                
+              ClassicEditor.create( document.querySelector( '#content4' ) )
+                .catch( error => {
+                    console.error( error );
+                } );    
+        </script>
 @stop

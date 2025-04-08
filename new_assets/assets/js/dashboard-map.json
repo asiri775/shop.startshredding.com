@@ -9,7 +9,7 @@
 			"id":"states",
 			"title":"States",
 			"map":"assets/img/maps/dashboard-map-dotted.png",
-			"minimap":"",
+			"minimap":"images/states/us-small.jpg",
 			"locations":[
 				{
 					"id":"usa",

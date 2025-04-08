@@ -458,17 +458,25 @@ class OrderTemplateController extends Controller
                 return $jobDates;
         }
 
-        $currentDate = $startDate->copy();
+ 
+        $start = new \Carbon\Carbon($startDate);
+        $end = new \Carbon\Carbon($endDate);
+        $days = $start->diff($end)->days;
+       
+        $start = $startDate;
+        $end_date = $endDate;
+        $start_date = Carbon::parse($start);
+        $days_allowed = $template->days_allowed;
+       $i = 0;
+       $incrementData=$start_date;
+      while ($incrementData <= $end_date) 
+      {
+       $incrementData = date('Y-m-d', strtotime("+" . $i . " day", strtotime($start)));
+       $jobDates = $this->getDateRange($start, $end_date, $template->days_apart,$days_allowed);
 
-        while ($currentDate->lte($endDate)) {
-            // Convert days_allowed to integers if they are stored as strings
-            $daysAllowed = array_map('intval', $template->days_allowed);
-
-            if (in_array($currentDate->dayOfWeekIso, $daysAllowed)) {
-                $jobDates[] = $currentDate->copy();
-            }
-            $currentDate->add($interval);
-        }
+     $i++;
+      }
+ 
 
         return $jobDates;
     }
@@ -479,7 +487,7 @@ class OrderTemplateController extends Controller
         $scheduleFrom=date('Y-m-d', strtotime($template->schedule_from));
         $today=date('Y-m-d',time());
         $items = OrderTemplateItem::whereOrderTemplateId($request->order_template_id)->get();
-   
+
         if (count($items) > 0) 
         {
             $products = [];
@@ -500,6 +508,7 @@ class OrderTemplateController extends Controller
             $cost = $tax + $price;
             $products = implode(',', $products);
             $quantities = implode(',', $quantities);
+
             if ($request->order_template_type == OrderTemplate::NEXT_MONTH) {
                 // puvii added
                 if ($template->repeat === 'On Call') {
@@ -519,6 +528,8 @@ class OrderTemplateController extends Controller
                 }
 
                 $jobDates = $this->getJobDates($template, $nextMonthStart, $nextMonthEnd);
+
+
 
                 foreach ($jobDates as $date) {
                     $this->generateRepeatOrders($template, $quantities, $products, $date, $cost, $prices);

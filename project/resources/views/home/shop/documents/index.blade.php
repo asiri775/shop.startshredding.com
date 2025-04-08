@@ -25,6 +25,12 @@
                             </ul>
                         </div>
                     @endif
+
+                    <style>
+                        .col-heading {
+                            color: #fff!important;
+                        }
+                    </style>
                 </div>
                 <div class="row">
                     
@@ -45,18 +51,17 @@
                                 <table data-export="1,2,3,4,5,6,7,8" cellpadding="0" cellspacing="0" id="table_1" class="table table-bordered table-striped">
                                     <thead>
                                     <tr class="text-center">
-                                        <th style=" white-space: nowrap;" class="all-caps">Order ID</th>
-                                        <th  class="all-caps">Service Date</th>
-                                        <th  class="all-caps">Client</th>
-                                        <th  class="all-caps">Amount</th>
-                                        <th class="all-caps">Status <i class="fa fa-question-circle"
-                                                                    style="color:white;" aria-hidden="true"></i></th>
-                                        <!-- <th  class="all-caps">Action</th> -->
+                                        <th style=" white-space: nowrap;" class="all-caps col-heading">Order ID</th>
+                                        <th  class="all-caps col-heading">Service Date</th>
+                                        <th  class="all-caps col-heading">Client</th>
+                                        <th  class="all-caps col-heading">Amount</th>
+                                        <th class="all-caps col-heading">Status <i class="fa fa-question-circle" style="color:white;" aria-hidden="true"></i></th>
+                                        <th  class="all-caps col-heading">Action</th> 
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($documents as $document)
-                                        @if($document->sa_state == 1)
+                                        <!-- @if($document->sa_state == 1) -->
                                         <tr class="text-center">
                                             <td class="fs-12">{{$document->order_id}}</td>
                                             <td class="fs-12">{{date('m/d/Y', strtotime($document->booking_date))}}</td>
@@ -67,7 +72,7 @@
                                                         type="button"><span>Completed</span>
                                                 </a>
                                             </td>
-                                            <!-- <td class="fs-12">
+                                            <td class="fs-12">
                                                 <a href="" class="btn btn-warning">
                                                     <i class="fa fa-envelope"></i>
                                                 </a>
@@ -77,10 +82,10 @@
                                                 <a href="{!!url('/document_print/'.$document->order_id)!!}" class="btn btn-primary">
                                                     <i class="fa fa-print"></i>
                                                 </a>
-                                            </td> -->
+                                            </td>
                                             
                                         </tr>
-                                        @endif
+                                        <!-- @endif -->
                                     @endforeach
                                     </tbody>
                                 </table>

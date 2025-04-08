@@ -29,7 +29,7 @@
             <div style="width:55%; float: left;">
                 <img style="margin-top:20px;" src="{{ asset('/home_assets/images/logo.png') }}"
                      width="220" height="45">
-                @if ($booking->invoice->is_paid)
+                @if ($order->payment_status=="completed")
                     <span style="position:absolute; left:10px;"><img src="{{ asset('images/paid-stamp.png') }}"
                                                                      width="200px" height="122px"
                                                                      style="margin-top:-7px; "></span>

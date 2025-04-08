@@ -685,7 +685,7 @@ class IndexController extends Controller
         $cart = Cart::where('uniqueid', Session::get('uniqueid'))->get();
         $count = count($cart);
         if (Auth::guard('profile')->user()) {
-            $user = Clients::find(Auth::user()->id);
+            $user = Clients::find(Auth::guard('profile')->user()->id);
             return redirect()->route('home.confirm')->with(['response' => $response, 'user' => $user]);
         } else if (Auth::guard('profile')->user() and !empty ($count)) {
             return redirect(url('/customers'));
@@ -878,6 +878,8 @@ class IndexController extends Controller
             try {
                 ///working here
                 $result = $beanstream->payments()->makeCardPayment($payment_data, $complete);
+              
+
                 if ($result) {
                     if ($order) {
 
@@ -935,6 +937,8 @@ class IndexController extends Controller
                     }
                 }
             } catch (\Beanstream\Exception $e) {
+                // echo '<pre>';
+                // print_r($e);die;
                 return redirect()->back()->withErrors([$e->getMessage()]);
             }
         }
@@ -1247,6 +1251,8 @@ class IndexController extends Controller
                 ->select('service_agreements.*','orders.booking_date', 'orders.pay_amount')
                 ->where('orders.customerid', $userInfo->id)
                 ->get();
+        // echo '<pre>';
+        // print_r($documents);die;
         return view('home.shop.documents.index', compact('user','documents'));
 
     }
@@ -1503,7 +1509,7 @@ class IndexController extends Controller
     public function updateAddress($id)
     {
         $edit_address = AddressMultiple::where('id', $id)->first();
-        return view('home.shop.updateAddress', compact('user', 'edit_address'));
+        return view('home.shop.updateAddress', compact('edit_address'));
     }
 
     public function updateMultipleAddressPopup(Request $request, $id)
@@ -1545,7 +1551,7 @@ class IndexController extends Controller
             Session::put('uniqueid', $cart->uniqueid);
         } else {
             $cart = Cart::where('uniqueid', Session::get('uniqueid'))->where('product', $request->product_id)->first();
-            if (count($cart) > 0) {
+            if (!empty($cart) AND count($cart) > 0) {
                 $cart->title = Product::where('id', $request->product_id)->first()->title;
                 $cart->cost = $request->product_price;
                 $cart->quantity = $request->product_quantity;

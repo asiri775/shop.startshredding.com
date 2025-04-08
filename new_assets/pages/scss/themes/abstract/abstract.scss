@@ -1,13 +1,13 @@
 /*------------------------------------------------------------------
-Pages v1.1.0
-Theme : Abstract
-Generated From SCSS
+Pages v5.0.0
+Theme : Abtract
+Generated From SASS
 [Table of contents]
 
 1. Layouts
 2. View Ports
 3. Chat
-4. Panels
+4. Cards
 5. Typography
 6. Buttons
 7. Alerts
@@ -35,15 +35,18 @@ Generated From SCSS
 29. Print
 30. Demo
 -------------------------------------------------------------------*/
+//Direction
+$direction: ltr; // use `rtl` or `ltr
+@import "../../direction";
 
 // Color functions
 @import "../../color";
 
-// Import Vars
-@import "var";
-
 // Mixins tools
 @import "../../mixins";
+
+// Import Vars
+@import "var";
 
 // Includes of Modules
 @import "../../modules";
@@ -53,6 +56,7 @@ Generated From SCSS
 
 // Custom
 @import "custom"
+
 
 
 

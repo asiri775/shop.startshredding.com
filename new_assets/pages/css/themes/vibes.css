@@ -43,7 +43,7 @@ Generated From SCSS
 ------------------------------------
 */
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600");
-@import url("https://keplerapis.com/fonts/css?family=Inter+UI:300,400,500,600");
+@import url("https://fonts.cdnfonts.com/css/inter?family=Inter+UI:300,400,500,600");
 .pace .pace-progress {
   background: #36d7a8;
   height: 3px;

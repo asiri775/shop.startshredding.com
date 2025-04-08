@@ -274,6 +274,10 @@ canvas {
 	line-height: 35px;
     min-height: 35px;
 }
+.submit .btn-cons {
+	line-height: 35px;
+    min-height: 35px;
+}
 .btn-cons 
   .primary input[type="checkbox"]:checked + label:before, .primary input[type="checkbox"]:indeterminate + label:before {
     border-color: #1A73E8;
@@ -332,9 +336,7 @@ img.makeitcounticon {
    .credit-card .form-group-default .form-control,.credit-card .form-group .form-control {
 	   font-size: 16px !important;
    }
-   .credit-card .form-group-default .form-control.card-no {
-	   font-size: 24px!important;
-   }
+
    .sign-pad-iframe {
 	   width: 35%;
    }
@@ -579,6 +581,10 @@ img.makeitcounticon {
 		color:#ffffff;
 	}
 	.previous a {
+		color:#4b4b4b;
+	}
+
+	.submit a {
 		color:#4b4b4b;
 	}
 

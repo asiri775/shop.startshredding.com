@@ -19,14 +19,15 @@
         var table = $('#tableWithSearch');
 
         var settings = {
-            "sDom": "<t><'row'<p i>>",
+            "sDom": "<'table-responsive sm-m-b-15't><'row'<p i>>",
             "destroy": true,
+            "search": false,
             "scrollCollapse": true,
             "oLanguage": {
                 "sLengthMenu": "_MENU_ ",
-                "sInfo": "Showing <b>_START_ to _END_</b> of _TOTAL_ entries"
+                "sInfo": "Showing <b>_START_ to _END_</b> of _TOTAL_ entries | View All"
             },
-            "iDisplayLength": 5
+            "iDisplayLength": 9
         };
 
         table.dataTable(settings);
@@ -36,6 +37,32 @@
             table.fnFilter($(this).val());
         });
     }
+
+    
+    // Initialize datatable showing a search box at the top right corner
+    var initTableWithSearch1 = function() {
+        var table = $('#tableWithSearch1');
+
+        var settings = {
+            "sDom": "<'table-responsive sm-m-b-15't><'row'<p i>>",
+            "destroy": true,
+            "search": false,
+            "scrollCollapse": true,
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ ",
+                "sInfo": "Showing <b>_START_ to _END_</b> of _TOTAL_ entries | View All"
+            },
+            "iDisplayLength": 9
+        };
+
+        table.dataTable(settings);
+
+        // search box for table
+        $('#search-table').keyup(function() {
+            table.fnFilter($(this).val());
+        });
+    }
+
 
     // Initialize datatable with ability to add rows dynamically
     var initTableWithDynamicRows = function() {
@@ -50,7 +77,7 @@
                 "sLengthMenu": "_MENU_ ",
                 "sInfo": "Showing <b>_START_ to _END_</b> of _TOTAL_ entries"
             },
-            "iDisplayLength": 5
+            "iDisplayLength": 9
         };
 
 
@@ -83,9 +110,9 @@
             "scrollCollapse": true,
             "oLanguage": {
                 "sLengthMenu": "_MENU_ ",
-                "sInfo": "Showing <b>_START_ to _END_</b> of _TOTAL_ entries"
+                "sInfo": "Showing <b>_START_ to _END_</b> of _TOTAL_ entries | View All"
             },
-            "iDisplayLength": 5,
+            "iDisplayLength": 9,
             "oTableTools": {
                 "sSwfPath": "assets/plugins/jquery-datatable/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
                 "aButtons": [{
@@ -133,6 +160,7 @@
     }
 
     initTableWithSearch();
+    initTableWithSearch1();
     initTableWithDynamicRows();
     initTableWithExportOptions();
 

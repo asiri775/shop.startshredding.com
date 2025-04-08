@@ -8,7 +8,7 @@ class PageSettings extends Model
 {
     protected $table = "page_settings";
 
-    protected $fillable = ['contact', 'contact_email', 'about', 'faq','large_banner', 'banner_link', 'c_status', 'a_status', 'f_status','slider_status', 'category_status', 'sbanner_status', 'latestpro_status', 'featuredpro_status', 'lbanner_status', 'popularpro_status', 'blogs_status', 'testimonial_status', 'brands_status', 'subscribe_status'];
+    protected $fillable = ['contact', 'contact_email', 'about', 'faq','large_banner', 'banner_link', 'c_status', 'a_status', 'f_status','slider_status', 'category_status', 'sbanner_status', 'latestpro_status', 'featuredpro_status', 'lbanner_status', 'popularpro_status', 'blogs_status', 'testimonial_status', 'brands_status', 'subscribe_status','terms_and_conditions','client_information','credit_card_infromation'];
 
     public $timestamps = false;
 

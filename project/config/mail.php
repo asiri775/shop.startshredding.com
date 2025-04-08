@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'info@startshredding.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'shop@behappyit.info'),
         'name' => env('MAIL_FROM_NAME', 'Start Shredding'),
     ],
 

@@ -37,8 +37,11 @@
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <select class="form-control" name="mainid" id="maincats" required>
                                         <option value="">Select Main Category</option>
+                                        <option value="1" selected="selected" >Document Management</option>
                                         @foreach($categories as $category)
-                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                            @if($category->id!=1)
+                                            <option value="{{$category->id}}" >{{$category->name}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>

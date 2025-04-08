@@ -12,7 +12,7 @@ class ShopOrderPlaced extends Mailable
     use Queueable, SerializesModels;
 
     public $order;
-    public $name;
+    public $first_name;
     public $subject;
     public $template;
     public $order_id;

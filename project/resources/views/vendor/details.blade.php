@@ -69,7 +69,7 @@ $urlTime = '';
                                     <p class="font-weight-bold mb-4"><strong>Payment Details</strong></p>
                                     <p class="mb-1"><span class="text-muted">Total Amount: </span>
                                         $<?= $order->pay_amount ?></p>
-                                    <p class="mb-1"><span class="text-muted">Order number: </span>
+                                    <p class="mb-1"><span class="text-muted">Job number: </span>
                                         <?= $order->order_number ?></p>
                                     <p class="mb-1"><span class="text-muted">Payment Status: </span>
                                         <?= $order->payment_status ?></p>
@@ -94,8 +94,8 @@ $urlTime = '';
                                         // $created = date_create($orderinquiry->created_at);
                                         // $created = date_format($created, 'm/d/Y');
                                     @endphp
-                                    <p class="font-weight-bold mb-4"><strong>Order Inquiry Details</strong></p>
-                                    <p class="mb-1"><span class="text-muted">Order Id : </span> <?= $order->id ?></p>
+                                    <p class="font-weight-bold mb-4"><strong>Job Inquiry Details</strong></p>
+                                    <p class="mb-1"><span class="text-muted">Job Id : </span> <?= $order->id ?></p>
                                     <p class="mb-1"><span class="text-muted">Service Type : </span>
                                         <?= $orderinquiry->service_type ?? '#NA' ?></p>
                                     <p class="mb-1"><span class="text-muted">Shredding Type: </span>
@@ -167,7 +167,7 @@ $urlTime = '';
 
                             <div class="row">
                                 <div class="col-md-6 text-left">
-                                    <p class="font-weight-bold mb-1">Order ID #<?= $order->id ?></p>
+                                    <p class="font-weight-bold mb-1">Job ID #<?= $order->id ?></p>
                                     <p class="text-muted">Date: <?= $new_date ?></p>
                                 </div>
                                 <div class="col-md-6 text-right mb_left">

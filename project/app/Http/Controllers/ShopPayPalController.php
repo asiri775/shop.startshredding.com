@@ -37,7 +37,7 @@ class ShopPayPalController extends Controller
             'LOGOIMG' => url('/') . '/assets/img/logo_protectica_v2_220X45.png',
             'CHANNELTYPE' => 'Merchant'
         ];
-        $this->provider = new ExpressCheckout;
+        //$this->provider = new ExpressCheckout;
     }
     /**
      * Responds with a welcome message with instructions

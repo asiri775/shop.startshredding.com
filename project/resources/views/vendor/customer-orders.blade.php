@@ -326,7 +326,17 @@
                             return '<input type="checkbox" name="chk_orders[]" value="' + $('<div/>').text(id).html() + '">';
                         }
                     },
-                    {data: 'id', name: 'id'},
+                    {
+                       'targets': 0,
+                        'searchable': false,
+                        'orderable': false,
+                        'className': 'dt-body-center',
+                        'data': 'id',
+                        'sortable': false,
+                        'render': function (id) {
+                            return '<a target="_blank" href="/vendor/details/' + $('<div/>').text(id).html() + '" >'+ $('<div/>').text(id).html() + '</a>';
+                        } 
+                    },
                     {data: 'customer_name', name: 'clients.name'},
                     {data: "type", name: 'type', searchable: false},
                     {data: "method", name: 'method'},

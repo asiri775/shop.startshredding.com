@@ -182,18 +182,18 @@
                                                             <? $session_address = Session::all();?>
                                                             <?php
                                                             $address = explode(',', $multiple_address->address);
+
+                                                           
                                                             ?>
                                                             <div class="bill-address">
                                                                 <div class="customer-name">
                                                                     {{ Auth::guard('profile')->user()->first_name ? ucfirst(Auth::guard('profile')->user()->first_name) : ucfirst(Session::get('first_name')) }}
                                                                     {{ Auth::guard('profile')->user()->last_name ? ucfirst(Auth::guard('profile')->user()->last_name) : ucfirst(Session::get('last_name')) }}
                                                                 </div>
-                                                                <div class="customer-lane">{{ $address[0] }}</div>
-                                                                <div class="customer-lane">{{ $address[1] }}</div>
-                                                                <div class="customer-lane">{{ $address[2] }}</div>
-                                                                <div class="customer-lane">{{ $address[3] }}</div>
-                                                                <div class="customer-zip">{{ $address[4] }}</div>
-                                                                <div class="customer-zip">{{ $address[5] }}</div>
+                                                                <div class="customer-lane">{{ (!empty($address[0]))?$address[0]:'' }}</div>
+                                                                <div class="customer-lane">{{ (!empty($address[1]))?$address[1]:'' }}</div>
+                                                                <div class="customer-zip">{{ (!empty($address[2]))?$address[2]:'' }}</div>
+                                                                <div class="customer-zip">{{ (!empty($address[3]))?$address[3]:'' }}</div>
                                                                 <div class="customer-email">
                                                                     {{ Auth::guard('profile')->user()->email ? Auth::guard('profile')->user()->email : Session::get('email_address') }}
                                                                 </div>
@@ -208,12 +208,10 @@
                                                                     {{ Auth::guard('profile')->user()->first_name ? ucfirst(Auth::guard('profile')->user()->first_name) : ucfirst(Session::get('first_name')) }}
                                                                     {{ Auth::guard('profile')->user()->last_name ? ucfirst(Auth::guard('profile')->user()->last_name) : ucfirst(Session::get('last_name')) }}
                                                                 </div>
-                                                                <div class="customer-lane">{{ $address[0] }}</div>
-                                                                <div class="customer-lane">{{ $address[1] }}</div>
-                                                                <div class="customer-lane">{{ $address[2] }}</div>
-                                                                <div class="customer-lane">{{ $address[3] }}</div>
-                                                                <div class="customer-zip">{{ $address[4] }}</div>
-                                                                <div class="customer-zip">{{ $address[5] }}</div>
+                                                                <div class="customer-lane">{{ (!empty($address[0]))?$address[0]:'' }}</div>
+                                                                <div class="customer-lane">{{ (!empty($address[1]))?$address[1]:'' }}</div>
+                                                                <div class="customer-zip">{{ (!empty($address[2]))?$address[2]:'' }}</div>
+                                                                <div class="customer-zip">{{ (!empty($address[3]))?$address[3]:'' }}</div>
                                                                 <div class="customer-email">
                                                                     {{ Auth::guard('profile')->user()->phone ? Auth::guard('profile')->user()->phone : Session::get('contact_no') }}
                                                                 </div>

@@ -19,6 +19,7 @@ use App\OrderTemplateItem;
 use App\Mail\ServiceAgreementMail;
 use App\Mail\ServiceAgreementPDFMail;
 use App\Models\Upload_document;
+use App\AddressMultiple;
 use PDF;
 use function GuzzleHttp\Promise\all;
 use Illuminate\Http\Request;
@@ -85,7 +86,7 @@ class VendorController extends Controller
                 $orders = DB::select('SELECT * FROM `ordered_products` WHERE vendorid = ' . Auth::user()->id . ' and status IN (' . $commaSepratedString . ')');
                 break;
         }
-        return view('vendor.vieworders', compact('orders', 'text', 'filterStatus', 'q'));
+        return view('vendor.viewjobs', compact('orders', 'text', 'filterStatus', 'q'));
     }
 
 
@@ -986,6 +987,8 @@ class VendorController extends Controller
                 // return redirect()->back()->with('message', 'Service Agreement link Sent Successfully.');
                 return json_encode(['message' => 'Service Agreement link Sent Successfully.']);
             } catch (\Exception $e) {
+
+                print_r($e);die;
                 // Error occurred while sending email
                 // return redirect()->back()->with('errors', 'Service Agreement link Sent Failed.');
                 return json_encode(['errors' => 'Service Agreement link Sent Failed.']);
@@ -1026,19 +1029,22 @@ class VendorController extends Controller
         if ($order != null) {
 
         }
+        $user = Clients::find($order->customerid);
         $model = DB::select("select * from ordered_products where orderid='$id'");
         $orderCheck=Order::where("id",$id)->where("order_type",3)->first();
         view()->share('model', $model);
         view()->share('order', $order);
-        
-        return view('home.shop.order_pdf_print');
+        $multiple_address = AddressMultiple::where('user_id', $user->id)
+        ->where('address_alias', "Default")
+        ->first();
+        return view('home.shop.order_pdf_print',compact('user','multiple_address'));
         if($orderCheck){
             $orderinquiry=OrderInquiry::where("order_id",$id)->first();
             view()->share('orderinquiry', $orderinquiry);
-             return view('vendor.order_print', compact('model', 'order','orderinquiry'));
+             return view('vendor.order_print', compact('model', 'order','orderinquiry','user'));
         }
         else {
-             return view('vendor.order_print', compact('model', 'order'));
+             return view('vendor.order_print', compact('model', 'order','user'));
         }
     }
 
@@ -1219,6 +1225,10 @@ class VendorController extends Controller
     public function orderDownload($id)
     {
         $order = Order::findOrFail($id);
+        $user = Clients::find($order->customerid);
+        $multiple_address = AddressMultiple::where('user_id', $user->id)
+        ->where('address_alias', "Default")
+        ->first();
         if ($order != null) {
             return false;
         }
@@ -1226,6 +1236,8 @@ class VendorController extends Controller
         $orderCheck=Order::where("id",$id)->where("order_type",3)->first();
         view()->share('model', $model);
         view()->share('order', $order);
+
+       
         if($orderCheck){
             $orderinquiry=OrderInquiry::where("order_id",$id)->first();
             view()->share('orderinquiry', $orderinquiry);
@@ -1236,7 +1248,8 @@ class VendorController extends Controller
             $pdf = PDF::loadView('vendor.order_pdf');
             return $pdf->download('order' . $order->id . '.pdf');
         }
-        //return view('shop.order_pdf',compact('user','order','multiple_address'))->render();
+        
+        return view('shop.order_pdf',compact('user','order','multiple_address'))->render();
     }
 
     public function customer_orderDownload($id)

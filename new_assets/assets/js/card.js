@@ -131,5 +131,4 @@
         iframeFix: false
     });
 
-
 })(window.jQuery);

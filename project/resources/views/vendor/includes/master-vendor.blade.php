@@ -150,7 +150,7 @@ $assetVersion = 1.4;
                         <li class="simple-list"><a href="{!! url('vendor/pos') !!}" class="">POS</a></li>
                         <?php */ ?>
                         <li class="simple-list"><a href="{!! url('vendor/plant') !!}" class="">Plant</a></li>
-                        <li class="simple-list"><a href="{!! url('vendor/orders') !!}" class="">Orders</a></li>
+                        <li class="simple-list"><a href="{!! url('vendor/jobs') !!}" class="">Jobs</a></li>
                         <li class="simple-list"><a href="{!! url('vendor/products') !!}" class="">Products</a></li>
                         <li class="simple-list"><a href="{!! url('vendor/customer') !!}" class="">Add Customer</a></li>
                         <li class="simple-list"><a href="{!! url('vendor/customers') !!}" class="">Customers</a></li>
