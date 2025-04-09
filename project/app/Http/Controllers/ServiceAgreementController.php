@@ -210,18 +210,18 @@ class ServiceAgreementController extends Controller {
             'company_name'  => 'required',
             'contact_name'    => 'required',
             'phone_number'  => 'required',
-            'email'=>'required',
+            // 'email'=>'required',
             'billing_address_1' => 'required',
-            'billing_address_2'  => 'required',
+            // 'billing_address_2'  => 'required',
             'billing_city'    => 'required',
-            'billing_state'  => 'required',
+            // 'billing_state'  => 'required',
             'billing_postal_code'    => 'required',            
-            'shipping_address_1' => 'required',
-            'shipping_address_2'  => 'required',
-            'shipping_city' => 'required',
-            'shipping_state'=> 'required',
-            'shipping_postal_code'=> 'required',
-            'shipping_phone'=> 'required',
+            // 'shipping_address_1' => 'required',
+            // 'shipping_address_2'  => 'required',
+            // 'shipping_city' => 'required',
+            // 'shipping_state'=> 'required',
+            // 'shipping_postal_code'=> 'required',
+            // 'shipping_phone'=> 'required',
           //'pick_up_date'=> 'required',
             'operation_from'=> 'required', 
             'operation_to'=> 'required',
@@ -233,7 +233,7 @@ class ServiceAgreementController extends Controller {
             'credit_card_ccv'=> 'required',
             'signature'=>'required',
         ]);
-
+        
         $order = Order::find($request->order_id);
 
         // echo '<pre>';
