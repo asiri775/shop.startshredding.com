@@ -76,8 +76,87 @@
 							} 
 					},
 					onNext: function(tab, navigation, index) {
-							console.log("Showing next tab");
-					},
+						const current = index; // index is the next tab (we are going *to* this)
+						const $form = $('#wizard-form'); // your form element
+						const sameBilling = $('#defaultCheck').is(':checked');
+						let sameBillingTab1 = null;
+						if(sameBilling) {
+							sameBillingTab1 = [
+								'shipp_address_1',
+								'shipping_city',
+								'shipp-shipping_postal_code',
+								'shipping_phone'
+							];
+						}
+						const requiredFieldsTab1 = [
+							'company_name',
+							'contact_name',
+							'phone_number',
+							'billing_address_1',
+							'billing_city',
+							'billing_postal_code',
+							'operation_from', 
+							'operation_to',
+						];
+
+						const requiredFieldsTab3 = [
+							'credit_card_name',
+							'credit_card_number',
+							'credit_card_expire_month',
+							'credit_card_expire_year',
+							'credit_card_ccv',
+							'signature'
+						];
+						
+						if (current === 1) {
+							if (!$form.valid()) {
+								
+								const validator = $form.validate();
+								const invalidFields = validator.invalid;
+								const invalidIds = Object.keys(invalidFields);
+								const sameBillingRequiredFields = sameBillingTab1.filter(field => invalidIds.includes(field));
+
+								const missingRequiredFields = requiredFieldsTab1.filter(field => invalidIds.includes(field));
+
+								if (missingRequiredFields.length > 0) {
+									return false; // Prevent moving to the next tab
+								}
+								if (sameBillingRequiredFields.length > 0) {
+									return false; // Prevent moving to the next tab
+								}
+							}
+							return true; // Allow tab change
+						}
+
+						if (current === 2) {
+							const termsAccepted = $('#checkbox-agree').is(':checked');
+							if (!termsAccepted) {
+								$('#termsModal').modal('show');
+								return false;
+							}
+							return true;
+						}
+
+						if (current === 3) {
+							if (!$form.valid()) {
+
+								const validator = $form.validate();
+								const invalidFields = validator.invalid;
+								const invalidIds = Object.keys(invalidFields);
+								const missingRequiredFieldsTab3 = requiredFieldsTab3.filter(field => invalidIds.includes(field));
+
+								if (missingRequiredFieldsTab3.length > 0) {
+									return false; // Prevent moving to the next tab
+								}
+							}
+							return true; // Allow tab change
+							
+						}
+
+
+
+						
+					},					
 					onPrevious: function(tab, navigation, index) {
 							console.log("Showing previous tab");
 					},
