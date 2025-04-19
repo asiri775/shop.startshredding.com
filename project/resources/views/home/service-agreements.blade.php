@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />  
+
 <meta charset="utf-8" />
 <title>Startshredding | Sercice Agreement</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
@@ -41,6 +42,11 @@
 <link href="{{ URL::asset('/home_assets/images/form-wizard/style.css') }}" rel="stylesheet" type="text/css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.3.4/signature_pad.min.js"></script>
 <style>
+
+  .form-group-default + .error{
+    color: red !important;
+  }
+
   .ash-bg {
     background-color: #B2BEB5; /* ASH color */
     border-radius: 12px;
@@ -213,6 +219,9 @@
                                       <div class="form-group form-group-default required">
                                         <label>Company Name</label>
                                          <input type="hidden"  name="order_id"  value="<?php echo $order->id?>" >
+                                         <input type="hidden"  name="user_id"  value="{{ $user->id }}">
+
+
                                         <input type="text" required class="form-control client_info"  name="company_name" id="companyName" placeholder="Company Name" value="<?php echo ($user->business_name)?$user->business_name:old('company_name')?>" >
                                            @error('company_name') <div class="text-danger">{{ $message }}</div> @enderror
                                        </div>
@@ -358,7 +367,7 @@
                               </div>
                               <div class="row mb-3 sm-p-0 mt-4"> 
                                 <div class="col-md-6 mb-2">
-                                  <h5 class="all-caps fs-14 mt-1 mb-1">Service Date</h5>
+                                  <h5 class="all-caps fs-14 mt-1 mb-1" style="margin-left: 8px">Service Date</h5>
                                   <div class="form-group form-group-default input-group col-md-10">
                                     <div class="form-input-group">
                                       <label>Pick Up Date</label>
@@ -475,7 +484,8 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text bold">$</span>
                                                 </div>
-                                                <input type="number" min="0" step="0.01" value="0.75" id="makeitcount" class="form-control" oninput="updateGrandTotal()" onkeydown="return event.key !== 'e' && event.key !== '-'">
+                                                <input type="number" min="0" step="0.01" value="0.75" name="make_it_count" id="makeitcount" class="form-control" oninput="updateGrandTotal()" onkeydown="return event.key !== 'e' && event.key !== '-'">
+
                                               </div>
                                               </td>
                                               </tr>
@@ -508,7 +518,8 @@
                         <!-- Terms & Conditions Modal -->
                         <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
                           <div class="modal-dialog">
-                            <div class="modal-content ash-bg text-dark position-relative">
+                            <div class="modal-content ash-bg text-dark position-relative"  style="background-color: white">
+
                               <div class="modal-header border-0">
                                 <h5 class="modal-title" id="termsModalLabel">Terms & Conditions</h5>
                                 <button type="button" class="btn-close custom-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -589,7 +600,8 @@
                                       <div class="row no-margin">
                                         <div class="col-md-3 no-padding-sm">
                                           <label class="fs-14"><b>Expiration</b></label>
-                                          <div class="form-group form-group-default input-group time-group">
+                                          <div class="form-group form-group-default input-group time-group" style="height: 80px; margin-top: 7px">
+
                                             <div class="form-input-group">
                                               <label class="fade">Month</label>
                                               <select class="form-control input-lg card_info" id="exp_month" name="credit_card_expire_month">
@@ -612,7 +624,8 @@
                                         </div>
                                         <div class="col-md-3 no-padding-sm">
                                           <label class="d-none-sm fs-14"></label>
-                                          <div class="form-group form-group-default input-group time-group mt-year">
+                                          <div class="form-group form-group-default input-group time-group mt-year" style="height: 80px">
+
                                             <div class="form-input-group">
                                               <label class="fade">Year</label>
                                               <select class="form-control input-lg card_info" id="exp_year" name="credit_card_expire_year">
@@ -624,10 +637,16 @@
                                             </div>
                                           </div>
                                         </div>
-                                        <div class="col-md-2 p-0">
-                                          <label class="fs-14 m-25 sm-ml-0"><b>CCV Code</b></label>
-                                          <div class="form-group required">
-                                            <input class="form-control mh-55 m-25 sm-ml-0 card_info" required type="password" id="ccv" name="credit_card_ccv" placeholder="000" minlength="3" maxlength="3" required>
+
+                                        <div class="col-md-3 no-padding-sm">
+                                          <label class="d-none-sm fs-14"></label>
+                                          <div class="form-group form-group-default input-group time-group mt-year" style="height: 80px">
+                                            <div class="form-input-group">
+                                              <label class="fade">CCV Code</label>
+                                              <input class="form-control mh-55 m-25 sm-ml-0 card_info" required type="password" id="ccv" name="credit_card_ccv" placeholder="000" minlength="3" maxlength="3" required style="margin-top: 10px;">
+                                              @error('credit_card_ccv')<div class="text-danger">{{ $message }}</div>@enderror
+                                            </div>
+
                                           </div>
                                         </div>
                                       </div>
@@ -669,14 +688,16 @@
                               </div>
                               <div class="row">
                                 <div class="sign-pad-iframe">
-                                  <div class="iframe-container ml-5 ml-m-3">
+                                  <div class="iframe-container ml-5 ml-m-3" style="overflow: visible;">
                                      <label>Signature:</label>
                                     <div class="border p-2 mb-3" style="width: 100%; max-width: 250px; ">
                                         <canvas id="signature-pad" class="border w-100" height="200" width="200" style="width: 100%;"></canvas>
                                     </div>
                                     <button type="button" class="btn btn-danger" id="clear">Clear</button>
-                                    <input type="hidden" name="signature" id="signature-data">
-                                     @error('signature')<div class="text-danger">{{ $message }}</div> @enderror
+                                     <input type="hidden" name="signature" id="signature-data">
+                                      <div id="signature-error" class="text-danger">
+                                          @error('signature') {{ $message }} @enderror
+                                      </div>
                                   </div>
                                 </div>
                                 <div class="sign-note">
@@ -722,14 +743,24 @@
           });
 
           // Handle form submission
-          document.querySelector("form").addEventListener("submit", function (e) {
-              if (signaturePad.isEmpty()) {
-                  alert("Please provide a signature.");
-                  e.preventDefault();
-              } else {
-                  document.getElementById("signature-data").value = signaturePad.toDataURL("image/png");
-              }
-          });
+
+            document.querySelector("form").addEventListener("submit", function (e) {
+                const signaturePadEmpty = signaturePad.isEmpty();
+                const signatureInput = document.getElementById("signature-data");
+                const errorContainer = document.getElementById("signature-error");
+
+                // Clear previous error
+                errorContainer.textContent = "";
+
+                if (signaturePadEmpty) {
+                    e.preventDefault();
+                    errorContainer.textContent = "The signature field is required.";
+                } else {
+                    // If not empty, set the base64 image data in the hidden input
+                    signatureInput.value = signaturePad.toDataURL("image/png");
+                }
+            });
+
       });
 
 
@@ -740,24 +771,29 @@
       const hst = <?php echo $hst; ?>;
       const grandTotal = subTotal + hst + makeItCount;
       document.getElementById('grand-total').textContent = `$${grandTotal.toFixed(2)}`;
+      
     }
 
     function sameBilling() {
       if ($('#defaultCheck').is(':checked')) {
-        $('#shipp-firstName').val($('#bill-firstName').val());
-        $('#shipp-lastName').val($('#bill-lastName').val());
-        $('#shipp-city').val($('#bill-city').val());
-        $('#shipp-state').val($('#bill-state').val());
-        $('#shipp-postal').val($('#bill-postal').val());
+        $('#shipp-firstName').val($('#bill-firstName').val()).attr('required', true);
+        $('#shipp-city').val($('#bill-city').val()).attr('required', true);
+        $('#shipp-postal').val($('#bill-postal').val()).attr('required', true);
+        $('#shipp-phoneNumber').val($('#phone').val()).attr('required', true);
+        $('#shipp-email').val($('#email').val());
       } else {
-        $('#shipp-firstName,#shipp-lastName,#shipp-city,#shipp-state,#shipp-postal').val('');
+        $('#shipp-firstName, #shipp-lastName, #shipp-city, #shipp-state, #shipp-postal, #shipp-phoneNumber, #shipp-email')
+          .val('')
+          .removeAttr('required');
       }
     }
+
 
     window.onload = function () {
       sameBilling(); // Call the function on page load
     };
   
+
 
     $(document).ready(function () {                         
         $(".next").click(function () {      
@@ -918,7 +954,7 @@
                             </li>
                            <li class="submit finish">
                             <button aria-label="" class="btn btn-success btn-cons from-left pull-right" type="submit">
-                                <span><a href="#top">Submit</a></span>
+                                <span>Submit</span>
                               </button>
                           </li>
 

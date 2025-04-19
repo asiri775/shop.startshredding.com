@@ -233,18 +233,41 @@ class ServiceAgreementController extends Controller {
             'credit_card_ccv'=> 'required',
             'signature'=>'required',
         ]);
-        
-        $order = Order::find($request->order_id);
-
-        // echo '<pre>';
-        // print_r($order); die;
-
-        //$order->token = "";
-       // $order->update();
+      
         $serviceAgreement = ServiceAgreement::updateOrCreate(['order_id' => $request->order_id]);
         $serviceAgreement->fill($request->all());
         $serviceAgreement->sa_state = 1;
         $serviceAgreement->update();
+
+        
+        $order = Order::find($request->order_id);
+        $order->make_it_count = $request->make_it_count;
+        // echo '<pre>';
+        // print_r($order); die;
+
+        //$order->token = "";
+        $order->update();
+        
+        $client_id = $request->user_id;
+        $existingCard = ClientCreditCard::where('client_id', $client_id)
+            ->where('card_number', $request->credit_card_number)
+            ->first();
+
+        if (!$existingCard) {
+            $credit = new ClientCreditCard;
+            $credit['client_id'] = $client_id;
+            $credit['card_holder_name'] = $request->credit_card_name;
+            $credit['card_number'] = $request->credit_card_number;
+            $credit['exp_month'] = $request->credit_card_expire_month;
+            $credit['exp_year'] = $request->credit_card_expire_year;
+            $credit['ccv'] = $request->credit_card_ccv;
+    
+            $is_primary = ClientCreditCard::where('client_id', $client_id)->count();
+            $credit['is_primary'] = $is_primary == 0 ? '1' : '0';
+    
+            $credit->save();
+        }
+
         return redirect('/shop-documents-list')->with('message', 'Completed Document Successfully');
     }
     

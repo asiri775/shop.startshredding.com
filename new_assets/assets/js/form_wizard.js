@@ -79,15 +79,15 @@
 						const current = index; // index is the next tab (we are going *to* this)
 						const $form = $('#wizard-form'); // your form element
 						const sameBilling = $('#defaultCheck').is(':checked');
-						let sameBillingTab1 = null;
-						if(sameBilling) {
-							sameBillingTab1 = [
-								'shipp_address_1',
-								'shipping_city',
-								'shipp-shipping_postal_code',
-								'shipping_phone'
-							];
-						}
+						
+						let sameBillingTab1 = [
+							'shipping_address_1',
+							'shipping_city',
+							'shipping_postal_code',
+							'shipping_phone'
+						];
+						
+
 						const requiredFieldsTab1 = [
 							'company_name',
 							'contact_name',
@@ -109,23 +109,40 @@
 						];
 						
 						if (current === 1) {
+							const validator = $form.validate();
 							if (!$form.valid()) {
-								
-								const validator = $form.validate();
 								const invalidFields = validator.invalid;
 								const invalidIds = Object.keys(invalidFields);
-								const sameBillingRequiredFields = sameBillingTab1.filter(field => invalidIds.includes(field));
-
-								const missingRequiredFields = requiredFieldsTab1.filter(field => invalidIds.includes(field));
-
-								if (missingRequiredFields.length > 0) {
-									return false; // Prevent moving to the next tab
+						
+								let sameBillingRequiredFields = [];
+								if (sameBilling) {
+									sameBillingRequiredFields = sameBillingTab1.filter(field => invalidIds.includes(field));
+								} else {
+									// Ignore shipping fields if not sameBilling
+									const shippingFieldsToClear = [
+										'shipping_address_1',
+										'shipping_city',
+										'shipping_postal_code',
+										'shipping_phone'
+									];
+									// Remove shipping fields from invalidIds
+									for (const field of shippingFieldsToClear) {
+										delete invalidFields[field];
+									}
+									validator.form(); // Re-run validation to update state
 								}
-								if (sameBillingRequiredFields.length > 0) {
-									return false; // Prevent moving to the next tab
+								const missingRequiredFields = requiredFieldsTab1.filter(field => Object.keys(invalidFields).includes(field));
+						
+								if (missingRequiredFields.length > 0) {
+									// Focus on first invalid field
+									const firstInvalidField = Object.keys(invalidFields)[0];
+									if (firstInvalidField) {
+										$(`[name="${firstInvalidField}"]`).focus();
+									}
+									return false; // Block tab switch
 								}
 							}
-							return true; // Allow tab change
+
 						}
 
 						if (current === 2) {
@@ -143,6 +160,10 @@
 								const validator = $form.validate();
 								const invalidFields = validator.invalid;
 								const invalidIds = Object.keys(invalidFields);
+
+								console.log(invalidIds)
+								console.log(invalidFields)
+
 								const missingRequiredFieldsTab3 = requiredFieldsTab3.filter(field => invalidIds.includes(field));
 
 								if (missingRequiredFieldsTab3.length > 0) {
@@ -152,9 +173,6 @@
 							return true; // Allow tab change
 							
 						}
-
-
-
 						
 					},					
 					onPrevious: function(tab, navigation, index) {
