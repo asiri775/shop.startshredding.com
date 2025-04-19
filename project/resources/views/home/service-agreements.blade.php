@@ -41,6 +41,31 @@
 <link href="{{ URL::asset('/home_assets/images/form-wizard/style.css') }}" rel="stylesheet" type="text/css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.3.4/signature_pad.min.js"></script>
 <style>
+  .form-group-default + .error{
+    color: red !important;
+  }
+  .ash-bg {
+    background-color: #B2BEB5; /* ASH color */
+    border-radius: 12px;
+  }
+
+  .custom-close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    opacity: 1;
+  }
+
+  .custom-close-btn:hover {
+    background-color: #222;
+    opacity: 0.9;
+  }
    #signature-pad 
    {
     width: 100%;
@@ -191,14 +216,16 @@
                                       <div class="form-group form-group-default required">
                                         <label>Company Name</label>
                                          <input type="hidden"  name="order_id"  value="<?php echo $order->id?>" >
-                                        <input type="text" class="form-control client_info"  name="company_name" id="companyName" placeholder="Company Name" value="<?php echo ($user->business_name)?$user->business_name:old('company_name')?>" >
+                                         <input type="hidden"  name="user_id"  value="{{ $user->id }}">
+
+                                        <input type="text" required class="form-control client_info"  name="company_name" id="companyName" placeholder="Company Name" value="<?php echo ($user->business_name)?$user->business_name:old('company_name')?>" >
                                            @error('company_name') <div class="text-danger">{{ $message }}</div> @enderror
                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                       <div class="form-group form-group-default required">
                                         <label>Contact Name</label>
-                                        <input type="text" class="form-control client_info" id="contactName" name="contact_name" placeholder="Contact Name" value="<?php echo ($order->customer_name)?$order->customer_name:old('contact_name')?>" >
+                                        <input type="text" required class="form-control client_info" id="contactName" name="contact_name" placeholder="Contact Name" value="<?php echo ($order->customer_name)?$order->customer_name:old('contact_name')?>" >
                                          @error('contact_name') <div class="text-danger">{{ $message }}</div> @enderror
                                        </div>
                                     </div>
@@ -207,7 +234,7 @@
                                   <div class="col-md-6">
                                     <div class="form-group form-group-default required">
                                       <label>Phone</label>
-                                      <input id="phone" type="tel" pattern="\d{3}\-\d{3}\-\d{4}" name="phone_number" class="form-control telephone client_info" data-mask="(999)-999-9999" placeholder="(999)-999-9999" value="<?php echo ($order->customer_phone)?$order->customer_phone:old('phone_number')?>"   />
+                                      <input id="phone" required type="tel" pattern="\d{3}\-\d{3}\-\d{4}" name="phone_number" class="form-control telephone client_info" data-mask="(999)-999-9999" placeholder="(999)-999-9999" value="<?php echo ($order->customer_phone)?$order->customer_phone:old('phone_number')?>"   />
                                       @error('phone_number') <div class="text-danger">{{ $message }}</div> @enderror
                                       <span id="phone-error" style="color: red;"></span>
                                     </div>
@@ -233,7 +260,7 @@
                                     <div class="form-group form-group-default">
                                       <label>Addresss Line 2</label>
                                       <input type="text" class="form-control" id="bill-lastName" name="billing_address_2" placeholder="Addresss Line 2" value="{{ old('billing_address_2') }}">
-                                      @error('billing_address_2') <div class="text-danger">{{ $message }}</div> @enderror
+                                      
                                     </div>
                                   </div>
                                 </div>
@@ -241,7 +268,7 @@
                                   <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                       <label>City</label>
-                                      <input type="text" class="form-control client_info" id="bill-city" name="billing_city" value="<?php echo ($customer->city)?$customer->city:old('billing_city')?>"  placeholder="City" >
+                                      <input type="text" required class="form-control client_info" id="bill-city" name="billing_city" value="<?php echo ($customer->city)?$customer->city:old('billing_city')?>"  placeholder="City" >
                                       @error('billing_city') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
@@ -261,47 +288,10 @@
                                   </div>
                                 </div>
                             
-                              <script type="text/javascript">
-                                function sameBilling()
-                                {
-                                    if ($('#defaultCheck').is(':checked')) {
-                                       $('#shipp-firstName').val($('#bill-firstName').val());
-                                       $('#shipp-lastName').val($('#bill-lastName').val());
-                                       $('#shipp-city').val($('#bill-city').val());
-                                       $('#shipp-state').val($('#bill-state').val());
-                                       $('#shipp-postal').val($('#bill-postal').val());
-                                       $('#shipp-phoneNumber').val($('#bill-phoneNumber').val());
-                                       $('#shipp-email').val($('#bill-email').val());
-                                       
-                                    } else {
-                                      $('#shipp-firstName,#shipp-lastName,#shipp-city,#shipp-state,#shipp-postal,#shipp-phoneNumber,#shipp-email').val('');
-                                    }
-
-                                  }
-
-
-                                  //  function nextPage()
-                                  // {
-                                 
-                                  //     var companyName = $("#companyName").val();
-
-                                  //     if (!companyName) {
-                                  //       $(".form-group").addClass("has-danger");
-                                  //       alert("Field is blank. Submit will be prevented.");
-                                  //       $('#companyName').validationEngine({ focusFirstField: false });
-
-                                  //       return false; // no submission
-                                  //     }
-
-                                  //     alert("Field is filled. The form will submit.");
-                                  //     return true; // form submits
-                                  //   }
-
-                              </script>
                               <div class="serv-check justify-content-between d-inline-flex w-100">
                                 <p class="font-montserrat bold fs-16 bold mt-3 mb-3">Shipping Address</p>
                                 <div class="form-check primary mt-1">
-                                  <input type="checkbox" onclick="sameBilling()" id="defaultCheck" checked>
+                                  <input type="checkbox" onclick="sameBilling()" name="defaultCheck" id="defaultCheck" checked>
                                   <label for="defaultCheck" class="bold">
                                     Same as Billing
                                   </label>
@@ -311,7 +301,7 @@
                                   <div class="col-md-6">
                                     <div class="form-group form-group-default required">
                                       <label>Addresss Line 1</label>
-                                      <input type="text" class="form-control client_info" id="shipp-firstName" name="shipping_address_1" placeholder="Addresss Line 1" value="{{ old('shipping_address_1') }}">
+                                      <input type="text" required class="form-control client_info" id="shipp-firstName" name="shipping_address_1" placeholder="Addresss Line 1" value="{{ old('shipping_address_1') }}">
                                      @error('shipping_address_1')<div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
@@ -327,7 +317,7 @@
                                   <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                       <label>City</label>
-                                      <input type="text" class="form-control client_info" id="shipp-city"  name="shipping_city" placeholder="City" value="{{ old('shipping_city') }}">
+                                      <input type="text" required class="form-control client_info" id="shipp-city"  name="shipping_city" placeholder="City" value="{{ old('shipping_city') }}">
                                     @error('shipping_city')<div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
@@ -341,7 +331,7 @@
                                   <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                       <label>Postal Code</label>
-                                      <input type="text" class="form-control client_info" id="shipp-postal" name="shipping_postal_code" placeholder="Postal Code" value="{{ old('shipping_postal_code') }}">
+                                      <input type="text" required class="form-control client_info" id="shipp-postal" name="shipping_postal_code" placeholder="Postal Code" value="{{ old('shipping_postal_code') }}">
                                      @error('shipping_postal_code')<div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                   </div>
@@ -350,7 +340,7 @@
                                 <div class="col-md-6">
                                   <div class="form-group form-group-default required">
                                     <label>Phone</label>
-                                    <input type="text" class="form-control client_info" id="shipp-phoneNumber" name="shipping_phone" value="{{ old('shipping_phone') }}" placeholder="(999)-999-9999">
+                                    <input type="text" required class="form-control client_info" id="shipp-phoneNumber" name="shipping_phone" value="{{ old('shipping_phone') }}" placeholder="(999)-999-9999">
                                    @error('shipping_phone')<div class="text-danger">{{ $message }}</div> @enderror
                                   </div>
                                 </div>
@@ -373,7 +363,7 @@
                               </div>
                               <div class="row mb-3 sm-p-0 mt-4"> 
                                 <div class="col-md-6 mb-2">
-                                  <h5 class="all-caps fs-14 mt-1 mb-1">Service Date</h5>
+                                  <h5 class="all-caps fs-14 mt-1 mb-1" style="margin-left: 8px">Service Date</h5>
                                   <div class="form-group form-group-default input-group col-md-10">
                                     <div class="form-input-group">
                                       <label>Pick Up Date</label>
@@ -455,7 +445,10 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                          <?php $sub_total=0;?>
+                                          <?php 
+                                            $sub_total=0;
+                                            $makeitcount = 0.75;
+                                          ?>
                                           @foreach($order_details as $item)
                                           <tr>
                                             <td class="text-center"><?php echo $item->quantity?></td>
@@ -487,15 +480,19 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text bold">$</span>
                                                 </div>
-                                                <input type="number" min="0" step="0.01" value="0.75" id="makeitcount" class="form-control">
-                                            </div>
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td class="text-right bold" colspan="3">
-                                              Estimated Grand Total
-                                            </td>
-                                            <td class="text-left font-montserrat demo-fs-23 bold fs-sm-18">$<?php echo number_format((float)$sub_total+$hst,2,'.','');?></td>
+                                                <input type="number" min="0" step="0.01" value="0.75" name="make_it_count" id="makeitcount" class="form-control" oninput="updateGrandTotal()" onkeydown="return event.key !== 'e' && event.key !== '-'">
+                                              </div>
+                                              </td>
+                                              </tr>
+                                              <tr>
+                                              <td class="text-right bold" colspan="3">
+                                                Estimated Grand Total
+                                              </td>
+                                              <td class="text-left font-montserrat demo-fs-23 bold fs-sm-18" id="grand-total">
+                                                $<?php echo number_format((float)$sub_total + $hst + $makeitcount, 2, '.', ''); ?>
+                                              </td>
+                                              </tr>
+            
                                           </tr>
                                         </tbody>
                                      </table>
@@ -512,7 +509,27 @@
 
                           </div>
                         </div>
-                    
+
+                        <!-- Terms & Conditions Modal -->
+                        <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content ash-bg text-dark position-relative"  style="background-color: white">
+                              <div class="modal-header border-0">
+                                <h5 class="modal-title" id="termsModalLabel">Terms & Conditions</h5>
+                                <button type="button" class="btn-close custom-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                You must agree to the Terms and Conditions by selecting the check box.
+                              </div>
+                              <div class="modal-footer border-0">
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Okay</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        
+
                         <div class="tab-pane padding-20 sm-no-padding" id="tab2">  
                           <div class="row row-same-height">
                            <div class="col-md-12">
@@ -525,7 +542,6 @@
                                   <label for="checkbox-agree" class="fs-16 bold font-montserrat">The undersigned hereby agrees to this agreement, on behalf of the
                                     Client.
                                   </label>
-                                   @error('terms_accepted')<div class="text-danger">{{ $message }}</div> @enderror
                                   <div id="checkbox-agree-valid"></div>
                                 </div>
                               </div>
@@ -555,100 +571,123 @@
                                     </ul>
                                     <div class="clearfix"></div>
                                     <div class="row">
-                                        <div class="col-md-12">
-                                            <select class="form-control input-lg" id="sel_card">
-                                              <option>No Card Selected</option>
-                                              @for($i = 0; $i < count($card_details); $i++)
-                                                <option value="{{$i}}">CARD# {{$card_details[$i]->card_number}}</option>
-                                              @endfor
-                                            </select>
-                                        </div>
+                                      <div class="col-md-12">
+                                      <select class="form-control input-lg" id="sel_card" onchange="autoFillCardDetails()">
+                                        <option value="">No Card Selected</option>
+                                        @foreach($card_details as $index => $card)
+                                        <option value="{{ $index }}">CARD# **** **** **** {{ substr($card->card_number, -4) }}</option>
+                                        @endforeach
+                                      </select>
+                                      </div>
                                     </div>
                                     <div class="form-group form-group-default required m-t-25">
                                       <label>Card holder's name</label>
-                                      <input type="text" class="form-control card_info" id="card_holder_name"  name="credit_card_name" placeholder="Name on the card" value="{{ old('credit_card_name') }}">
-                                       @error('credit_card_name')<div class="text-danger">{{ $message }}</div> @enderror
-                                      <div id="card-name-valid"></div>
+                                      <input type="text" required class="form-control card_info" id="card_holder_name" name="credit_card_name" placeholder="Name on the card" value="{{ old('credit_card_name') }}">
+                                      @error('credit_card_name')<div class="text-danger">{{ $message }}</div>@enderror
                                     </div>
                                     <div class="form-group form-group-default required">
                                       <label>Card number</label>
-                                      
-                                      <input type="text" class="form-control card-no card_info" id="cardNumber" name="credit_card_number" placeholder="Enter credit card number"  id="cr_no" minlength="16" maxlength="19" value="{{ old('credit_card_number') }}">
-                        @error('credit_card_number')<div class="text-danger">{{ $message }}</div> @enderror
+                                      <input type="text" required class="form-control card-no card_info" id="cardNumber" name="credit_card_number" placeholder="Enter credit card number" minlength="16" maxlength="19" value="{{ old('credit_card_number') }}">
+                                      @error('credit_card_number')<div class="text-danger">{{ $message }}</div>@enderror
                                     </div>
-                                      <div class="card-date mb-3 w-100">
-                                         <div class="row no-margin">
-                                          <div class="col-md-3 no-padding-sm">
-                                            <label class="fs-14"><b>Expiration</b></label>
-                                            <div class="form-group form-group-default input-group time-group">
-                                              <div class="form-input-group">
-                                                <label class="fade">Month</label>
-                                                <div id="selector">
-                                                  <select class="form-control input-lg card_info" id="exp_month"  name="credit_card_expire_month">
-                                                    <option value="1">Jan (01)</option>
-                                                    <option value="2">Feb (02)</option>
-                                                    <option value="3">Mar (03)</option>
-                                                    <option value="4">Apr (04)</option>
-                                                    <option value="5">May (05)</option>
-                                                    <option value="6">Jun (06)</option>
-                                                    <option value="7">Jul (07)</option>
-                                                    <option value="8">Aug (08)</option>
-                                                    <option value="9">Sep (09)</option>
-                                                    <option value="10">Oct (10)</option>
-                                                    <option value="11">Nov (11)</option>
-                                                    <option value="12">Dec (12)</option>
-                                                 </select>
-                                                 <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                                  @error('credit_card_expire_month')<div class="text-danger">{{ $message }}</div> @enderror
-                                                 </div>
-                                               </div>
+                                    <div class="card-date mb-3 w-100">
+                                      <div class="row no-margin">
+                                        <div class="col-md-3 no-padding-sm">
+                                          <label class="fs-14"><b>Expiration</b></label>
+                                          <div class="form-group form-group-default input-group time-group" style="height: 80px; margin-top: 7px">
+                                            <div class="form-input-group">
+                                              <label class="fade">Month</label>
+                                              <select class="form-control input-lg card_info" id="exp_month" name="credit_card_expire_month">
+                                                <option value="1">Jan (01)</option>
+                                                <option value="2">Feb (02)</option>
+                                                <option value="3">Mar (03)</option>
+                                                <option value="4">Apr (04)</option>
+                                                <option value="5">May (05)</option>
+                                                <option value="6">Jun (06)</option>
+                                                <option value="7">Jul (07)</option>
+                                                <option value="8">Aug (08)</option>
+                                                <option value="9">Sep (09)</option>
+                                                <option value="10">Oct (10)</option>
+                                                <option value="11">Nov (11)</option>
+                                                <option value="12">Dec (12)</option>
+                                              </select>
+                                              @error('credit_card_expire_month')<div class="text-danger">{{ $message }}</div>@enderror
                                             </div>
-                                          </div>
-                                          <div class="col-md-3 no-padding-sm">
-                                            <label class="d-none-sm fs-14"></label>
-                                            <div class="form-group form-group-default input-group time-group mt-year">
-                                              <div class="form-input-group">
-                                                <label class="fade">Year</label>
-                                                <div id="selector">
-                                                  <select class="form-control input-lg card_info" id="exp_year" name="credit_card_expire_year">
-                                                    <option selected="selected">2022</option>
-                                                    <option>2023</option>
-                                                    <option>2024</option>
-                                                    <option>2025</option>
-                                                    <option>2026</option>
-                                                    <option>2027</option>
-                                                    <option>2028</option>
-                                                    <option>2029</option>
-                                                    <option>2030</option>
-                                                 </select>
-                                                 <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                                  @error('credit_card_expire_year')<div class="text-danger">{{ $message }}</div> @enderror
-                                                 </div>
-                                               </div>
-                                            </div>
-                                          </div>
-                                          <div class="col-md-2 p-0">
-                                            <label class="fs-14 m-25 sm-ml-0"><b>CCV Code</b></label>
-                                              <div class="form-group required">
-                                                <input class="form-control mh-55 m-25 sm-ml-0 card_info" type="password" id="ccv" name="credit_card_ccv" placeholder="000" size="1" minlength="3" maxlength="3" required>
-                                              </div>
                                           </div>
                                         </div>
-                                       </div>
+                                        <div class="col-md-3 no-padding-sm">
+                                          <label class="d-none-sm fs-14"></label>
+                                          <div class="form-group form-group-default input-group time-group mt-year" style="height: 80px">
+                                            <div class="form-input-group">
+                                              <label class="fade">Year</label>
+                                              <select class="form-control input-lg card_info" id="exp_year" name="credit_card_expire_year">
+                                                @for($year = date('Y'); $year <= date('Y') + 10; $year++)
+                                                  <option value="{{ $year }}">{{ $year }}</option>
+                                                @endfor
+                                              </select>
+                                              @error('credit_card_expire_year')<div class="text-danger">{{ $message }}</div>@enderror
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-3 no-padding-sm">
+                                          <label class="d-none-sm fs-14"></label>
+                                          <div class="form-group form-group-default input-group time-group mt-year" style="height: 80px">
+                                            <div class="form-input-group">
+                                              <label class="fade">CCV Code</label>
+                                              <input class="form-control mh-55 m-25 sm-ml-0 card_info" required type="password" id="ccv" name="credit_card_ccv" placeholder="000" minlength="3" maxlength="3" required style="margin-top: 10px;">
+                                              @error('credit_card_ccv')<div class="text-danger">{{ $message }}</div>@enderror
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
                                     </div>
-                                    <input name="csrf" id="csrf" value="{{ csrf_token() }}" hidden>
+
+                                    <script>
+                                      const cardDetails = @json($card_details);
+
+                                  function autoFillCardDetails() {
+                                          const selectedIndex = $('#sel_card').val();  // Get selected value using jQuery
+                                          if (selectedIndex !== "") {
+                                              const selectedCard = cardDetails[selectedIndex];
+
+                                              $('#card_holder_name').val(selectedCard.card_holder_name); // Assign value to input
+                                              $('#cardNumber').val(selectedCard.card_number);
+                                              $('#exp_month').val(selectedCard.exp_month);
+                                              $('#exp_year').val(selectedCard.exp_year);
+                                              $('#ccv').val(selectedCard.ccv);
+
+                                              $('#card_holder_name-error').remove();
+                                              $('#cardNumber-error').remove();
+                                              $('#exp_month-error').remove();
+                                              $('#exp_year-error').remove();
+                                              $('#ccv-error').remove();
+                                          } else {
+                                              $('#card_holder_name').val("");  // Clear input value
+                                              $('#cardNumber').val("");
+                                              $('#exp_month').val("");
+                                              $('#exp_year').val("");
+                                              $('#ccv').val("");
+                                          }
+                                      }
+
+                                    
+                                    </script>
+                                  </div>
+                                  <input name="csrf" id="csrf" value="{{ csrf_token() }}" hidden>
                              
                               </div>
                               <div class="row">
                                 <div class="sign-pad-iframe">
-                                  <div class="iframe-container ml-5 ml-m-3">
+                                  <div class="iframe-container ml-5 ml-m-3" style="overflow: visible;">
                                      <label>Signature:</label>
                                     <div class="border p-2 mb-3" style="width: 100%; max-width: 250px; ">
                                         <canvas id="signature-pad" class="border w-100" height="200" width="200" style="width: 100%;"></canvas>
                                     </div>
                                     <button type="button" class="btn btn-danger" id="clear">Clear</button>
-                                    <input type="hidden" name="signature" id="signature-data">
-                                     @error('signature')<div class="text-danger">{{ $message }}</div> @enderror
+                                     <input type="hidden" name="signature" id="signature-data">
+                                      <div id="signature-error" class="text-danger">
+                                          @error('signature') {{ $message }} @enderror
+                                      </div>
                                   </div>
                                 </div>
                                 <div class="sign-note">
@@ -662,59 +701,97 @@
 
     
 <script>
-$(document).ready(function () {
-    $(".next").click(function () {
-        $(this).closest(".step").addClass("d-none").next().removeClass("d-none");
-    });
 
-    $(".prev").click(function () {
-        $(this).closest(".step").addClass("d-none").prev().removeClass("d-none");
-    });
-});
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var canvas = document.getElementById("signature-pad");
 
-        // Ensure the canvas exists
-        if (!canvas) {
-            console.error("Signature pad canvas not found!");
-            return;
-        }
+      document.addEventListener("DOMContentLoaded", function () {
+          var canvas = document.getElementById("signature-pad");
+          // Ensure the canvas exists
+          if (!canvas) {
+              console.error("Signature pad canvas not found!");
+              return;
+          }
 
-        var signaturePad = new SignaturePad(canvas, {
-            backgroundColor: 'rgba(255, 255, 255, 1)', // White background
-            penColor: "black" // Pen color
-        });
+          var signaturePad = new SignaturePad(canvas, {
+              backgroundColor: 'rgba(255, 255, 255, 1)', // White background
+              penColor: "black" // Pen color
+          });
 
-    function resizeCanvas() {
-        var parentWidth = canvas.parentElement.clientWidth; // Get parent div width
-        if (parentWidth === 0) parentWidth = 250; // Set default if parent is hidden
-        
-        canvas.width = parentWidth;
-        canvas.height = 150;
+          function resizeCanvas() {
+              var parentWidth = canvas.parentElement.clientWidth; // Get parent div width
+              if (parentWidth === 0) parentWidth = 250; // Set default if parent is hidden
+              
+              canvas.width = parentWidth;
+              canvas.height = 150;
+          }
+
+          resizeCanvas();
+          window.addEventListener("resize", resizeCanvas);
+
+          // Clear Signature
+          document.getElementById("clear").addEventListener("click", function () {
+              signaturePad.clear();
+          });
+
+          // Handle form submission
+            document.querySelector("form").addEventListener("submit", function (e) {
+                const signaturePadEmpty = signaturePad.isEmpty();
+                const signatureInput = document.getElementById("signature-data");
+                const errorContainer = document.getElementById("signature-error");
+
+                // Clear previous error
+                errorContainer.textContent = "";
+
+                if (signaturePadEmpty) {
+                    e.preventDefault();
+                    errorContainer.textContent = "The signature field is required.";
+                } else {
+                    // If not empty, set the base64 image data in the hidden input
+                    signatureInput.value = signaturePad.toDataURL("image/png");
+                }
+            });
+      });
+
+
+
+   function updateGrandTotal() {
+      const makeItCount = parseFloat(document.getElementById('makeitcount').value) || 0;
+      const subTotal = <?php echo $sub_total; ?>;
+      const hst = <?php echo $hst; ?>;
+      const grandTotal = subTotal + hst + makeItCount;
+      document.getElementById('grand-total').textContent = `$${grandTotal.toFixed(2)}`;
     }
 
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
+    function sameBilling() {
+      if ($('#defaultCheck').is(':checked')) {
+        $('#shipp-firstName').val($('#bill-firstName').val()).attr('required', true);
+        $('#shipp-city').val($('#bill-city').val()).attr('required', true);
+        $('#shipp-postal').val($('#bill-postal').val()).attr('required', true);
+        $('#shipp-phoneNumber').val($('#phone').val()).attr('required', true);
+        $('#shipp-email').val($('#email').val());
+      } else {
+        $('#shipp-firstName, #shipp-lastName, #shipp-city, #shipp-state, #shipp-postal, #shipp-phoneNumber, #shipp-email')
+          .val('')
+          .removeAttr('required');
+      }
+    }
 
-        // Clear Signature
-        document.getElementById("clear").addEventListener("click", function () {
-            signaturePad.clear();
+
+    window.onload = function () {
+      sameBilling(); // Call the function on page load
+    };
+  
+
+    $(document).ready(function () {                         
+        $(".next").click(function () {      
+            $(this).closest(".step").addClass("d-none").next().removeClass("d-none");
         });
 
-        // Handle form submission
-        document.querySelector("form").addEventListener("submit", function (e) {
-            if (signaturePad.isEmpty()) {
-                alert("Please provide a signature.");
-                e.preventDefault();
-            } else {
-                document.getElementById("signature-data").value = signaturePad.toDataURL("image/png");
-            }
+        $(".prev").click(function () {
+            $(this).closest(".step").addClass("d-none").prev().removeClass("d-none");
         });
     });
-</script>
-<script>
+
+
         $(document).ready(function () {
             $("#phone").on("input", function () {
                 var phone = $(this).val();
@@ -819,7 +896,7 @@ $(document).ready(function () {
                         <div class="padding-20 sm-padding-5 sm-m-b-20 sm-m-t-20 bg-white clearfix">
                           <ul class="pager wizard no-style">
                             <li class="next">
-                              <button aria-label="" class="btn btn-primary btn-cons from-left pull-right" onclick="nextPage();" id="form-next" type="button">
+                              <button aria-label="" class="btn btn-primary btn-cons from-left pull-right" id="form-next" type="button">
                                 <span><a href="#top" >Next</a></span>
                               </button>
                             </li>
@@ -863,7 +940,7 @@ $(document).ready(function () {
                             </li>
                            <li class="submit finish">
                             <button aria-label="" class="btn btn-success btn-cons from-left pull-right" type="submit">
-                                <span><a href="#top">Submit</a></span>
+                                <span>Submit</span>
                               </button>
                           </li>
 
@@ -948,6 +1025,7 @@ $(document).ready(function () {
         src="{{ URL::asset('new_assets/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js')}}"
         type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables-responsive/3.0.3/dataTables.responsive.min.js"  type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="{{ URL::asset('new_assets/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js')}}"
         type="text/javascript"></script>
 <script src="{{ URL::asset('new_assets/assets/js/form_wizard.js')}}"
