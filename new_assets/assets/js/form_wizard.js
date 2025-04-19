@@ -87,6 +87,7 @@
 							'shipping_phone'
 						];
 						
+
 						const requiredFieldsTab1 = [
 							'company_name',
 							'contact_name',
@@ -141,6 +142,7 @@
 									return false; // Block tab switch
 								}
 							}
+
 						}
 
 						if (current === 2) {
@@ -161,6 +163,7 @@
 
 								console.log(invalidIds)
 								console.log(invalidFields)
+
 								const missingRequiredFieldsTab3 = requiredFieldsTab3.filter(field => invalidIds.includes(field));
 
 								if (missingRequiredFieldsTab3.length > 0) {

@@ -233,11 +233,12 @@ class ServiceAgreementController extends Controller {
             'credit_card_ccv'=> 'required',
             'signature'=>'required',
         ]);
-
+      
         $serviceAgreement = ServiceAgreement::updateOrCreate(['order_id' => $request->order_id]);
         $serviceAgreement->fill($request->all());
         $serviceAgreement->sa_state = 1;
         $serviceAgreement->update();
+
         
         $order = Order::find($request->order_id);
         $order->make_it_count = $request->make_it_count;

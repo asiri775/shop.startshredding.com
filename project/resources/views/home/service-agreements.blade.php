@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />  
+
 <meta charset="utf-8" />
 <title>Startshredding | Sercice Agreement</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
@@ -41,9 +42,11 @@
 <link href="{{ URL::asset('/home_assets/images/form-wizard/style.css') }}" rel="stylesheet" type="text/css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.3.4/signature_pad.min.js"></script>
 <style>
+
   .form-group-default + .error{
     color: red !important;
   }
+
   .ash-bg {
     background-color: #B2BEB5; /* ASH color */
     border-radius: 12px;
@@ -217,6 +220,7 @@
                                         <label>Company Name</label>
                                          <input type="hidden"  name="order_id"  value="<?php echo $order->id?>" >
                                          <input type="hidden"  name="user_id"  value="{{ $user->id }}">
+
 
                                         <input type="text" required class="form-control client_info"  name="company_name" id="companyName" placeholder="Company Name" value="<?php echo ($user->business_name)?$user->business_name:old('company_name')?>" >
                                            @error('company_name') <div class="text-danger">{{ $message }}</div> @enderror
@@ -481,6 +485,7 @@
                                                     <span class="input-group-text bold">$</span>
                                                 </div>
                                                 <input type="number" min="0" step="0.01" value="0.75" name="make_it_count" id="makeitcount" class="form-control" oninput="updateGrandTotal()" onkeydown="return event.key !== 'e' && event.key !== '-'">
+
                                               </div>
                                               </td>
                                               </tr>
@@ -514,6 +519,7 @@
                         <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
                           <div class="modal-dialog">
                             <div class="modal-content ash-bg text-dark position-relative"  style="background-color: white">
+
                               <div class="modal-header border-0">
                                 <h5 class="modal-title" id="termsModalLabel">Terms & Conditions</h5>
                                 <button type="button" class="btn-close custom-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -595,6 +601,7 @@
                                         <div class="col-md-3 no-padding-sm">
                                           <label class="fs-14"><b>Expiration</b></label>
                                           <div class="form-group form-group-default input-group time-group" style="height: 80px; margin-top: 7px">
+
                                             <div class="form-input-group">
                                               <label class="fade">Month</label>
                                               <select class="form-control input-lg card_info" id="exp_month" name="credit_card_expire_month">
@@ -618,6 +625,7 @@
                                         <div class="col-md-3 no-padding-sm">
                                           <label class="d-none-sm fs-14"></label>
                                           <div class="form-group form-group-default input-group time-group mt-year" style="height: 80px">
+
                                             <div class="form-input-group">
                                               <label class="fade">Year</label>
                                               <select class="form-control input-lg card_info" id="exp_year" name="credit_card_expire_year">
@@ -629,6 +637,7 @@
                                             </div>
                                           </div>
                                         </div>
+
                                         <div class="col-md-3 no-padding-sm">
                                           <label class="d-none-sm fs-14"></label>
                                           <div class="form-group form-group-default input-group time-group mt-year" style="height: 80px">
@@ -637,6 +646,7 @@
                                               <input class="form-control mh-55 m-25 sm-ml-0 card_info" required type="password" id="ccv" name="credit_card_ccv" placeholder="000" minlength="3" maxlength="3" required style="margin-top: 10px;">
                                               @error('credit_card_ccv')<div class="text-danger">{{ $message }}</div>@enderror
                                             </div>
+
                                           </div>
                                         </div>
                                       </div>
@@ -733,6 +743,7 @@
           });
 
           // Handle form submission
+
             document.querySelector("form").addEventListener("submit", function (e) {
                 const signaturePadEmpty = signaturePad.isEmpty();
                 const signatureInput = document.getElementById("signature-data");
@@ -749,6 +760,7 @@
                     signatureInput.value = signaturePad.toDataURL("image/png");
                 }
             });
+
       });
 
 
@@ -759,6 +771,7 @@
       const hst = <?php echo $hst; ?>;
       const grandTotal = subTotal + hst + makeItCount;
       document.getElementById('grand-total').textContent = `$${grandTotal.toFixed(2)}`;
+      
     }
 
     function sameBilling() {
@@ -780,6 +793,7 @@
       sameBilling(); // Call the function on page load
     };
   
+
 
     $(document).ready(function () {                         
         $(".next").click(function () {      
