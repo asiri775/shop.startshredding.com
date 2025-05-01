@@ -781,6 +781,9 @@
         $('#shipp-postal').val($('#bill-postal').val()).attr('required', true);
         $('#shipp-phoneNumber').val($('#phone').val()).attr('required', true);
         $('#shipp-email').val($('#email').val());
+        $('#shipp-state').val($('#bill-state').val());
+        $('#shipp-lastName').val($('#bill-lastName').val());
+        
       } else {
         $('#shipp-firstName, #shipp-lastName, #shipp-city, #shipp-state, #shipp-postal, #shipp-phoneNumber, #shipp-email')
           .val('')
