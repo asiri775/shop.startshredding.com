@@ -12,6 +12,7 @@ use App\Clients;
 use App\Models\EmailSubject;
 use App\Models\EmailTemplate;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use http\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -462,6 +463,9 @@ class OrderTemplateController extends Controller
         $start = new \Carbon\Carbon($startDate);
         $end = new \Carbon\Carbon($endDate);
         $days = $start->diff($end)->days;
+
+        $startDateRange = Carbon::parse($startDate);
+        $startDateRange = Carbon::parse($endDate);
        
         $start = $startDate;
         $end_date = $endDate;
@@ -471,15 +475,29 @@ class OrderTemplateController extends Controller
        $incrementData=$start_date;
       while ($incrementData <= $end_date) 
       {
+        
+
        $incrementData = date('Y-m-d', strtotime("+" . $i . " day", strtotime($start)));
        $jobDates = $this->getDateRange($start, $end_date, $template->days_apart,$days_allowed);
 
+        if ($startDate->month == $endDate->month) {
+               
+            if($i>28){
+                continue;
+            }
+       } 
+
      $i++;
       }
+
+
+      
  
 
         return $jobDates;
     }
+
+
 
     public function makeRecurringOrder(Request $request)
     {
@@ -517,7 +535,9 @@ class OrderTemplateController extends Controller
                 }
 
                 $nextMonthStart = Carbon::now()->addMonthNoOverflow()->startOfMonth();
-                $nextMonthEnd = Carbon::now()->addMonthNoOverflow()->endOfMonth();
+                $nextMonthEnd = Carbon::now()->addMonthNoOverflow()->startOfMonth()->addDays(28);
+
+
                 
                 // Check if schedule_from is before or equal to the start date of the next month
                 $scheduleFrom = Carbon::parse($template->schedule_from);
@@ -530,7 +550,6 @@ class OrderTemplateController extends Controller
                 $jobDates = $this->getJobDates($template, $nextMonthStart, $nextMonthEnd);
 
 
-
                 foreach ($jobDates as $date) {
                     $this->generateRepeatOrders($template, $quantities, $products, $date, $cost, $prices);
                 }
@@ -539,23 +558,6 @@ class OrderTemplateController extends Controller
                 return Redirect('/vendor/order-template-history/' . $template->client_id . '/' . $template->id);
                 // puvii added
 
-            	// $start = date('Y-m-d');
-                // $end_date = date('Y-m-d',strtotime($start. ' + 30 days'));
-                // $start_date = Carbon::parse($start);
-                // $days_allowed = $template->days_allowed;
-                // $i = 0;
-                // $incrementData=$start_date;
-                // while ($incrementData <= $end_date) {
-                //     $incrementData = date('Y-m-d', strtotime("+" . $i . " day", strtotime($start)));
-                //     $dayList = $this->getDateRange($start, $end_date, $template->days_apart,$days_allowed);
-                //     if (in_array($incrementData, $dayList)) {
-                //         $this->generateRepeatOrders($template, $quantities, $products, $incrementData, $cost, $prices);
-                //     }
-
-                //     $i++;
-                // }
-                // Session::flash('message', 'Next calender orders has been successfully created');
-                // return Redirect('/vendor/order-template-history/'.$template->client_id.'/'.$template->id);
             }
             elseif ($request->order_template_type == OrderTemplate::RANGE) {
                 // puvii added
@@ -575,6 +577,7 @@ class OrderTemplateController extends Controller
                     Session::flash('error', 'Please select a date before or on the schedule from date.');
                     return redirect('/vendor/order-template/' . $template->id);
                 }
+
 
                 $jobDates = $this->getJobDates($template, $nextMonthStart, $nextMonthEnd);
 
@@ -863,6 +866,7 @@ class OrderTemplateController extends Controller
 
     public function getDateRange($start_date, $end_date, $days_apart,$days_allowed)
     {
+        $list=[];
         $i = $days_apart;
         $dates = array($start_date);
         while (end($dates) < $end_date) {
