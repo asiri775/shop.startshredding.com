@@ -88,7 +88,7 @@
 
                                                 <div class="mt-2 col-md-4">
                                                     <p><strong>State:</strong></p>
-                                                    <p>{{$client->province_state}}</p>
+                                                    <p>{{$client->Province_State}}</p>
                                                 </div>
 
                                                 <div class="mt-2 col-md-12">

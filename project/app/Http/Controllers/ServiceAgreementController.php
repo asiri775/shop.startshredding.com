@@ -249,6 +249,14 @@ class ServiceAgreementController extends Controller {
         $order->update();
         
         $client_id = $request->user_id;
+        $client = Clients::find($client_id);
+
+        if ($client && is_null($client->Province_State)) {
+            $client->update([
+                'Province_State' => $serviceAgreement->billing_state,
+            ]);
+        }
+
         $existingCard = ClientCreditCard::where('client_id', $client_id)
             ->where('card_number', $request->credit_card_number)
             ->first();
