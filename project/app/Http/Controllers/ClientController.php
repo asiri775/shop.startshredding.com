@@ -97,7 +97,6 @@ class ClientController extends Controller
         $input = $request->all();
         $fname = $input['first_name'];
         $lname = $input['last_name'];
-        $gender = $input['gender'];
         $phone = $input['phone1'] . $input['phone2'] . $input['phone3'];
         $email = empty($input['email']) ? "" : $input['email'];
         $address = empty($input['address']) ? "" : $input['address'];
@@ -122,8 +121,6 @@ class ClientController extends Controller
             'name' => $fname . ' ' . $lname,
             'first_name' => $fname,
             'last_name' => $lname,
-            // 'gender' => $gender,  //ToDo: need to remove this recod
-
             'phone' => $phone,
             'balance' => 0,
             'email' => $email,
@@ -136,7 +133,6 @@ class ClientController extends Controller
             'longitude' => $longi,
             'latitude' => $lat,
             'business_name' => $business_name,
-
             'client_type' => $client_type,
             'status' => $status,
             'department' => $department, // ToDo: new recods added
