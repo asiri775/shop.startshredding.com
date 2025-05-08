@@ -373,13 +373,11 @@ class VendorController extends Controller
     //add customer
     public function customer()
     {
-        $query = "SELECT * FROM `orders`";
-
+        $query = "SELECT * FROM `orders`";  
         $customers = DB::select(DB::raw($query));
-        $tax_groups = DB::connection('mysql2')->table('tax_group')->get();
-        $account_managers = DB::connection('mysql2')->table('employee')->where('POSITION', 'Account Manager')->get();
-
-
+        $tax_groups = DB::connection('mysql2')->table('TAX_GROUP')->get();
+        $account_managers = DB::connection('mysql2')->table('EMPLOYEE')->where('POSITION', 'Account Manager')->get();
+        
         return view('vendor.customer', compact('customers','tax_groups','account_managers'));
 
     }
