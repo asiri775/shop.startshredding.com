@@ -93,15 +93,15 @@ class ClientController extends Controller
     public function customerAdd()
     {
 
-        if (empty(Input::get('gender'))) {
-            return redirect()->back()
-                ->with('error', 'Please, select gender!')
-                ->withInput();
-        }
+        // if (empty(Input::get('gender'))) {
+        //     return redirect()->back()
+        //         ->with('error', 'Please, select gender!')
+        //         ->withInput();
+        // }
 
         $fname = Input::get('first_name');
         $lname = Input::get('last_name');
-        $gender = Input::get('gender');
+        // $gender = Input::get('gender');
         $phone = Input::get('phone1') . Input::get('phone2') . Input::get('phone3');
         $email = empty(Input::get('email')) ? "" : Input::get('email');
         $address = empty(Input::get('address')) ? "" : Input::get('address');
@@ -113,11 +113,21 @@ class ClientController extends Controller
         $lat = empty(Input::get('latude')) ? 0 : Input::get('latude');
         $business_name = empty(Input::get('business_name')) ? "" : Input::get('business_name');
 
+        $department = Input::get('department');
+        $payment_method = Input::get('payment_method');
+        $tax_group = Input::get('tax_group');
+        $source = Input::get('source');
+        $manager = Input::get('manager');
+        $client_type = Input::get('customer_type');
+        $status = Input::get('status');
+        
+
         $user = Clients::create([
             'name' => $fname . ' ' . $lname,
             'first_name' => $fname,
             'last_name' => $lname,
-            'gender' => $gender,
+            // 'gender' => $gender,  //ToDo: need to remove this recod
+
             'phone' => $phone,
             'balance' => 0,
             'email' => $email,
@@ -129,7 +139,15 @@ class ClientController extends Controller
             'zip' => $zip,
             'longitude' => $longi,
             'latitude' => $lat,
-            'business_name' => $business_name
+            'business_name' => $business_name,
+
+            'client_type' => $client_type,
+            'status' => $status,
+            'department' => $department, // ToDo: new recods added
+            'payment_method' => $payment_method,// ToDo: new recods added
+            'tax_group' => $tax_group,// ToDo: new recods added
+            'source' => $source,// ToDo: new recods added
+            'manager' => $manager// ToDo: new recods added
         ]);
 
         if (!empty(Input::get('address'))) {

@@ -12,7 +12,8 @@ class Clients extends Authenticatable
     public $table = "clients";
     protected $fillable = [
         'name', 'gender', 'balance', 'email', 'latitude', 'longitude', 'phone', 'password', 'fax','unit_no','buzz_code', 'address', 'instagram', 'facebook', 'city', 'zip', 'status','is_activated', 'created_at', 'updated_at', 'first_name',
-        'last_name', 'Province_State', 'business_name', 'Country', 'client_type', 'zone_id', 'special_notes'
+        'last_name', 'Province_State', 'business_name', 'Country', 'client_type', 'zone_id', 'special_notes',
+        'department','payment_method','tax_group','source','manager' 
     ];
 
     /**
