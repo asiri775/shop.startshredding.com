@@ -276,7 +276,7 @@
                 $('#txt_business_name').val(client['business_name']);
                 $('#txt_first_name').val(client['first_name']);
                 $('#txt_last_name').val(client['last_name']);
-                $('#txt_gender').val(client['gender']);
+                // $('#txt_gender').val(client['gender']);
                 $('#txt_email').val(client['email']);
                 //$('#txt_phone').val(client['PHONE']);
                 $('#txt_phone1').val(client['phone'].substring(0, 3));
@@ -373,7 +373,116 @@
                                                                 <input type="text" name="last_name" id="last_name" placeholder="Last Name" required>
                                                             </div>
                                                         </div>
+
+
+
+
+
                                                         <div class="col-xs-12">
+                                                            <label class="control-label col-sm-3" for="customer_type">Customer Type *</label>
+                                                            <div class="col-sm-9">
+                                                                <select name="customer_type" class="form-control" placeholder="Customer Type" id="customer_type" required>
+                                                                    <option value="">Select Customer Type</option>
+                                                                    <option value="Contract">Contract</option>
+                                                                    <option value="Purge">Purge</option>
+                                                                    <option value="Drop Off">Drop Off</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-xs-12">
+                                                            <label class="control-label col-sm-3" for="unit">Department *</label>
+                                                            <div class="col-sm-9">
+                                                                <input type="text" name="department" id="department" placeholder="Department" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-xs-12">
+                                                            <label class="control-label col-sm-3" for="status">Status *</label>
+                                                            <div class="col-sm-9">
+                                                                <select name="status" class="form-control" placeholder="Status" id="status" required>
+                                                                    <option value="">Select Status</option>
+                                                                    <option value="Prospect">Prospect</option>
+                                                                    <option value="Lead">Lead</option>
+                                                                    <option value="Customer">Customer</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-xs-12">
+                                                            <label class="control-label col-sm-3" for="payment_method">Payment Method *</label>
+                                                            <div class="col-sm-9">
+                                                                <select name="payment_method" class="form-control" placeholder="Payment Method" id="payment_method" required>
+                                                                    <option value="">Select Payment Method</option>
+                                                                    <option value="Credit Card">Credit Card</option>
+                                                                    <option value="Paypal">Paypal</option>
+                                                                    <option value="Credit">Credit</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                     
+                                                        
+                                                        
+                                                        <div class="col-xs-12">
+                                                            <label class="control-label col-sm-3" for="tax_group">Tax Group *</label>
+                                                            <div class="col-sm-9">
+                                                                <select name="tax_group" class="form-control" id="tax_group" required>
+                                                                    <option value="">Select Tax Group</option>
+                                                                    @foreach($tax_groups as $group)
+                                                                        <option value="{{ $group->GROUP_NAME }}">{{ $group->GROUP_NAME }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-xs-12">
+                                                            <label class="control-label col-sm-3" for="source">Source *</label>
+                                                            <div class="col-sm-9">
+                                                                <select name="source" class="form-control" placeholder="Source" id="source" required>
+                                                                    <option value="">Select Source</option>
+                                                                    <option value="Online">Online</option>
+                                                                    <option value="Referral">Referral</option>
+                                                                    <option value="Phone">Phone</option>
+                                                                    <option value="Other">Other</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-xs-12">
+                                                            <label class="control-label col-sm-3" for="invoicing">Invoicing *</label>
+                                                            <div class="col-sm-9">
+                                                                <select name="invoicing" class="form-control" placeholder="Invoicing" id="invoicing" required>
+                                                                    <option value="">Select Invoicing</option>
+                                                                    <option value="Single">Single</option>
+                                                                    <option value="Batch">Batch</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-xs-12">
+                                                            <label class="control-label col-sm-3" for="manager">Account Manager *</label>
+                                                            <div class="col-sm-9">
+                                                                <select name="manager" class="form-control" id="manager" required>
+                                                                    <option value="">Select Account Manager</option>
+                                                                    @foreach($account_managers as $manager)
+                                                                        <option value="{{ $manager->FULL_NAME }}">{{ $manager->FULL_NAME }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+
+                                                        
+
+
+                                                        {{-- <div class="col-xs-12">
                                                             <label class="control-label col-sm-3" for="province">Gender *</label>
                                                             <div class="col-sm-9">
                                                                 <select name="gender" class="form-control" placeholder="Gender" id="gender">
@@ -382,7 +491,7 @@
                                                                     <option value="female">Female</option>
                                                                 </select>
                                                             </div>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="col-xs-12">
                                                             <label class="control-label col-sm-3" for="city">E-mail *</label>
                                                             <div class="col-sm-9">
@@ -569,7 +678,7 @@
                     <input name="txt_last_name" class="form-control" placeholder="Last Name" id="txt_last_name" required type="text">
                 </div>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label class="control-label col-sm-4" for="province">Gender *</label>
                 <div class="col-sm-7">
                     <select name="txt_gender" class="form-control" placeholder="Gender" id="txt_gender">
@@ -578,7 +687,7 @@
                         <option value="female">Female</option>
                     </select>
                 </div>
-            </div>
+            </div> --}}
             <div class="form-group">
                 <label for="EMAIL" class="col-sm-4 control-label">E-mail *</label>
                 <div class="col-sm-7">
@@ -778,7 +887,7 @@
         function fillInAddress(results, status) {
             var latitude = results[0].geometry.location.lat();
             var longitude = results[0].geometry.location.lng();
-
+            console.log("latitude: " + latitude + " longitude: " + longitude);
             if (marker != null) {
                 marker.setMap(null);
             }

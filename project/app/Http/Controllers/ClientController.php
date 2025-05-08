@@ -95,13 +95,6 @@ class ClientController extends Controller
     public function customerAdd(Request $request)
     {
         $input = $request->all();
-
-        if (empty($input['gender'])) {
-            return redirect()->back()
-                ->with('error', 'Please, select gender!')
-                ->withInput();
-        }
-
         $fname = $input['first_name'];
         $lname = $input['last_name'];
         $gender = $input['gender'];
@@ -116,11 +109,21 @@ class ClientController extends Controller
         $lat = empty($input['latude']) ? 0 : $input['latude'];
         $business_name = empty($input['business_name']) ? "" : $input['business_name'];
 
+        $department =  $input['department'];
+        $payment_method = $input['payment_method'];
+        $tax_group = $input['tax_group'];
+        $source = $input['source'];
+        $manager = $input['manager'];
+        $client_type = $input['customer_type'];
+        $status = $input['status'];
+        
+
         $user = Clients::create([
             'name' => $fname . ' ' . $lname,
             'first_name' => $fname,
             'last_name' => $lname,
-            'gender' => $gender,
+            // 'gender' => $gender,  //ToDo: need to remove this recod
+
             'phone' => $phone,
             'balance' => 0,
             'email' => $email,
@@ -132,7 +135,15 @@ class ClientController extends Controller
             'zip' => $zip,
             'longitude' => $longi,
             'latitude' => $lat,
-            'business_name' => $business_name
+            'business_name' => $business_name,
+
+            'client_type' => $client_type,
+            'status' => $status,
+            'department' => $department, // ToDo: new recods added
+            'payment_method' => $payment_method,// ToDo: new recods added
+            'tax_group' => $tax_group,// ToDo: new recods added
+            'source' => $source,// ToDo: new recods added
+            'manager' => $manager// ToDo: new recods added
         ]);
 
         if (!empty($input['address'])) {
