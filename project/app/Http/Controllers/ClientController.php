@@ -25,9 +25,10 @@ class ClientController extends Controller
         $this->middleware('auth:vendor');
     }
 
-    public function getAJAXClient()
+    public function getAJAXClient(Request $request)
     {
-        $client_id = Input::get('client_id');
+        $input = $request->all();
+        $client_id = $input['client_id'];
         $client = DB::table('clients')
             ->when($client_id, function ($client) use ($client_id) {
                 return $client->where('id', '=', '' . $client_id . '');
@@ -37,11 +38,12 @@ class ClientController extends Controller
         echo json_encode($client);
     }
 
-    public function getAJAXSearchClient()
+    public function getAJAXSearchClient(Request $request)
     {
+        $input = $request->all();
         DB::enableQueryLog();
-        $keyword = empty(Input::get('keyword')) ? "" : Input::get('keyword');
-        $phone = empty(Input::get('phone')) ? "" : Input::get('phone');
+        $keyword = empty($input['keyword']) ? "" : $input['keyword'];
+        $phone = empty($input['phone']) ? "" : $input['phone'];
         $clients = DB::table('vendor_customers')
             ->when($keyword, function ($clients) use ($keyword) {
                 return $clients->where('business_name', 'LIKE', '%' . $keyword . '%');
@@ -90,28 +92,29 @@ class ClientController extends Controller
         }
     }
 
-    public function customerAdd()
+    public function customerAdd(Request $request)
     {
+        $input = $request->all();
 
-        if (empty(Input::get('gender'))) {
+        if (empty($input['gender'])) {
             return redirect()->back()
                 ->with('error', 'Please, select gender!')
                 ->withInput();
         }
 
-        $fname = Input::get('first_name');
-        $lname = Input::get('last_name');
-        $gender = Input::get('gender');
-        $phone = Input::get('phone1') . Input::get('phone2') . Input::get('phone3');
-        $email = empty(Input::get('email')) ? "" : Input::get('email');
-        $address = empty(Input::get('address')) ? "" : Input::get('address');
-        $country = empty(Input::get('country')) ? "" : Input::get('country');
-        $city = empty(Input::get('city')) ? "" : Input::get('city');
-        $province = empty(Input::get('province')) ? "" : Input::get('province');
-        $zip = Input::get('zip1') . Input::get('zip2');
-        $longi = empty(Input::get('lontude')) ? 0 : Input::get('lontude');
-        $lat = empty(Input::get('latude')) ? 0 : Input::get('latude');
-        $business_name = empty(Input::get('business_name')) ? "" : Input::get('business_name');
+        $fname = $input['first_name'];
+        $lname = $input['last_name'];
+        $gender = $input['gender'];
+        $phone = $input['phone1'] . $input['phone2'] . $input['phone3'];
+        $email = empty($input['email']) ? "" : $input['email'];
+        $address = empty($input['address']) ? "" : $input['address'];
+        $country = empty($input['country']) ? "" : $input['country'];
+        $city = empty($input['city']) ? "" : $input['city'];
+        $province = empty($input['province']) ? "" : $input['province'];
+        $zip = $input['zip1'] . $input['zip2'];
+        $longi = empty($input['lontude']) ? 0 : $input['lontude'];
+        $lat = empty($input['latude']) ? 0 : $input['latude'];
+        $business_name = empty($input['business_name']) ? "" : $input['business_name'];
 
         $user = Clients::create([
             'name' => $fname . ' ' . $lname,
@@ -132,7 +135,7 @@ class ClientController extends Controller
             'business_name' => $business_name
         ]);
 
-        if (!empty(Input::get('address'))) {
+        if (!empty($input['address'])) {
             AddressMultiple::create([
                 'user_id' => $user->id,
                 'address_alias' => "Default",
@@ -158,22 +161,23 @@ class ClientController extends Controller
             ->with('message', 'Customer successfully added!');
     }
 
-    public function customerUpdate()
+    public function customerUpdate(Request $request)
     {
-        $client_id = Input::get('hf_client_id');
+        $input = $request->all();
+        $client_id = $input['hf_client_id'];
 
-        $business_name = empty(Input::get('txt_business_name')) ? "" : Input::get('txt_business_name');
-        $first_name = Input::get('txt_first_name');
-        $last_name = Input::get('txt_last_name');
+        $business_name = empty($input['txt_business_name']) ? "" : $input['txt_business_name'];
+        $first_name = $input['txt_first_name'];
+        $last_name = $input['txt_last_name'];
         $name = $first_name . ' ' . $last_name;
-        $gender = Input::get('txt_gender');
-        $email = Input::get('txt_email');
-        $phone = Input::get('txt_phone1') . Input::get('txt_phone2') . Input::get('txt_phone3');
-        $address = empty(Input::get('txt_address')) ? "" : Input::get('txt_address');
-        $country = empty(Input::get('txt_country')) ? "" : Input::get('txt_country');
-        $city = empty(Input::get('txt_city')) ? "" : Input::get('txt_city');
-        $province = empty(Input::get('cmb_province')) ? "" : Input::get('cmb_province');
-        $zip = Input::get('txt_fsa1') . Input::get('txt_fsa2');
+        $gender = $input['txt_gender'];
+        $email = $input['txt_email'];
+        $phone = $input['txt_phone1'] . $input['txt_phone2'] . $input['txt_phone3'];
+        $address = empty($input['txt_address']) ? "" : $input['txt_address'];
+        $country = empty($input['txt_country']) ? "" : $input['txt_country'];
+        $city = empty($input['txt_city']) ? "" : $input['txt_city'];
+        $province = empty($input['cmb_province']) ? "" : $input['cmb_province'];
+        $zip = $input['txt_fsa1'] . $input['txt_fsa2'];
 
         $qry = "";
         $qry .= "UPDATE clients set name='" . $name . "', first_name='" . $first_name . "', last_name='" . $last_name . "',";
