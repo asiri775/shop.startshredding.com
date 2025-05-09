@@ -63,6 +63,49 @@
                             </div>
                             <br>
                             <br>
+
+                            <div class="col-xs-12 mt-2">
+                                <label class="control-label col-sm-3" for="unit">Main Category</label>
+                                <div class="col-sm-4">
+                                    <select class="w-100" type="text" name="category_id" id="category_id" placeholder="Main Category">
+                                        @foreach($categories as $category)
+                                            <option value="{{$category['id']}}" @if(($category['id']==old('category_id'))) selected @endif>{{$category['name']}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+
+                            <div class="col-xs-12 mt-2">
+                                <label class="control-label col-sm-3" for="unit">Sub Category</label>
+                                <div class="col-sm-4">
+                                    <select class="w-100" type="text" name="sub_category_id" id="sub_category_id" placeholder="Sub Category">
+                                        <option value="">Select Sub Category</option>
+                                         @foreach($subs as $sub)
+                                            <option value="{{$sub['id']}}" @if(($sub['id']==old('sub_category_id'))) selected @endif>{{$sub['name']}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+
+                            <div class="col-xs-12 mt-2">
+                                <label class="control-label col-sm-3" for="unit">Child Category</label>
+                                <div class="col-sm-4">
+                                    <select class="w-100" type="text" name="child_category_id" id="child_category_id" placeholder="Child Category">
+                                        <option value="">Select Sub Category</option>
+                                          @foreach($child as $data)
+                                            <option value="{{$data['id']}}" @if(($data['id']==old('child_category_id'))) selected @endif>{{$data['name']}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <br>
+                            <br>         
+
                             <div class="col-xs-12 mt-2">
                                 <label class="control-label col-sm-3" for="unit">Account Manager</label>
                                 <div class="col-sm-4">

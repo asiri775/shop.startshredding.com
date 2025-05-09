@@ -112,6 +112,12 @@
                             <p>{{$orderTemplate->payment_method}}</p>
                         </div>
 
+                         <div class="mt-2 col-md-4">
+                            <p><strong>Categories:</strong></p>
+                            <p>{{ $category['main_category'] ?? 'N/A' }} / {{ $category['sub_category'] ?? 'N/A' }} /  {{ $category['child_category'] ?? 'N/A' }}</p>
+                        </div>
+
+
                     </div>
                 </div>
             </div>

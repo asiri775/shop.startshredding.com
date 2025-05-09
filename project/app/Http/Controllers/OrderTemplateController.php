@@ -9,6 +9,7 @@ use App\OrderTemplate;
 use App\OrderTemplateItem;
 use App\Product;
 use App\Clients;
+use App\Category;
 use App\Models\EmailSubject;
 use App\Models\EmailTemplate;
 use Carbon\Carbon;
@@ -81,13 +82,17 @@ class OrderTemplateController extends Controller
      */
     public function create($id)
     {
+
+        $child = Category::where('role','child')->get();
+        $subs = Category::where('role','sub')->get();
+        $categories = Category::where('role','main')->get();
         $accountManagers = DB::connection('mysql2')->table('EMPLOYEE')
             ->join('employee_company_details', 'EMPLOYEE.UID', '=', 'employee_company_details.employee_id')
             ->where('employee_company_details.department_id', 3)
             ->get();
         $vendor_id = Auth::user()->id;
         $job_type = DB::connection('mysql2')->table('JOB_TYPE')->get();
-        return view('vendor.template-create-customer', compact('id', 'accountManagers', 'job_type', 'vendor_id'));
+        return view('vendor.template-create-customer', compact('id', 'accountManagers', 'job_type', 'vendor_id','child','subs','categories'));
     }
 
     /**
@@ -141,6 +146,10 @@ class OrderTemplateController extends Controller
                 'special_notes' => $input['special_notes'],
                 'name_for_sams' => $input['name_for_sams'] ?? '',
                 'payment_method' => $input['payment_method'],
+                'category_id' => $input['category_id'],
+                'sub_category_id' => $input['sub_category_id'],
+                'child_category_id' => $input['child_category_id'],
+
             ]
         );
         Session::flash('message', 'Template has been successfully created');
@@ -159,10 +168,34 @@ class OrderTemplateController extends Controller
             ->orderBy('id', 'desc')
             ->pluck('id', 'title');
 
+        $category = [];
+
+        $categoryMappings = [
+            'main_category' => $orderTemplate->category_id,
+            'sub_category' => $orderTemplate->sub_category_id,
+            'child_category' => $orderTemplate->child_category_id,
+        ];
+
+        foreach ($categoryMappings as $key => $categoryId) {
+            if (!empty($categoryId)) {
+                // Ensure it's initialized as an array
+                if (!isset($category[$key])) {
+                    $category[$key] = [];
+                }
+
+                // Append the name to the array
+                $name = Category::where('id', $categoryId)->value('name');
+                $category[$key] = $name;
+            }
+        }
+
+        // echo '<pre>';
+        // print_r($category);die;
+      
         $job_type = DB::connection('mysql2')->table('JOB_TYPE')->where('UID', $orderTemplate->job_type_id)->first();
         $accountManager = DB::connection('mysql2')->table('EMPLOYEE')->where('UID', $orderTemplate->manager_id)->first();
         $orderTemplateItems = OrderTemplateItem::whereOrderTemplateId($orderTemplate->id)->get();
-        return view('vendor.ordertemplate-show', compact('orderTemplate', 'products', 'orderTemplateItems', 'job_type', 'accountManager'));
+        return view('vendor.ordertemplate-show', compact('orderTemplate', 'products', 'orderTemplateItems', 'job_type', 'accountManager','category'));
     }
 
     /**

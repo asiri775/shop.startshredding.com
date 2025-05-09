@@ -330,7 +330,7 @@
                     'selectAll',
                     'selectNone',
                     {
-                        text: 'Delete All',
+                        text: 'Delete',
                         action: function (e, dt, node, config) {
                             var deleteids_arr = [];
                             $.each($("input[name='chk_orders[]']:checked"), function () {
