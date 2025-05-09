@@ -10,8 +10,7 @@ class OrderTemplate extends Model
     const RANGE=2;
     const SINGlE_DATE=3;
 
-    protected $fillable = ['name', 'client_id','vendor_id', 'name_for_sams','manager_id','job_type_id','repeat','days_allowed','days_apart','weeks_apart','months_apart','schedule_from','avg_service_time','is_active','special_notes','po_cro_no','payment_method','crated_at','updated_at'];
-
+     protected $fillable = ['name', 'client_id','vendor_id', 'name_for_sams','manager_id','category_id','sub_category_id','child_category_id','job_type_id','repeat','days_allowed','days_apart','weeks_apart','months_apart','schedule_from','avg_service_time','is_active','special_notes','po_cro_no','payment_method','crated_at','updated_at'];
 
     public function setDaysAllowedAttribute($value)
     {
