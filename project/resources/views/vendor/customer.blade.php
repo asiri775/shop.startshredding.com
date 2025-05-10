@@ -955,7 +955,7 @@
                 });
                 if (postal_code) {
                     postal_code_array = postal_code.split(" ");
-                    document.getElementById("zip").value = postal_code_array[0] == null ? '' : postal_code_array[0];
+                    document.getElementById("zip1").value = postal_code_array[0] == null ? '' : postal_code_array[0];
                     document.getElementById("zip2").value = postal_code_array[1] == null ? '' : postal_code_array[1];
                 }
                 google.maps.event.trigger(map, 'resize');

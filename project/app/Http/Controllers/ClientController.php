@@ -113,7 +113,7 @@ class ClientController extends Controller
         $tax_group = $input['tax_group'];
         $source = $input['source'];
         $manager = $input['manager'];
-        $client_type = $input['customer_type'];
+        $customer_type = $input['customer_type'];
         $status = $input['status'];
         
 
@@ -133,13 +133,13 @@ class ClientController extends Controller
             'longitude' => $longi,
             'latitude' => $lat,
             'business_name' => $business_name,
-            'client_type' => $client_type,
+            'customer_type' => $customer_type,
             'status' => $status,
             'department' => $department, // ToDo: new recods added
             'payment_method' => $payment_method,// ToDo: new recods added
-            'tax_group' => $tax_group,// ToDo: new recods added
+            'TAX_GROUP' => $tax_group,// ToDo: new recods added
             'source' => $source,// ToDo: new recods added
-            'manager' => $manager// ToDo: new recods added
+            'Account_Manager' => $manager// ToDo: new recods added
         ]);
 
         if (!empty($input['address'])) {
@@ -177,7 +177,6 @@ class ClientController extends Controller
         $first_name = $input['txt_first_name'];
         $last_name = $input['txt_last_name'];
         $name = $first_name . ' ' . $last_name;
-        $gender = $input['txt_gender'];
         $email = $input['txt_email'];
         $phone = $input['txt_phone1'] . $input['txt_phone2'] . $input['txt_phone3'];
         $address = empty($input['txt_address']) ? "" : $input['txt_address'];
@@ -188,7 +187,7 @@ class ClientController extends Controller
 
         $qry = "";
         $qry .= "UPDATE clients set name='" . $name . "', first_name='" . $first_name . "', last_name='" . $last_name . "',";
-        $qry .= " gender='" . $gender . "', phone='" . $phone . "', email='" . $email . "', address='" . $address . "', city='" . $city . "',";
+        $qry .= " phone='" . $phone . "', email='" . $email . "', address='" . $address . "', city='" . $city . "',";
         $qry .= " Province_State='" . $province . "', Country='" . $country . "', zip='" . $zip . "', business_name='" . $business_name . "'";
         $qry .= " WHERE id = ?";
         $affected = DB::update($qry, [$client_id]);
