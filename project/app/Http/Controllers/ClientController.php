@@ -114,7 +114,8 @@ class ClientController extends Controller
         $source = $input['source'];
         $manager = $input['manager'];
         $customer_type = $input['customer_type'];
-        $status = $input['status'];
+        $status_stages = $input['status_stages'];
+        $invoicing_type = $input['invoicing_type'];
         
 
         $user = Clients::create([
@@ -134,12 +135,13 @@ class ClientController extends Controller
             'latitude' => $lat,
             'business_name' => $business_name,
             'customer_type' => $customer_type,
-            'status' => $status,
+            'status_stages' => $status_stages,
             'department' => $department, // ToDo: new recods added
             'payment_method' => $payment_method,// ToDo: new recods added
             'TAX_GROUP' => $tax_group,// ToDo: new recods added
             'source' => $source,// ToDo: new recods added
-            'Account_Manager' => $manager// ToDo: new recods added
+            'Account_Manager' => $manager,// ToDo: new recods added
+            'invoicing_type' => $invoicing_type,
         ]);
 
         if (!empty($input['address'])) {
@@ -185,10 +187,24 @@ class ClientController extends Controller
         $province = empty($input['cmb_province']) ? "" : $input['cmb_province'];
         $zip = $input['txt_fsa1'] . $input['txt_fsa2'];
 
+
+        $department = $input['txt_department'];
+        $payment_method = $input['txt_payment_method'];
+        $tax_group = $input['txt_tax_group'];
+        $source = $input['txt_source'];
+        $manager = $input['txt_manager'];
+        $customer_type = $input['txt_customer_type'];
+        $status_stages = $input['txt_status_stages'];
+        $txt_invoicing_type = $input['txt_invoicing_type'];
+
+
         $qry = "";
         $qry .= "UPDATE clients set name='" . $name . "', first_name='" . $first_name . "', last_name='" . $last_name . "',";
         $qry .= " phone='" . $phone . "', email='" . $email . "', address='" . $address . "', city='" . $city . "',";
+        $qry .= " department='" . $department . "', payment_method='" . $payment_method . "', TAX_GROUP='" . $tax_group . "', source='" . $source . "' , Account_Manager='" . $manager . "', customer_type='" . $customer_type . "', status_stages='" . $status_stages . "', invoicing_type='" . $txt_invoicing_type . "',";
         $qry .= " Province_State='" . $province . "', Country='" . $country . "', zip='" . $zip . "', business_name='" . $business_name . "'";
+
+
         $qry .= " WHERE id = ?";
         $affected = DB::update($qry, [$client_id]);
 
