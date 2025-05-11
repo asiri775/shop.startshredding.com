@@ -288,6 +288,17 @@
                 $('#cmb_province').val(client['Province_State']);
                 $('#txt_fsa1').val(client['zip'].substring(0, 3));
                 $('#txt_fsa2').val(client['zip'].substring(3, 6));
+
+
+                $('#txt_department').val(client['department']);
+                $('#txt_payment_method').val(client['payment_method']);
+                $('#txt_tax_group').val(client['TAX_GROUP']);
+                $('#txt_source').val(client['source']);
+                $('#txt_invoicing_type').val(client['invoicing_type']);
+                $('#txt_manager').val(client['Account_Manager']);
+                $('#txt_customer_type').val(client['customer_type']);
+                $('#txt_status_stages').val(client['status_stages']);
+
                 $.blockUI({
                     message: $('#updateCustomerForm')
                 });
@@ -401,7 +412,7 @@
                                                         <div class="col-xs-12">
                                                             <label class="control-label col-sm-3" for="status">Status *</label>
                                                             <div class="col-sm-9">
-                                                                <select name="status" class="form-control" placeholder="Status" id="status" required>
+                                                                <select name="status_stages" class="form-control" placeholder="Status" id="status_stages" required>
                                                                     <option value="">Select Status</option>
                                                                     <option value="Prospect">Prospect</option>
                                                                     <option value="Lead">Lead</option>
@@ -453,7 +464,7 @@
                                                         <div class="col-xs-12">
                                                             <label class="control-label col-sm-3" for="invoicing">Invoicing *</label>
                                                             <div class="col-sm-9">
-                                                                <select name="invoicing" class="form-control" placeholder="Invoicing" id="invoicing" required>
+                                                                <select name="invoicing_type" class="form-control" placeholder="Invoicing" id="invoicing_type" required>
                                                                     <option value="">Select Invoicing</option>
                                                                     <option value="Single">Single</option>
                                                                     <option value="Batch">Batch</option>
@@ -473,14 +484,6 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-
-
-
-
-
-
-                                                        
-
 
                                                         {{-- <div class="col-xs-12">
                                                             <label class="control-label col-sm-3" for="province">Gender *</label>
@@ -688,6 +691,104 @@
                     </select>
                 </div>
             </div> --}}
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="customer_type">Customer Type *</label>
+                <div class="col-sm-7">
+                    <select name="txt_customer_type" class="form-control" placeholder="Customer Type" id="txt_customer_type" required>
+                        <option value="">Select Customer Type</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Purge">Purge</option>
+                        <option value="Drop Off">Drop Off</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="department" class="col-sm-4 control-label">Department *</label>
+                <div class="col-sm-7">
+                    <input name="txt_department" class="form-control" placeholder="Department" id="txt_department" required type="text">
+                </div>
+            </div>
+
+
+           <div class="form-group">
+                <label class="col-sm-4 control-label" for="status">Status *</label>
+                <div class="col-sm-7">
+                    <select name="txt_status_stages" class="form-control" placeholder="Status" id="txt_status_stages" required>
+                        <option value="">Select Status</option>
+                        <option value="Prospect">Prospect</option>
+                        <option value="Lead">Lead</option>
+                        <option value="Customer">Customer</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="payment_method">Payment Method *</label>
+                <div class="col-sm-7">
+                    <select name="txt_payment_method" class="form-control" placeholder="Payment Method" id="txt_payment_method" required>
+                        <option value="">Select Payment Method</option>
+                        <option value="Credit Card">Credit Card</option>
+                        <option value="Paypal">Paypal</option>
+                        <option value="Credit">Credit</option>
+                    </select>
+                </div>
+            </div>
+
+            
+            
+            
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="tax_group">Tax Group *</label>
+                <div class="col-sm-7">
+                    <select name="txt_tax_group" class="form-control" id="txt_tax_group" required>
+                        <option value="">Select Tax Group</option>
+                        @foreach($tax_groups as $group)
+                            <option value="{{ $group->GROUP_NAME }}">{{ $group->GROUP_NAME }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="source">Source *</label>
+                <div class="col-sm-7">
+                    <select name="txt_source" class="form-control" placeholder="Source" id="txt_source" required>
+                        <option value="">Select Source</option>
+                        <option value="Online">Online</option>
+                        <option value="Referral">Referral</option>
+                        <option value="Phone">Phone</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="invoicing">Invoicing *</label>
+                <div class="col-sm-7">
+                    <select name="txt_invoicing_type" class="form-control" placeholder="Invoicing" id="txt_invoicing_type" required>
+                        <option value="">Select Invoicing</option>
+                        <option value="Single">Single</option>
+                        <option value="Batch">Batch</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="manager">Account Manager *</label>
+                <div class="col-sm-7">
+                    <select name="txt_manager" class="form-control" id="txt_manager" required>
+                        <option value="">Select Account Manager</option>
+                        @foreach($account_managers as $manager)
+                            <option value="{{ $manager->FULL_NAME }}">{{ $manager->FULL_NAME }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="EMAIL" class="col-sm-4 control-label">E-mail *</label>
                 <div class="col-sm-7">
