@@ -289,7 +289,11 @@
                             return '<input type="checkbox" name="chk_orders[]" value="' + $('<div/>').text(id).html() + '">';
                         }
                     },
-                    {data: 'id', name: 'id'},
+                    {data: 'id',  "targets": 9,
+                        "render": function ( data, type, full, meta ) {
+                          return '<a href="<?php echo url('vendor/details'); ?>/'+data+'">'+data+'</a>';     
+                             }
+                      },
                     {data: "job_name", name: 'job_name'},
                     {data: "type", name: 'type'},
                     {data: 'order_type', render: function (data, type, full) {

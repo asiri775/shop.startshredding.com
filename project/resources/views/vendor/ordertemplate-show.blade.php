@@ -72,7 +72,7 @@
 
                         <div class="mt-2 col-md-4">
                             <p><strong>Account Manager:</strong></p>
-                            <p>{{$accountManager->FULL_NAME}}</p>
+                            <p>{{$accountManager->FULL_NAME??'N/A'}}</p>
                         </div>
 
                         <div class="mt-2 col-md-4">
