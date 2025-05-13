@@ -113,8 +113,9 @@ class ClientController extends Controller
         $tax_group = $input['tax_group'];
         $source = $input['source'];
         $manager = $input['manager'];
-        $client_type = $input['customer_type'];
-        $status = $input['status'];
+        $customer_type = $input['customer_type'];
+        $status_stages = $input['status_stages'];
+        $invoicing_type = $input['invoicing_type'];
         
 
         $user = Clients::create([
@@ -133,13 +134,14 @@ class ClientController extends Controller
             'longitude' => $longi,
             'latitude' => $lat,
             'business_name' => $business_name,
-            'client_type' => $client_type,
-            'status' => $status,
+            'customer_type' => $customer_type,
+            'status_stages' => $status_stages,
             'department' => $department, // ToDo: new recods added
             'payment_method' => $payment_method,// ToDo: new recods added
             'tax_group' => $tax_group,// ToDo: new recods added
             'source' => $source,// ToDo: new recods added
-            'manager' => $manager// ToDo: new recods added
+            'Account_Manager' => $manager,// ToDo: new recods added
+            'invoicing_type' => $invoicing_type,
         ]);
 
         if (!empty($input['address'])) {
@@ -177,7 +179,6 @@ class ClientController extends Controller
         $first_name = $input['txt_first_name'];
         $last_name = $input['txt_last_name'];
         $name = $first_name . ' ' . $last_name;
-        $gender = $input['txt_gender'];
         $email = $input['txt_email'];
         $phone = $input['txt_phone1'] . $input['txt_phone2'] . $input['txt_phone3'];
         $address = empty($input['txt_address']) ? "" : $input['txt_address'];
@@ -186,10 +187,24 @@ class ClientController extends Controller
         $province = empty($input['cmb_province']) ? "" : $input['cmb_province'];
         $zip = $input['txt_fsa1'] . $input['txt_fsa2'];
 
+
+        $department = $input['txt_department'];
+        $payment_method = $input['txt_payment_method'];
+        $tax_group = $input['txt_tax_group'];
+        $source = $input['txt_source'];
+        $manager = $input['txt_manager'];
+        $customer_type = $input['txt_customer_type'];
+        $status_stages = $input['txt_status_stages'];
+        $txt_invoicing_type = $input['txt_invoicing_type'];
+
+
         $qry = "";
         $qry .= "UPDATE clients set name='" . $name . "', first_name='" . $first_name . "', last_name='" . $last_name . "',";
-        $qry .= " gender='" . $gender . "', phone='" . $phone . "', email='" . $email . "', address='" . $address . "', city='" . $city . "',";
+        $qry .= " phone='" . $phone . "', email='" . $email . "', address='" . $address . "', city='" . $city . "',";
+        $qry .= " department='" . $department . "', payment_method='" . $payment_method . "', TAX_GROUP='" . $tax_group . "', source='" . $source . "' , Account_Manager='" . $manager . "', customer_type='" . $customer_type . "', status_stages='" . $status_stages . "', invoicing_type='" . $txt_invoicing_type . "',";
         $qry .= " Province_State='" . $province . "', Country='" . $country . "', zip='" . $zip . "', business_name='" . $business_name . "'";
+
+
         $qry .= " WHERE id = ?";
         $affected = DB::update($qry, [$client_id]);
 
