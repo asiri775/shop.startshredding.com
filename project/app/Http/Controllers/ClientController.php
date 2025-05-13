@@ -138,7 +138,7 @@ class ClientController extends Controller
             'status_stages' => $status_stages,
             'department' => $department, // ToDo: new recods added
             'payment_method' => $payment_method,// ToDo: new recods added
-            'tax_group' => $tax_group,// ToDo: new recods added
+            'TAX_GROUP' => $tax_group,// ToDo: new recods added
             'source' => $source,// ToDo: new recods added
             'Account_Manager' => $manager,// ToDo: new recods added
             'invoicing_type' => $invoicing_type,
