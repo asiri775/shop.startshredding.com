@@ -343,7 +343,7 @@ class VendorController extends Controller
         $customers = VendorCustomers::where('vendor_customers.vendor_id', Auth::user()->id)
             ->where('vendor_customers.status', 1)
             ->join('clients', 'vendor_customers.customer_id', '=', 'clients.id')
-            ->get(['clients.*']);
+            ->get(['clients.*'])->sortByDesc('clients.id');
 
         $customer_array = [];
         foreach ($customers as $customer) {
@@ -375,8 +375,9 @@ class VendorController extends Controller
     {
         $query = "SELECT * FROM `orders`";
         $customers = DB::select(DB::raw($query));
-        $tax_groups = DB::connection('mysql2')->table('tax_group')->get();
-        $account_managers = DB::connection('mysql2')->table('employee')->where('POSITION', 'Account Manager')->get();
+        $tax_groups = DB::connection('mysql2')->table('TAX_GROUP')->get();
+        $account_managers = DB::connection('mysql2')->table('EMPLOYEE')->where('POSITION', 'Account Manager')->get();
+
         return view('vendor.customer', compact('customers','tax_groups','account_managers'));
 
     }
@@ -549,8 +550,8 @@ class VendorController extends Controller
         $client = Clients::whereId($id)->first();
 
         if (!empty($client)) {
-            $tax_groups = DB::connection('mysql2')->table('tax_group')->get();
-            $account_managers = DB::connection('mysql2')->table('employee')->where('POSITION', 'Account Manager')->get();
+            $tax_groups = DB::connection('mysql2')->table('TAX_GROUP')->get();
+            $account_managers = DB::connection('mysql2')->table('EMPLOYEE')->where('POSITION', 'Account Manager')->get();
             return view('vendor.customer-details', compact('client', 'tax_groups','account_managers'));
         } else {
             return NULL;
