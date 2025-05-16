@@ -51,6 +51,11 @@ return [
             'provider' => 'profiles',
         ],
 
+        'auto_login' => [
+        'driver' => 'session',
+        'provider' => 'clients', // or your custom provider
+        ],
+
         'profile-api' => [
             'driver' => 'token',
             'provider' => 'profiles',
@@ -111,6 +116,11 @@ return [
         'plants' => [
             'driver' => 'eloquent',
             'model' => App\Plants::class,
+        ],
+
+        'clients' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Clients::class,
         ],
 
         // 'users' => [

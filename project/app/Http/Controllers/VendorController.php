@@ -552,6 +552,7 @@ class VendorController extends Controller
         if (!empty($client)) {
             $tax_groups = DB::connection('mysql2')->table('TAX_GROUP')->get();
             $account_managers = DB::connection('mysql2')->table('EMPLOYEE')->where('POSITION', 'Account Manager')->get();
+
             return view('vendor.customer-details', compact('client', 'tax_groups','account_managers'));
         } else {
             return NULL;

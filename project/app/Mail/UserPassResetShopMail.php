@@ -25,7 +25,7 @@ class UserPassResetShopMail extends Mailable
     {
         $this->subject = $subject;
         $this->template = $template;
-        $this->button = url('/home/shop-resetPassword', $token);
+        $this->button = url('/shop-resetPassword', $token);
     }
 
     /**

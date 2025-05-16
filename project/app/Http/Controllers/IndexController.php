@@ -42,6 +42,7 @@ use DateTime;
 use App\Mail\UserPassResetShopMail;
 use App\Mail\QuoteRequestVendorMail;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Cookie;
 
 class IndexController extends Controller
 {
@@ -322,15 +323,38 @@ class IndexController extends Controller
 
     public function login(Request $request)
     {
-        if (Auth::guard('profile')->attempt(['email' => $request->email, 'password' => $request->password, 'is_activated' => 1], false)) {
-            if ($request->has('page')) {
-                $user = Clients::where('email', $request->email)->first();
+        if (Auth::guard('profile')->attempt(['email' => $request->email, 'password' => $request->password], false)) {
+            $user = Clients::where('email', $request->email)->first();
+             if(!$user->is_activated)
+            {
+              return redirect()->back()->with([
+                'login_message' => 'Your account is not activated. Please check your email or contact support.',
+               ]);
+            }
+            else {
+
+             if ($request->has('page')) {
                 Session::put('user_id', $user->id);
                 return redirect()->route('home.confirm');
             }
-            return redirect()->intended(url('/'));
+
+
+            if(Cookie::get('redirect_shop'))
+            {
+                Cookie::queue(Cookie::forget('redirect_shop'));
+               return redirect()->intended(url('/shop-documents-list'));
+            }
+            else {
+                return redirect()->intended(url('/'));
+            } 
+            }
+           
         }
-        return $this->sendFailedLoginResponse($request);
+      else {
+            return $this->sendFailedLoginResponse($request);
+        }
+
+        
     }
 
     protected function sendFailedLoginResponse(Request $request)
@@ -1117,8 +1141,14 @@ class IndexController extends Controller
     public function userResetPass($token)
     {
         $user = PasswordReset::where('token', $token)->first();
-        $curDateTime = date('Y-m-d H:i:s');
         $id = $user['user_id'];
+        $client = Clients::find($id);
+        if(!$client->is_activated){
+            $client->update(['is_activated'=>1]);
+        }
+
+        $curDateTime = date('Y-m-d H:i:s');
+        
         if ($curDateTime > $user['expired_at']) {
             return view('home.shop.user_token_expired');
         } else {
@@ -1132,7 +1162,7 @@ class IndexController extends Controller
         $user = Clients::find($id);
         $user->password = Hash::make($request->password);
         $user->update();
-        return redirect(url('home/shop-signin'))->with('success', "Password successfully changed.");
+        return redirect(url('shop-signin'))->with('success', "Password successfully changed.");
     }
 
     protected function validator(array $data)
