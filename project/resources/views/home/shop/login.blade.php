@@ -39,6 +39,12 @@
                                         <strong>{{ $login_message}}</strong>
                                     </div>
                                 @endif
+                                 @if ($message = Session::get('message'))
+                                    <div class="alert alert-success alert-dismissable">
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                        <strong>{{ $message}}</strong>
+                                    </div>
+                                @endif
                     </div>
                     <div class="signIn-area">
                         <h2 class="signIn-title">Sign in</h2>

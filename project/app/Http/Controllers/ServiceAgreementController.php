@@ -8,12 +8,20 @@ use App\Order;
 use App\ServiceAgreement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Password;
+use App\PasswordReset;
+use App\Models\EmailSubject;
+use App\Models\EmailTemplate;
+use App\Mail\UserPassResetShopMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use App\ClientCreditCard;
 use App\PageSettings;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cookie;
 
 class ServiceAgreementController extends Controller {
 
@@ -210,19 +218,9 @@ class ServiceAgreementController extends Controller {
             'company_name'  => 'required',
             'contact_name'    => 'required',
             'phone_number'  => 'required',
-            // 'email'=>'required',
             'billing_address_1' => 'required',
-            // 'billing_address_2'  => 'required',
             'billing_city'    => 'required',
-            // 'billing_state'  => 'required',
             'billing_postal_code'    => 'required',            
-            // 'shipping_address_1' => 'required',
-            // 'shipping_address_2'  => 'required',
-            // 'shipping_city' => 'required',
-            // 'shipping_state'=> 'required',
-            // 'shipping_postal_code'=> 'required',
-            // 'shipping_phone'=> 'required',
-          //'pick_up_date'=> 'required',
             'operation_from'=> 'required', 
             'operation_to'=> 'required',
             'terms_accepted'=> 'required',
@@ -242,10 +240,6 @@ class ServiceAgreementController extends Controller {
         
         $order = Order::find($request->order_id);
         $order->make_it_count = $request->make_it_count;
-        // echo '<pre>';
-        // print_r($order); die;
-
-        //$order->token = "";
         $order->update();
         
         $client_id = $request->user_id;
@@ -276,7 +270,40 @@ class ServiceAgreementController extends Controller {
             $credit->save();
         }
 
-        return redirect('/shop-documents-list')->with('message', 'Completed Document Successfully');
+
+         $client = Clients::where('email', $client->email)->first();
+
+         if ($client->is_activated) 
+        {
+           Auth::guard('profile')->login($client); // No password needed
+
+           if(Auth::guard('profile')->check())
+           {
+             return redirect('/shop-documents-list')->with('message', 'Completed Document Successfully');
+           }
+           
+        }
+         else {
+          
+            $token = str_random(20);
+            PasswordReset::create([
+                'user_id' => $client->id,
+                'token' => $token,
+                'created_at' => Carbon::now(),
+                'expired_at' => date("Y-m-d H:i:s", strtotime("+15 minutes"))
+            ]);
+            $EmailSubject = EmailSubject::where('token', 'c4jkpk69')->first();
+            $EmailTemplate = EmailTemplate::where('domain', 2)->where('subject_id', $EmailSubject['id'])->first();
+            Mail::to($client->email)->send(new UserPassResetShopMail($token, $EmailSubject['subject'], $EmailTemplate));
+
+            Cookie::queue('redirect_shop', '/shop-documents-list', 60); // lasts 60 minutes
+
+            return redirect('/shop-signin')->with('message','Please check your email and reset your password to log in.');   
+
+         }
+
+ 
+      
     }
     
 }
