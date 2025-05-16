@@ -8,12 +8,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCRu_qlT0HNjPcs45NXXiOSMd3btAUduSc&libraries=places"></script>
-<style>
-    .blockUI {
-        z-index: 1011;
-        position: absolute !important;
-    }
-</style>
+
 <script src="{{ URL::asset('assets/map/js/jquery1.11.3.min.js')}}"></script>
 <!--<script src="{{ URL::asset('assets/map/js/bootstrap3.3.4.min.js')}}"></script>-->
 <script src="{{ URL::asset('assets/map/js/jquery.blockUI.js')}}"></script>
@@ -655,215 +650,271 @@
         </div>
     </div>
 </div>
-<div class="blockUI blockMsg blockPage" style="z-index: 1011; display:none;position: absolute !important;" id="updateCustomerForm">
-    <div class="background-container">
+
+
+<div class="blockUI blockMsg blockPage" style="z-index: 1011; display:none; position: fixed !important; width: 100%; max-width: 1000px; left: 50%; top: 50%; transform: translate(-50%, -50%);" id="updateCustomerForm">
+    <div class="background-container" style="position: relative; width: 100%;">
+        <!-- Close button at top right corner -->
+        <button type="button" class="close-box-button" style="position: absolute; top: 10px; right: 15px; z-index: 2; background: transparent; border: none; font-size: 24px;">&times;</button>
         <h3 style="text-align:center;">Edit Customer</h3>
-        <form action="{{ route('vendor.customer_update') }}" role="form" class="form-horizontal" id="ClientHomeForm" method="post" accept-charset="utf-8">
+        <form action="{{ route('vendor.customer_update') }}" role="form" class="form-horizontal" id="ClientHomeForm" method="post" accept-charset="utf-8" style="width: 100%;">
             {{ csrf_field() }}
-            <div class="col-sm-10">
-                <input type="hidden" name="hf_client_id" class="form-control" id="hf_client_id" value="">
-            </div>
-            <div class="form-group">
-                <label for="BUSINESS_NAME" class="col-sm-4 control-label">Business Name</label>
-                <div class="col-sm-7">
-                    <input name="txt_business_name" class="form-control" placeholder="Business Name" id="txt_business_name" type="text">
+            <input type="hidden" name="hf_client_id" class="form-control" id="hf_client_id" value="">
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <div class="form-group row">
+                        <label for="BUSINESS_NAME" class="col-sm-4 col-form-label">Business Name</label>
+                        <div class="col-sm-8">
+                            <input name="txt_business_name" class="form-control" placeholder="Business Name" id="txt_business_name" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="CONTACT_FIRST_NAME" class="col-sm-4 col-form-label">First Name *</label>
+                        <div class="col-sm-8">
+                            <input name="txt_first_name" class="form-control" placeholder="First Name" id="txt_first_name" required type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="CONTACT_LAST_NAME" class="col-sm-4 col-form-label">Last Name *</label>
+                        <div class="col-sm-8">
+                            <input name="txt_last_name" class="form-control" placeholder="Last Name" id="txt_last_name" required type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="customer_type">Customer Type *</label>
+                        <div class="col-sm-8">
+                            <select name="txt_customer_type" class="form-control" id="txt_customer_type" required>
+                                <option value="">Select Customer Type</option>
+                                <option value="Contract">Contract</option>
+                                <option value="Purge">Purge</option>
+                                <option value="Drop Off">Drop Off</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="department" class="col-sm-4 col-form-label">Department *</label>
+                        <div class="col-sm-8">
+                            <input name="txt_department" class="form-control" placeholder="Department" id="txt_department" required type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="status">Status *</label>
+                        <div class="col-sm-8">
+                            <select name="txt_status_stages" class="form-control" id="txt_status_stages" required>
+                                <option value="">Select Status</option>
+                                <option value="Prospect">Prospect</option>
+                                <option value="Lead">Lead</option>
+                                <option value="Customer">Customer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="payment_method">Payment Method *</label>
+                        <div class="col-sm-8">
+                            <select name="txt_payment_method" class="form-control" id="txt_payment_method" required>
+                                <option value="">Select Payment Method</option>
+                                <option value="Credit Card">Credit Card</option>
+                                <option value="Paypal">Paypal</option>
+                                <option value="Credit">Credit</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="tax_group">Tax Group *</label>
+                        <div class="col-sm-8">
+                            <select name="txt_tax_group" class="form-control" id="txt_tax_group" required>
+                                <option value="">Select Tax Group</option>
+                                @foreach($tax_groups as $group)
+                                    <option value="{{ $group->GROUP_NAME }}">{{ $group->GROUP_NAME }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="source">Source *</label>
+                        <div class="col-sm-8">
+                            <select name="txt_source" class="form-control" id="txt_source" required>
+                                <option value="">Select Source</option>
+                                <option value="Online">Online</option>
+                                <option value="Referral">Referral</option>
+                                <option value="Phone">Phone</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- Second column -->
+                <div class="col-md-6 col-12">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="invoicing">Invoicing *</label>
+                        <div class="col-sm-8">
+                            <select name="txt_invoicing_type" class="form-control" id="txt_invoicing_type" required>
+                                <option value="">Select Invoicing</option>
+                                <option value="Single">Single</option>
+                                <option value="Batch">Batch</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="manager">Account Manager *</label>
+                        <div class="col-sm-8">
+                            <select name="txt_manager" class="form-control" id="txt_manager" required>
+                                <option value="">Select Account Manager</option>
+                                @foreach($account_managers as $manager)
+                                    <option value="{{ $manager->FULL_NAME }}">{{ $manager->FULL_NAME }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="EMAIL" class="col-sm-4 col-form-label">E-mail *</label>
+                        <div class="col-sm-8">
+                            <input name="txt_email" class="form-control" placeholder="Email" required id="txt_email" type="email">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="PHONE" class="col-sm-4 col-form-label">Phone</label>
+                        <div class="col-sm-2 col-4 pr-1">
+                            <input name="txt_phone1" class="form-control" maxlength="3" placeholder="000" id="txt_phone1" type="text">
+                        </div>
+                        <div class="col-sm-2 col-4 pr-1">
+                            <input name="txt_phone2" class="form-control" maxlength="3" placeholder="000" id="txt_phone2" type="text">
+                        </div>
+                        <div class="col-sm-4 col-4">
+                            <input name="txt_phone3" class="form-control" maxlength="4" placeholder="0000" id="txt_phone3" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="STREET_ADDR1" class="col-sm-4 col-form-label">Address</label>
+                        <div class="col-sm-8">
+                            <input name="txt_address" class="form-control" placeholder="Address" id="txt_address" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="address">Country</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="txt_country" id="txt_country" placeholder="Country">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="CITY" class="col-sm-4 col-form-label">City</label>
+                        <div class="col-sm-8">
+                            <input name="txt_city" class="form-control" placeholder="City" id="txt_city" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="PROVINCE" class="col-sm-4 col-form-label">Province</label>
+                        <div class="col-sm-8">
+                            <select name="cmb_province" class="form-control" id="cmb_province">
+                                <option value="">Select Province</option>
+                                <option value="Alberta">Alberta</option>
+                                <option value="British Columbia">British Columbia</option>
+                                <option value="Manitoba">Manitoba</option>
+                                <option value="New Brunswick">New Brunswick</option>
+                                <option value="Newfoundland">Newfoundland</option>
+                                <option value="Northwest Territorie">Northwest Territorie</option>
+                                <option value="Nova Scotia">Nova Scotia</option>
+                                <option value="Nunavut">Nunavut</option>
+                                <option value="Ontario">Ontario</option>
+                                <option value="Prince Edward Island">Prince Edward Island</option>
+                                <option value="Quebec">Quebec</option>
+                                <option value="Saskatchewan">Saskatchewan</option>
+                                <option value="Yukon">Yukon</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ClientPostalCode1" class="col-sm-4 col-form-label">Postal Code</label>
+                        <div class="col-sm-4 col-6 pr-1">
+                            <input name="txt_fsa1" class="form-control" maxlength="3" id="txt_fsa1" type="text">
+                        </div>
+                        <div class="col-sm-4 col-6">
+                            <input name="txt_fsa2" class="form-control" maxlength="3" id="txt_fsa2" type="text">
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="CONTACT_FIRST_NAME" class="col-sm-4 control-label">First Name *</label>
-                <div class="col-sm-7">
-                    <input name="txt_first_name" class="form-control" placeholder="First Name" id="txt_first_name" required type="text">
-                </div>
+            <div class="text-center" style="margin-top:20px;">
+                <button class="btn btn-inverse close-box-button" type="reset">Cancel</button>
+                &nbsp;
+                <button class="btn btn-success" type="submit">Update</button>
             </div>
-            <div class="form-group">
-                <label for="CONTACT_LAST_NAME" class="col-sm-4 control-label">Last Name *</label>
-                <div class="col-sm-7">
-                    <input name="txt_last_name" class="form-control" placeholder="Last Name" id="txt_last_name" required type="text">
-                </div>
-            </div>
-            {{-- <div class="form-group">
-                <label class="control-label col-sm-4" for="province">Gender *</label>
-                <div class="col-sm-7">
-                    <select name="txt_gender" class="form-control" placeholder="Gender" id="txt_gender">
-                        <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                </div>
-            </div> --}}
-
-            <div class="form-group">
-                <label class="col-sm-4 control-label" for="customer_type">Customer Type *</label>
-                <div class="col-sm-7">
-                    <select name="txt_customer_type" class="form-control" placeholder="Customer Type" id="txt_customer_type" required>
-                        <option value="">Select Customer Type</option>
-                        <option value="Contract">Contract</option>
-                        <option value="Purge">Purge</option>
-                        <option value="Drop Off">Drop Off</option>
-                    </select>
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                <label for="department" class="col-sm-4 control-label">Department *</label>
-                <div class="col-sm-7">
-                    <input name="txt_department" class="form-control" placeholder="Department" id="txt_department" required type="text">
-                </div>
-            </div>
-
-
-           <div class="form-group">
-                <label class="col-sm-4 control-label" for="status">Status *</label>
-                <div class="col-sm-7">
-                    <select name="txt_status_stages" class="form-control" placeholder="Status" id="txt_status_stages" required>
-                        <option value="">Select Status</option>
-                        <option value="Prospect">Prospect</option>
-                        <option value="Lead">Lead</option>
-                        <option value="Customer">Customer</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-4 control-label" for="payment_method">Payment Method *</label>
-                <div class="col-sm-7">
-                    <select name="txt_payment_method" class="form-control" placeholder="Payment Method" id="txt_payment_method" required>
-                        <option value="">Select Payment Method</option>
-                        <option value="Credit Card">Credit Card</option>
-                        <option value="Paypal">Paypal</option>
-                        <option value="Credit">Credit</option>
-                    </select>
-                </div>
-            </div>
-
-            
-            
-            
-            <div class="form-group">
-                <label class="col-sm-4 control-label" for="tax_group">Tax Group *</label>
-                <div class="col-sm-7">
-                    <select name="txt_tax_group" class="form-control" id="txt_tax_group" required>
-                        <option value="">Select Tax Group</option>
-                        @foreach($tax_groups as $group)
-                            <option value="{{ $group->GROUP_NAME }}">{{ $group->GROUP_NAME }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label class="col-sm-4 control-label" for="source">Source *</label>
-                <div class="col-sm-7">
-                    <select name="txt_source" class="form-control" placeholder="Source" id="txt_source" required>
-                        <option value="">Select Source</option>
-                        <option value="Online">Online</option>
-                        <option value="Referral">Referral</option>
-                        <option value="Phone">Phone</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-4 control-label" for="invoicing">Invoicing *</label>
-                <div class="col-sm-7">
-                    <select name="txt_invoicing_type" class="form-control" placeholder="Invoicing" id="txt_invoicing_type" required>
-                        <option value="">Select Invoicing</option>
-                        <option value="Single">Single</option>
-                        <option value="Batch">Batch</option>
-                    </select>
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                <label class="col-sm-4 control-label" for="manager">Account Manager *</label>
-                <div class="col-sm-7">
-                    <select name="txt_manager" class="form-control" id="txt_manager" required>
-                        <option value="">Select Account Manager</option>
-                        @foreach($account_managers as $manager)
-                            <option value="{{ $manager->FULL_NAME }}">{{ $manager->FULL_NAME }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="EMAIL" class="col-sm-4 control-label">E-mail *</label>
-                <div class="col-sm-7">
-                    <input name="txt_email" class="form-control" placeholder="Email" required id="txt_email" type="email">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="PHONE" class="col-sm-4 control-label">Phone</label>
-                <div class="col-sm-2">
-                    <input name="txt_phone1" class="form-control" maxlength="3" placeholder="000" id="txt_phone1" type="phone">
-                </div>
-                <div class="col-sm-2">
-                    <input name="txt_phone2" class="form-control" maxlength="3" placeholder="000" id="txt_phone2" type="phone">
-                </div>
-                <div class="col-sm-3">
-                    <input name="txt_phone3" class="form-control" maxlength="4" placeholder="0000" id="txt_phone3" type="phone">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="STREET_ADDR1" class="col-sm-4 control-label">Address</label>
-                <div class="col-sm-7">
-                    <input name="txt_address" class="form-control" placeholder="Address" id="txt_address" type="text">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label" for="address">Country</label>
-                <div class="col-sm-7">
-                    <input type="text" class="form-control" name="txt_country" id="txt_country" placeholder="Country">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="CITY" class="col-sm-4 control-label">City</label>
-                <div class="col-sm-7">
-                    <input name="txt_city" class="form-control" placeholder="City" id="txt_city" type="text">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="PROVINCE" class="col-sm-4 control-label">Province</label>
-                <div class="col-sm-7">
-                    <select name="cmb_province" class="form-control" placeholder="Province" id="cmb_province">
-                        <option value="">Select Province</option>
-                        <option value="Alberta">Alberta</option>
-                        <option value="British Columbia">British Columbia</option>
-                        <option value="Manitoba">Manitoba</option>
-                        <option value="New Brunswick">New Brunswick</option>
-                        <option value="Newfoundland">Newfoundland</option>
-                        <option value="Northwest Territorie">Northwest Territorie</option>
-                        <option value="Nova Scotia">Nova Scotia</option>
-                        <option value="Nunavut">Nunavut</option>
-                        <option value="Ontario">Ontario</option>
-                        <option value="Prince Edward Island">Prince Edward Island</option>
-                        <option value="Quebec">Quebec</option>
-                        <option value="Saskatchewan">Saskatchewan</option>
-                        <option value="Yukon">Yukon</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 15px;">
-                <div class="col-sm-4 control-label">
-                    <label for="ClientPostalCode1">Postal Code</label>
-                </div>
-                <div class="col-sm-2">
-                    <input name="txt_fsa1" class="form-control" maxlength="3" id="txt_fsa1" type="text">
-                </div>
-                <div class="col-sm-2">
-                    <input name="txt_fsa2" class="form-control" maxlength="3" id="txt_fsa2" type="text">
-                </div>
-            </div>
-            <button class="btn btn-inverse close-box-button" type="reset">Cancel</button>
-            &nbsp;
-            <button class="btn btn-success" type="submit">Update</button>
-            <div class="form-group"></div>
         </form>
     </div>
 </div>
+
+<style>
+    @media (max-width: 767.98px) {
+        #updateCustomerForm {
+            max-width: 90vw !important;
+            width: 90vw !important;
+            left: 50% !important;
+            top: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            border-radius: 10px !important;
+            margin: 0 !important;
+            height: 90vh !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+        }
+        #updateCustomerForm .background-container {
+            padding: 10px !important;
+        }
+        #updateCustomerForm form .row {
+            flex-direction: column;
+        }
+        #updateCustomerForm .col-md-6, #updateCustomerForm .col-12 {
+            max-width: 100%;
+            flex: 0 0 100%;
+        }
+        #updateCustomerForm .form-group.row {
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+        #updateCustomerForm label.col-form-label, 
+        #updateCustomerForm .col-sm-4.col-form-label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 0.25rem;
+        }
+        #updateCustomerForm .col-sm-8, 
+        #updateCustomerForm .col-sm-4, 
+        #updateCustomerForm .col-sm-2, 
+        #updateCustomerForm .col-sm-3 {
+            width: 100%;
+            max-width: 100%;
+            padding-right: 0;
+            padding-left: 0;
+        }
+        #updateCustomerForm .form-group .row > div {
+            padding-right: 0;
+            padding-left: 0;
+        }
+        #updateCustomerForm .form-group .col-4, 
+        #updateCustomerForm .form-group .col-6 {
+            width: 48%;
+            display: inline-block;
+        }
+        #updateCustomerForm .form-group .col-4:last-child, 
+        #updateCustomerForm .form-group .col-6:last-child {
+            width: 48%;
+            margin-left: 2%;
+        }
+        #updateCustomerForm .text-center {
+            text-align: center !important;
+        }
+    }
+    #updateCustomerForm {
+        overflow-y: auto !important;
+        max-height: 90vh;
+    }
+    #updateCustomerForm .background-container {
+        max-height: 100%;
+        overflow-y: auto;
+    }
+</style>
+
+
 <!----------------- javascript for map address--------------------------------------->
 <script type="text/javascript">
     $(document).ready(function() {
