@@ -382,6 +382,21 @@ class VendorController extends Controller
 
     }
 
+    public function edit_customer($id)
+    {
+          $client = Clients::whereId($id)->first();
+
+        if (!empty($client)) {
+            $tax_groups = DB::connection('mysql2')->table('TAX_GROUP')->get();
+            $account_managers = DB::connection('mysql2')->table('EMPLOYEE')->where('POSITION', 'Account Manager')->get();
+
+            return view('vendor.edit-customer', compact('client', 'tax_groups','account_managers'));
+        } else {
+            return NULL;
+        }
+
+    }
+
     public function pos()
     {
         //$products=Product::where('vendorid',Auth::user()->id)->orderBy('id','desc')->get();

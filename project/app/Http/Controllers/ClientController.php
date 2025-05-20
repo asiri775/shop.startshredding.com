@@ -80,7 +80,7 @@ class ClientController extends Controller
                 echo '<td>' . trim($client->name) . '</td>';
                 echo '<td>' . trim($client->business_name) . '</td>';
                 echo '<td>' . trim($client->phone) . '</td>';
-                echo '<td class="vCenter" align="center"><button style="padding: 2px 5px;" class="btn btn-success js-edit_client_button" data-id="' . $client->customer_id . '" onclick="openEditPopup(' . $client->customer_id . ');"><i class="fa fa-edit"></i></button></td>';
+                echo '<td class="vCenter" align="center"><a href="' . route('vendor.customer.edit', ['id' => $client->customer_id]) . '" class="btn btn-success" style="padding: 2px 5px;"><i class="fa fa-edit"></i></a></td>';
                 echo '</tr>';
 
                 $i++;
@@ -136,11 +136,11 @@ class ClientController extends Controller
             'business_name' => $business_name,
             'customer_type' => $customer_type,
             'status_stages' => $status_stages,
-            'department' => $department, // ToDo: new recods added
-            'payment_method' => $payment_method,// ToDo: new recods added
-            'TAX_GROUP' => $tax_group,// ToDo: new recods added
-            'source' => $source,// ToDo: new recods added
-            'Account_Manager' => $manager,// ToDo: new recods added
+            'department' => $department, 
+            'payment_method' => $payment_method,
+            'TAX_GROUP' => $tax_group,
+            'source' => $source,
+            'Account_Manager' => $manager,
             'invoicing_type' => $invoicing_type,
         ]);
 
