@@ -207,6 +207,32 @@ class OrderTemplateController extends Controller
     public function edit($id)
     {
         $orderTemplate = OrderTemplate::findOrFail($id);
+        $category = [];
+
+        $categoryMappings = [
+            'main_category' => $orderTemplate->category_id,
+            'sub_category' => $orderTemplate->sub_category_id,
+            'child_category' => $orderTemplate->child_category_id,
+        ];
+
+        foreach ($categoryMappings as $key => $categoryId) 
+        {
+            if (!empty($categoryId)) {
+                // Ensure it's initialized as an array
+                if (!isset($category[$key])) {
+                    $category[$key] = [];
+                }
+
+                // Append the name to the array
+                $name = Category::where('id', $categoryId)->value('name');
+                $category[$key] = $name;
+            }
+        }
+
+        $child = Category::where('role','child')->get();
+        $subs = Category::where('role','sub')->get();
+        $categories = Category::where('role','main')->get();
+
         $accountManagers = DB::connection('mysql2')->table('EMPLOYEE')
             ->join('employee_company_details', 'EMPLOYEE.UID', '=', 'employee_company_details.employee_id')
             ->where('employee_company_details.department_id', 3)
@@ -214,7 +240,7 @@ class OrderTemplateController extends Controller
 
         $job_type = DB::connection('mysql2')->table('JOB_TYPE')->get();
 
-        return view('vendor.template-edit-customer', compact('orderTemplate', 'id', 'accountManagers', 'job_type'));
+        return view('vendor.template-edit-customer', compact('orderTemplate', 'id', 'accountManagers', 'job_type','category','child','subs','categories'));
     }
 
     /**
