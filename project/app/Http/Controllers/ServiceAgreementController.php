@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\AddressMultiple;
+use App\Agreement;
+use App\AgreementTermsAndCondition;
+use App\Categorie;
+use App\Category;
 use App\Clients;
 use App\Order;
 use App\ServiceAgreement;
@@ -18,7 +22,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use App\ClientCreditCard;
+use App\Industry;
 use App\PageSettings;
+use App\TermsAndCondition;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cookie;
@@ -304,6 +310,287 @@ class ServiceAgreementController extends Controller {
 
  
       
+    }
+
+
+    public function getAllAgreement(Request $request)
+    {
+        $greement_list = Agreement::all();
+        return view('admin.service_agreement_list', compact('greement_list'));
+    }
+
+      public function createAgreement()
+    {
+        $condition_list = TermsAndCondition::where('status', 'active')->get();
+        return view('admin.agreement_create', compact('condition_list'));
+    }
+
+    public function storeAgreement(Request $request){
+
+        $request->validate([
+            'name' => 'required',
+            'condition_list' => 'required|array',
+        ]);
+
+        $agreement = new Agreement();
+        $agreement->name = $request->name;
+
+        if($request->is_default == true){
+            $is_default_agreement= Agreement::where('is_default',true)->first();
+            if($is_default_agreement == true){
+                $is_default_agreement->is_default = false;
+                $is_default_agreement->save();
+            }
+            $agreement->is_default = true;
+        }
+        $agreement->save();
+
+
+        $condition_list = TermsAndCondition::where('status', 'active')->get();
+
+        foreach ($condition_list as $key => $condition) {
+            $agreementTermsAndCondition = new AgreementTermsAndCondition();
+            $agreementTermsAndCondition->agreement_id = $agreement->id;
+            $agreementTermsAndCondition->terms_and_condition_id = $condition->id;
+
+            foreach ($request->condition_list as $k => $value) {
+                if($condition->id == $value){
+                    $agreementTermsAndCondition->is_active = true;
+
+                }else{
+                    $agreementTermsAndCondition->is_active = false;
+                }
+            }
+            $agreementTermsAndCondition->save();
+        }
+
+        return redirect('/admin/agreement_list')->with('message', 'Service Agreement created successfully.');
+    }
+
+    public function editAgreement($id)
+    {
+        $agreement = Agreement::with('agreementTermsAndConditions')->findOrFail($id);
+
+        $condition_list = TermsAndCondition::where('status', 'active')->get();
+
+        // Build a list of all conditions, marking those that are active in the agreement
+        $condition_list_array = [];
+
+        foreach ($condition_list as $condition) {
+            // Find if this condition is already attached to the agreement
+            $existing = $agreement->agreementTermsAndConditions
+                ->where('terms_and_condition_id', $condition->id)
+                ->first();
+
+            $condition_list_array[] = [
+                'agreement_id' => $agreement->id,
+                'terms_and_condition_id' => $condition->id,
+                'terms_and_condition' => $condition->title,
+                'is_active' => $existing ? $existing->is_active : false,
+            ];
+        }
+        return view('admin.agreement_edit', compact('agreement', 'condition_list_array'));
+    }
+
+
+    public function updateAgreement(Request $request){
+        $conditionList = $request->input('condition_list', []);
+        if (empty($conditionList) || count($conditionList) == 0) {
+            return redirect('/admin/agreement/edit/'.$request->id)->with('message-error', 'Please select at least one condition.');
+        }
+
+        $request->validate([
+            'name' => 'required',
+        ]);
+
+        $agreement = Agreement::find($request->id);
+        $agreement->name = $request['name'];
+
+        if($request->is_default == true){
+            $is_default_agreement= Agreement::where('is_default',true)->first();
+            if($is_default_agreement == true){
+                $is_default_agreement->is_default = false;
+                $is_default_agreement->save();
+            }
+            $agreement->is_default = true;
+        }
+        $agreement->save();
+
+        
+        $agreementTermsAndConditions = AgreementTermsAndCondition::where('agreement_id', $agreement->id)->get();
+        $agreementTermsAndConditions->each(function ($item) {
+            $item->delete();
+        });
+
+        $condition_list = TermsAndCondition::where('status', 'active')->get();
+
+        foreach ($condition_list as $key => $condition) {
+            $agreementTermsAndCondition = new AgreementTermsAndCondition();
+            $agreementTermsAndCondition->agreement_id = $agreement->id;
+            $agreementTermsAndCondition->terms_and_condition_id = $condition->id;
+
+            foreach ($request->condition_list as $k => $value) {
+                if($condition->id == $value){
+                    $agreementTermsAndCondition->is_active = true;
+
+                }else{
+                    $agreementTermsAndCondition->is_active = false;
+                }
+            }
+            $agreementTermsAndCondition->save();
+        }
+
+        return redirect('/admin/agreement_list')->with('message', 'Service Agreement updated successfully.');
+    }
+
+    public function destroyAgreement(Request $request, $id)
+    {
+        $request->validate([
+            'id' => 'required',
+        ]);
+
+
+        $agreementTermsAndConditions = AgreementTermsAndCondition::where('agreement_id', $request->id)->get();
+        $agreementTermsAndConditions->each(function ($item) {
+            $item->delete();
+        });
+
+        Agreement::where('id', $id)->delete();
+
+        return redirect('/admin/agreement_list')->with('message', 'Service Agreement deleted successfully.');
+    }
+
+    public function getAllTermsAndConditions(Request $request)
+    {
+        $category_list = Category::get();
+        $industry_list = Industry::get();
+        $condition_list = TermsAndCondition::with('category','industry')->get();
+        return view('admin.terms and_conditions_list', compact('condition_list','category_list','industry_list'));
+    }
+
+    public function createCondition()
+    {
+        $category_list = Category::get();
+        $industry_list = Industry::get();
+        return view('admin.condition_create', compact('category_list','industry_list'));
+    }
+
+    public function storeCondition(Request $request)
+    {
+        $request->validate([
+            'title' => 'required',
+            'categorie_id' => 'required',
+            'industry_id' => 'required',
+        ]);
+
+        $condition = new TermsAndCondition();
+        $condition->title = $request->title;
+        $condition->categorie_id = $request->categorie_id;
+        $condition->status = $request->status;
+        $condition->industry_id = $request->industry_id;
+        $condition->save();
+
+        return redirect('/admin/condition/create')->with('message', 'Terms and Conditions created successfully.');
+    }
+    
+    public function editCondition($id)
+    {
+        $condition = TermsAndCondition::findOrFail($id);
+        $category_list = Category::get();
+        $industry_list = Industry::get();
+        return view('admin.condition_edit', compact('condition','category_list','industry_list'));
+    }
+
+    public function duplicateCondition($id)
+    {
+        $condition = TermsAndCondition::findOrFail($id);
+
+        // Duplicate the condition
+        $newCondition = $condition->replicate();
+        $newCondition->title = $condition->title;
+        $newCondition->save();
+
+        return redirect('/admin/terms_conditions_list')->with('message', 'Terms and Conditions duplicated successfully.');
+    }
+
+    public function updateCondition(Request $request)
+    {
+        $request->validate([
+            'title' => 'required',
+            'categorie_id' => 'required',
+            'industry_id' => 'required',
+        ]);
+
+        $condition = TermsAndCondition::findOrFail($request->id);
+        $condition->title = $request->title;
+        $condition->categorie_id = $request->categorie_id;
+        $condition->industry_id = $request->industry_id;  
+        $condition->status = $request->status;      
+        $condition->save();
+
+        return redirect('/admin/condition/edit/' . $condition->id)->with('message', 'Terms and Conditions updated successfully.');
+    }
+
+
+    public function destroyCondition(Request $request, $id)
+    {
+        // Validate the ID exists in the table
+        $request->validate([
+            'id' => 'required',
+        ]);
+
+        // Check if the condition is used in any agreement and is active
+        $agreementTerm = AgreementTermsAndCondition::where('terms_and_condition_id', $id)->first();
+
+        if ($agreementTerm && $agreementTerm->is_active) {
+            return redirect('/admin/terms_conditions_list')->with('error', 'Cannot delete this condition as it is used in an agreement.');
+        }
+        // Remove related agreement terms and the condition itself
+        AgreementTermsAndCondition::where('terms_and_condition_id', $id)->delete();
+        TermsAndCondition::where('id', $id)->delete();
+
+        return redirect('/admin/terms_conditions_list')->with('message', 'Terms and Conditions deleted successfully.');
+    }
+
+    public function getConditionSearchResults()
+    {
+        $query = TermsAndCondition::query();
+
+        // Search by title or other fields
+        if ($search = request('search')) {
+            $query->where(function ($q) use ($search) {
+            $q->where('title', 'like', "%{$search}%")
+              ->orWhere('id', $search);
+            });
+        }
+
+        // Filter by category
+        if ($category = request('category')) {
+            $query->where('categorie_id', $category);
+        }
+
+        // Filter by industry
+        if ($industry = request('industry')) {
+            $query->where('industry_id', $industry);
+        }
+
+        // Filter by status (assuming 'status' is a column, e.g., active/inactive)
+        if (!is_null(request('status'))) {
+            $query->where('status', request('status'));
+        }
+
+        // Filter by ID
+        if ($id = request('id')) {
+            $query->where('id', $id);
+        }
+
+
+        $category_list = Category::get();
+        $industry_list = Industry::get();
+        $condition_list = $query->with('category','industry')->get();
+
+        return view('admin.terms and_conditions_list', compact('condition_list','category_list','industry_list'));
+
     }
     
 }

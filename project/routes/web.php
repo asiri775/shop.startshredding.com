@@ -208,6 +208,27 @@ Route::post('admin/settings/language', 'SettingsController@language');
 Route::resource('/admin/settings', 'SettingsController');
 Route::resource('/admin/sliders', 'SliderController');
 Route::get('/admin/customers/email/{id}', 'CustomerController@email');
+
+Route::get('/admin/agreement_list', 'ServiceAgreementController@getAllAgreement');
+Route::get('/admin/agreement/create', 'ServiceAgreementController@createAgreement');
+Route::post('/admin/agreement/store', 'ServiceAgreementController@storeAgreement');
+Route::get('/admin/agreement/edit/{id}', 'ServiceAgreementController@editAgreement');
+Route::post('/admin/agreement/update', 'ServiceAgreementController@updateAgreement');
+Route::delete('/admin/agreement/destroy/{id}', 'ServiceAgreementController@destroyAgreement');
+
+Route::get('/admin/terms_conditions_list', 'ServiceAgreementController@getAllTermsAndConditions');
+Route::get('/admin/condition/create', 'ServiceAgreementController@createCondition');
+Route::post('/admin/condition/store', 'ServiceAgreementController@storeCondition');
+Route::delete('/admin/condition/destroy/{id}', 'ServiceAgreementController@destroyCondition');
+Route::get('/admin/condition/edit/{id}', 'ServiceAgreementController@editCondition');
+Route::get('/admin/condition/duplicate/{id}', 'ServiceAgreementController@duplicateCondition');
+
+Route::post('/admin/condition/update', 'ServiceAgreementController@updateCondition');
+Route::post('/admin/condition/searchResults', 'ServiceAgreementController@getConditionSearchResults');
+
+
+
+
 Route::post('/admin/customers/emailsend', 'CustomerController@sendemail');
 Route::resource('/admin/customers', 'CustomerController');
 Route::get('/admin/customers/{id}', 'CustomerController@show');

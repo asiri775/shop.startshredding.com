@@ -100,6 +100,12 @@
                         <a href="{!! url('admin/customers') !!}"><i class="fa fa-fw fa-user"></i> Customers</a>
                     </li>
                     <li>
+                        <a href="{!! url('admin/agreement_list') !!}"><i class="fa fa-fw fa-file-text-o"></i> Service Agreement List</a>
+                    </li>
+                    <li>
+                        <a href="{!! url('admin/terms_conditions_list') !!}"><i class="fa fa-fw fa-file-text"></i> Terms and Conditions List</a>
+                    </li>
+                    <li>
                         <a href="{!! url('admin/referrals') !!}"><i class="fa fa-fw fa-user-plus"></i> Referral
                             Program</a>
                     </li>
