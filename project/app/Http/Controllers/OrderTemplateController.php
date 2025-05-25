@@ -152,8 +152,7 @@ class OrderTemplateController extends Controller
 
             ]
         );
-        Session::flash('message', 'Template has been successfully created');
-        return Redirect::route('order-template.show', ['order_template' => $template]);
+         return redirect('vendor/customer/' . $template->client_id . '/templates')->with('message', 'Template has been successfully created');
     }
 
     /**
@@ -290,10 +289,14 @@ class OrderTemplateController extends Controller
             $template->manager_id = $request->input('manager_id');
             $template->name_for_sams = $request->input('name_for_sams');
             $template->payment_method = $request->input('payment_method');
+            $template->category_id = $request->input('category_id');
+            $template->sub_category_id = $request->input('sub_category_id');
+            $template->child_category_id = $request->input('child_category_id');
             $template->update();
         }
-        Session::flash('message', 'Template has been successfully updated');
-        return Redirect::route('order-template.show', ['order_template' => $template]);
+
+       return redirect('vendor/customer/' . $template->client_id . '/templates')->with('message', 'Template has been successfully updated');
+
 
     }
 
