@@ -486,7 +486,7 @@ class ServiceAgreementController extends Controller {
         $condition = new TermsAndCondition();
         $condition->title = $request->title;
         $condition->categorie_id = $request->categorie_id;
-        $condition->status = $request->status;
+        $condition->status = $request->status ?? 'inactive';
         $condition->industry_id = $request->industry_id;
         $condition->save();
 
