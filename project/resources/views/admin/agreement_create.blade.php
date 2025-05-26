@@ -24,6 +24,14 @@
                                     {{ Session::get('message') }}
                                 </div>
                             @endif
+
+                            @if (Session::has('message-error'))
+                                <div class="alert alert-error alert-dismissable" style="background-color: rgb(223, 102, 102)">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    {{ Session::get('message-error') }}
+                                </div>
+                            @endif
+                            
                         </div>
                         <div class="gocover"></div>
                         <div id="response"></div>

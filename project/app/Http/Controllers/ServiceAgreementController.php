@@ -327,9 +327,13 @@ class ServiceAgreementController extends Controller {
 
     public function storeAgreement(Request $request){
 
+        if (empty($request->condition_list) || count($request->condition_list) == 0) {
+            return redirect()->back()->with('message-error', 'Please select at least one condition.');
+        }
+
+ 
         $request->validate([
             'name' => 'required',
-            'condition_list' => 'required|array',
         ]);
 
         $agreement = new Agreement();
