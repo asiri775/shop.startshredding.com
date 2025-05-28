@@ -41,7 +41,7 @@
                     <div class="pull-right">
                         <a href="{!! url('admin/condition/create') !!}" class="btn btn-primary btn-add"><i class="fa fa-plus"></i> Add New Condition</a>
                     </div>
-                    <h3>Terms and Conditions List</h3>
+                    <h3>Master List - Agreement Terms and Conditions (Parts)</h3>
                     <div class="go-line"></div>
                 </div>
 
@@ -53,21 +53,21 @@
                             class="basic-form horizontal-form col-md-12 col-sm-12 col-xs-12 customer_left_portion">
                             {{ csrf_field() }}
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-4">
+                                    <label>KEYWORD SEARCH</label>
                                     <div class="input-group">
-                                        <input name="search" class="form-control" placeholder="Search" autocomplete="off"
+                                        <input name="search" class="form-control" placeholder="Search for a keyword or name of the Term" autocomplete="off"
                                             type="text" id="search">
                                         <span class="input-group-btn"><label class="btn btn-default search-icon"><i
                                                     class="fa fa-search"></i></label></span>
                                     </div>
                                 </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-md-3">
+                        
+                                <div class="col-md-2">
+                                    <label>CATEGORY</label>
                                     <div class="form-group">
                                         <select class="form-control chzn-select" name="category" id="category">
-                                            <option value="" selected>Category</option>
+                                            <option value="" selected>Category Filter1</option>
                                             @if (!empty($category_list))
                                                 @foreach($category_list as $category)
                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -77,10 +77,11 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-2">
+                                    <label>INDUSTRY</label>
                                     <div class="form-group">
                                         <select class="form-control chzn-select" name="industry" id="industry">
-                                            <option value="" selected>Industry</option>
+                                            <option value="" selected>Industry Filter1</option>
                                             @if (!empty($industry_list))
                                                 @foreach($industry_list as $industry)
                                                     <option value="{{ $industry->id }}">{{ $industry->name }}</option>
@@ -91,11 +92,12 @@
                                 </div>
 
 
-                                <div class="col-md-3">
+                                <div class="col-md-2">
+                                    <label for="status">STATUS</label>
                                     <div class="form-group">
                                         <!-- <label for="client_type">Status:</label> -->
                                         <select class="form-control chzn-select" name="status" id="status">
-                                            <option value="" selected>Status</option>
+                                            <option value="" selected>Active/Inactive</option>
                                             <option value="active">Active</option>
                                             <option value="inactive">Inactive</option>
                                         </select>
@@ -103,16 +105,19 @@
                                 </div>
 
 
-                                <div class="col-md-3">
+                                <div class="col-md-2">
+                                    <label>ID</label>
                                     <div class="input-group">
-                                        <input name="id" class="form-control" placeholder="Search Id" autocomplete="off"
+                                        <input name="id" class="form-control" placeholder="ID#" autocomplete="off"
                                             type="text" id="id">
                                         <span class="input-group-btn"><label class="btn btn-default search-icon"><i
                                                     class="fa fa-search"></i></label></span>
                                     </div>
                                 </div>
+                            </div>
 
-                                
+                            <div class="row">
+
                                 <div class="col-md-12" align="right">
                                     <button type="submit" class="btn btn-success"><i class="fa fa-search"></i>
                                         Search</button>
@@ -140,11 +145,11 @@
                                     <thead>
                                         <tr>
                                             <th style="word-break: break-all;">ID</th>
-                                            <th style="word-break: break-all;">Title</th>
-                                            <th style="word-break: break-all;">Category</th>
-                                            <th style="word-break: break-all;">Industry</th>
-                                            <th style="word-break: break-all;">Status</th>
-                                            <th width="10%">Actions</th>
+                                            <th style="word-break: break-all;">TERM_NAME</th>
+                                            <th style="word-break: break-all;">CATEGORY</th>
+                                            <th style="word-break: break-all;">INDUSTRY</th>
+                                            <th style="word-break: break-all;">STATUS</th>
+                                            <th width="10%">ACTIONS</th>
                                         </tr>
                                     </thead>
                                     <tbody>

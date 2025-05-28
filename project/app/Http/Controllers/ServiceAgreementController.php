@@ -493,8 +493,7 @@ class ServiceAgreementController extends Controller {
         $condition->status = $request->status ?? 'active';
         $condition->industry_id = $request->industry_id;
         $condition->save();
-
-        return redirect('/admin/condition/create')->with('message', 'Terms and Conditions created successfully.');
+        return redirect('/admin/terms_conditions_list')->with('message', 'Terms and Conditions created successfully.');
     }
     
     public function editCondition($id)
