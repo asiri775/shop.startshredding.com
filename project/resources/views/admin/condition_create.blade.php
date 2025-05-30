@@ -8,10 +8,11 @@
 
                 <!-- Page Heading -->
                 <div class="go-title">
-                    <div class="pull-right">
-                        <a href="{!! url('admin/terms_conditions_list') !!}" class="btn btn-default btn-back"><i class="fa fa-arrow-left"></i> Back</a>
-                    </div>
-                    <h3>Add New Condition</h3>
+                    <h3>Master List - Agreement Terms and Conditions (Parts)</h3>
+                    <p>
+                        <a href="{!! url('admin/terms_conditions_list') !!}" class="btn btn-link" style="padding:0; color:#776a69; font-weight:bold;">List Home</a>
+                        / Create Terms
+                    </p>
                     <div class="go-line"></div>
                 </div>
                 <!-- Page Content -->
@@ -62,8 +63,9 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-6 col-md-offset-3">
-                                    <button type="submit" class="btn btn-success btn-block">Add New Condition</button>
+                                <div class="col-md-6 col-md-offset-3" style="padding-right:0;">
+                                    <button type="submit" class="btn btn-success" style="background-color: #0F8937; border: none; float: left; margin-right: 10px;font-weight: bold;">Create Term</button>
+                                    <a href="{!! url('admin/terms_conditions_list') !!}" class="btn btn-warning" style="float: left; background-color: #FFFF14;border: none;color: #000;font-weight: bold;">Cancel</a>
                                 </div>
                             </div>
                         </form>
@@ -82,9 +84,13 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
     <script>
         ClassicEditor
-            .create(document.querySelector('#title'))
+            .create(document.querySelector('#title'), {
+            toolbar: [
+                
+            ]
+            })
             .catch(error => {
-                console.error(error);
+            console.error(error);
             });
     </script>
 @stop
