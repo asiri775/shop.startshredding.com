@@ -158,7 +158,7 @@
                                                 <td>{{ $condition->id }}</td>
                                            
                                                 <td style="word-break: break-all; white-space: pre-line;">
-                                                    {{ \Illuminate\Support\Str::limit(strip_tags($condition->title), 50, '...') }}
+                                                    {{ \Illuminate\Support\Str::limit(strip_tags(html_entity_decode($condition->title)), 50, '...') }}
                                                 </td>
                                                 <td style="word-break: break-all; white-space: pre-line;">
                                                     {{ $condition->category->name }}

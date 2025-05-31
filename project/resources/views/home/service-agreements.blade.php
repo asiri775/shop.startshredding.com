@@ -539,8 +539,14 @@
                         <div class="tab-pane padding-20 sm-no-padding" id="tab2">  
                           <div class="row row-same-height">
                            <div class="col-md-12">
-                               <h3 class="font-montserrat">Terms and Conditions</h3>
-                                <?php echo $terms_and_conditions;?>
+                              <h3 class="font-montserrat">Terms and Conditions</h3>
+                              @if(is_array($terms_and_conditions))
+                                @foreach($terms_and_conditions as $index => $term)
+                                  <div class="mb-2"><strong>{{ $index + 1 }}.</strong> {!! $term !!}</div>
+                                @endforeach
+                              @else
+                                {!! $terms_and_conditions !!}
+                              @endif
                              <div class="row">
                               <div class="col-12 mt-3">
                                 <div class="form-check primary m-t-0 ml-2 text-right">

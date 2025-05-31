@@ -160,7 +160,7 @@ class ServiceAgreementController extends Controller {
         $user = Clients::find($data['user_id']);
         $customer = Clients::find($user->id);
         $order = Order::find($data['order_id']);
-        $terms_and_conditions=$page->terms_and_conditions;
+        // $terms_and_conditions=$page->terms_and_conditions;
         $client_information=$page->client_information;
         $credit_card_infromation=$page->credit_card_infromation;
         if($token == $order->token){
@@ -173,7 +173,22 @@ class ServiceAgreementController extends Controller {
                             ->where('ordered_products.orderid', $order->id)
                             ->get();
             $card_details = ClientCreditCard::where('client_id', $user->id)->get();
-            
+
+            $agreement = Agreement::with('agreementTermsAndConditions')->where('is_default', true)->first();
+            $condition_list = [];
+            if ($agreement) {
+
+                foreach ($agreement->agreementTermsAndConditions as $condition) {
+                    if ($condition->is_active) {
+                        $termsAndCondition = TermsAndCondition::where('status', 'active')->find($condition->terms_and_condition_id);
+                        if ($termsAndCondition) {
+                            array_push($condition_list, $termsAndCondition->title);
+                        }
+                    }
+                }
+            }
+
+            $terms_and_conditions=$condition_list;
             return view('home.service-agreements', compact('user', 'customer','documents', 'order','order_details','card_details','terms_and_conditions','client_information','credit_card_infromation'));
         }
         else {
@@ -433,14 +448,7 @@ class ServiceAgreementController extends Controller {
             $agreementTermsAndCondition->agreement_id = $agreement->id;
             $agreementTermsAndCondition->terms_and_condition_id = $condition->id;
 
-            foreach ($request->condition_list as $k => $value) {
-                if($condition->id == $value){
-                    $agreementTermsAndCondition->is_active = true;
-
-                }else{
-                    $agreementTermsAndCondition->is_active = false;
-                }
-            }
+            $agreementTermsAndCondition->is_active = in_array($condition->id, $request->condition_list);
             $agreementTermsAndCondition->save();
         }
 
