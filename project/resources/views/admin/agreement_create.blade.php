@@ -51,9 +51,11 @@
                                 <div class="col-md-8 col-sm-8 col-xs-12"> <!-- Increased width from 6 to 8 -->
                                     @foreach($condition_list as $condition)
                                         <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="condition_list[]" value="{{$condition->id}}"> {!! strip_tags($condition->title) !!}
+                                            <label style="font-weight: bold;">
+                                                <input type="checkbox" name="condition_list[]" value="{{$condition->id}}"> {!! strip_tags($condition->name) !!}
                                             </label>
+                                            </br></br>
+                                            <p>{!! strip_tags($condition->title) !!}</p>
                                         </div>
                                     @endforeach
                                 </div>

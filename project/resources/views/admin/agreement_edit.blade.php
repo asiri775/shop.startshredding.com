@@ -54,9 +54,11 @@
                                 <div class="col-md-8 col-sm-8 col-xs-12"> <!-- Increased width from 6 to 8 -->
                                     @foreach($condition_list_array as $condition)
                                         <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="condition_list[]" {{ $condition['is_active'] ? 'checked' : '' }} value="{{$condition['terms_and_condition_id']}}"> {!! strip_tags( $condition['terms_and_condition'] ) !!}
+                                            <label style="font-weight: bold;">
+                                                <input type="checkbox" name="condition_list[]" {{ $condition['is_active'] ? 'checked' : '' }} value="{{$condition['terms_and_condition_id']}}"> {!! strip_tags( $condition['terms_and_condition_name'] ) !!}
                                             </label>
+                                        </br></br>
+                                            <p>{!! strip_tags( $condition['terms_and_condition_title'] ) !!}</p>
                                         </div>
                                     @endforeach
                                 </div>
