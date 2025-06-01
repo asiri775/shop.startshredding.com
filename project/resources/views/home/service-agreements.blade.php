@@ -522,7 +522,7 @@
 
                               <div class="modal-header border-0">
                                 <h5 class="modal-title" id="termsModalLabel">Terms & Conditions</h5>
-                                <button type="button" class="btn-close custom-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close custom-close-btn" data-bs-dismiss="modal" aria-label="Close" style="background-color: #ccd3d9;"></button>
                               </div>
                               <div class="modal-body">
                                 You must agree to the Terms and Conditions by selecting the check box.

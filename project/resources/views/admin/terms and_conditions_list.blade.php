@@ -158,7 +158,7 @@
                                                 <td>{{ $condition->id }}</td>
                                            
                                                 <td style="word-break: break-all; white-space: pre-line;">
-                                                    {{ \Illuminate\Support\Str::limit(strip_tags(html_entity_decode($condition->title)), 50, '...') }}
+                                                    {{$condition->name }}
                                                 </td>
                                                 <td style="word-break: break-all; white-space: pre-line;">
                                                     {{ $condition->category->name }}
@@ -175,6 +175,7 @@
                                                     <a href="javascript:;"
                                                         class="btn btn-info btn-xs btn-preview"
                                                         data-id="{{ $condition->id }}"
+                                                        data-name="{{ $condition->name }}"
                                                         data-title="{{ strip_tags($condition->title, '<br>') }}"
                                                         data-category="{{ $condition->category->name }}"
                                                         data-industry="{{ $condition->industry->name }}"
@@ -257,19 +258,25 @@
                         <div class="col-xs-10 text-left"><span id="preview-id"></span></div>
                     </div>
                     <div class="row" style="margin-bottom: 8px;">
-                        <div class="col-xs-2 text-right" style="font-weight:bold;">Title:</div>
+                        <div class="col-xs-2 text-right" style="font-weight:bold;">TERM NAME:</div>
+                        <div class="col-xs-10 text-left"><span id="preview-name-text"></span></div>
+                    </div>
+
+                    <div class="row" style="margin-bottom: 8px;">
+                        <div class="col-xs-2 text-right" style="font-weight:bold;">TERM CONDITION:</div>
                         <div class="col-xs-10 text-left"><span id="preview-title-text"></span></div>
                     </div>
+
                     <div class="row" style="margin-bottom: 8px;">
-                        <div class="col-xs-2 text-right" style="font-weight:bold;">Category:</div>
+                        <div class="col-xs-2 text-right" style="font-weight:bold;">CATEGORY:</div>
                         <div class="col-xs-10 text-left"><span id="preview-category"></span></div>
                     </div>
                     <div class="row" style="margin-bottom: 8px;">
-                        <div class="col-xs-2 text-right" style="font-weight:bold;">Industry:</div>
+                        <div class="col-xs-2 text-right" style="font-weight:bold;">INDUSTRY:</div>
                         <div class="col-xs-10 text-left"><span id="preview-industry"></span></div>
                     </div>
                     <div class="row" style="margin-bottom: 8px;">
-                        <div class="col-xs-2 text-right" style="font-weight:bold;">Status:</div>
+                        <div class="col-xs-2 text-right" style="font-weight:bold;">STATUS:</div>
                         <div class="col-xs-10 text-left"><span id="preview-status"></span></div>
                     </div>
                    
@@ -364,11 +371,28 @@
             $('#search').on('keyup', function() {
                 table.search(this.value).draw();
             });
+
+            $('#category').on('change', function() {
+                table.search(this.value).draw();
+            });
+
+            $('#industry').on('change', function() {
+                table.search(this.value).draw();
+            });
+
+            $('#status').on('change', function() {
+                table.search(this.value).draw();
+            });
+
+            $('#id').on('keyup', function() {
+                table.search(this.value).draw();
+            });
         });
 
 
         $(document).on('click', '.btn-preview', function () {
             $('#preview-id').text($(this).data('id'));
+            $('#preview-name-text').text($(this).data('name'));
             $('#preview-title-text').text($(this).data('title'));
             $('#preview-category').text($(this).data('category'));
             $('#preview-industry').text($(this).data('industry'));

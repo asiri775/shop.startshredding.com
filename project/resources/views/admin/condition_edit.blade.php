@@ -1,7 +1,36 @@
 @extends('vendor.includes.master-vendor')
 
 @section('content')
-
+<style>
+     @media (max-width: 575.98px) {
+        .d-flex {
+            flex-direction: column !important;
+        }
+        .gap-2 > * {
+            margin-bottom: 10px;
+        }
+        .w-100 {
+            width: 100% !important;
+        }
+        .w-sm-auto {
+            width: 95% !important;
+        }
+    }
+    @media (min-width: 576px) {
+        .d-flex {
+            display: flex !important;
+        }
+        .flex-sm-row {
+            flex-direction: row !important;
+        }
+        .gap-2 > *:not(:last-child) {
+            margin-right: 10px;
+        }
+        .w-sm-auto {
+            width: auto !important;
+        }
+    }
+</style>
     <div id="page-wrapper">
         <div class="container-fluid">
             <div class="row" id="main">
@@ -29,61 +58,78 @@
                         </div>
                         <div class="gocover"></div>
                         <div id="response"></div>
-                        <form method="POST" action="{!! action('ServiceAgreementController@updateCondition') !!}" class="form-horizontal form-label-left" enctype="multipart/form-data">
-                            {{csrf_field()}}
-                            <div class="item form-group">
-                                <input type="hidden" name="id" value="{{ $condition->id }}">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Title<span class="required">*</span></label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <textarea id="title" name="title" class="form-control" rows="4">{{ $condition->title }}</textarea>
-                                </div>
-                            </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <form method="POST" action="{!! action('ServiceAgreementController@updateCondition') !!}" class="form-horizontal form-label-left" enctype="multipart/form-data">
+                                    {{csrf_field()}}
+                                    <div class="item form-group">
+                                        <input type="hidden" name="id" value="{{ $condition->id }}">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="name">TERM NAME<span class="required">*</span></label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <input type="text" id="name" name="name" class="form-control" value="{{ $condition->name }}" required>
+                                        </div>
+                                    </div>
 
-                            <div class="form-group">
-                                <label for="category" class="col-md-3 control-label">Category <span class="required">*</span></label>
-                                <div class="col-md-6">
-                                    <select id="category" name="categorie_id" class="form-control select2" required>
-                                        <option value="">Select Category</option>
-                                        @foreach($category_list as $category)
-                                            <option value="{{ $category->id }}" {{ $condition->categorie_id == $category->id ? 'selected' : '' }}>
-                                                {{ $category->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
+                                     <div class="item form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="title">TERM CONDITION<span class="required">*</span></label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <textarea id="title" name="title" class="form-control" rows="4">{{ $condition->title }}</textarea>
+                                        </div>
+                                    </div>
 
-                            <div class="form-group">
-                                <label for="industry" class="col-md-3 control-label">Industry <span class="required">*</span></label>
-                                <div class="col-md-6">
-                                    <select id="industry" name="industry_id" class="form-control select2" required>
-                                        <option value="">Select Industry</option>
-                                        @foreach($industry_list as $industry)
-                                            <option value="{{ $industry->id }}" {{ $condition->industry_id == $industry->id ? 'selected' : '' }}>
-                                                {{ $industry->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="status" class="col-md-3 control-label">Status <span class="required">*</span></label>
-                                <div class="col-md-6">
-                                    <select id="status" name="status" class="form-control" required>
-                                        <option value="active" {{ $condition->status == 'active' ? 'selected' : '' }}>Active</option>
-                                        <option value="inactive" {{ $condition->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="ln_solid"></div>
+                                    
 
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-3" style="padding-right:0;">
-                                    <button type="submit" class="btn btn-success" style="background-color: #0F8937; border: none; float: left; margin-right: 10px;font-weight: bold;">Update Term</button>
-                                    <a href="{!! url('admin/terms_conditions_list') !!}" class="btn btn-warning" style="float: left; background-color: #FFFF14;border: none;color: #000;font-weight: bold;">Cancel</a>
-                                </div>
+                                   
                             </div>
-                        </form>
+                            <div class="col-md-6">
+                                   
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="category">CATEGORY <span class="required">*</span></label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <select id="category" name="categorie_id" class="form-control select2" required>
+                                                <option value="">Select Category</option>
+                                                @foreach($category_list as $category)
+                                                    <option value="{{ $category->id }}" {{ $condition->categorie_id == $category->id ? 'selected' : '' }}>
+                                                        {{ $category->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="industry">INDUSTRY <span class="required">*</span></label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <select id="industry" name="industry_id" class="form-control select2" required>
+                                                <option value="">Select Industry</option>
+                                                @foreach($industry_list as $industry)
+                                                    <option value="{{ $industry->id }}" {{ $condition->industry_id == $industry->id ? 'selected' : '' }}>
+                                                        {{ $industry->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                     <div class="item form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="status">STATUS <span class="required">*</span></label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <select id="status" name="status" class="form-control" required>
+                                                <option value="active" {{ $condition->status == 'active' ? 'selected' : '' }}>Active</option>
+                                                <option value="inactive" {{ $condition->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="ln_solid"></div>
+                                    <div class="form-group">
+                                        <div class="col-md-8 col-md-offset-4" style="padding-right:0;">
+                                            <button type="submit" class="btn btn-success" style="background-color: #0F8937; border: none; float: left; margin-right: 10px;font-weight: bold; min-height: 48px;">Update Term</button>
+                                            <a href="{!! url('admin/terms_conditions_list') !!}" class="btn btn-warning" style="background-color: #FFFF14; border: none; color: #000; font-weight: bold; font-size: large; min-height: 48px; padding: 12px 24px">Cancel</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
 
                         @push('styles')
                         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />

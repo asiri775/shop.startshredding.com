@@ -260,17 +260,26 @@ class ServiceAgreementController extends Controller {
 
         
         $order = Order::find($request->order_id);
+        $order->customer_name = $request->contact_name;
+        $order->customer_email = $request->email;
+        $order->customer_phone = $request->phone_number;
+        $order->shipping_city = $request->shipping_city;
+        $order->customer_city = $request->shipping_city;
         $order->make_it_count = $request->make_it_count;
         $order->update();
         
         $client_id = $request->user_id;
         $client = Clients::find($client_id);
 
-        if ($client && is_null($client->Province_State)) {
-            $client->update([
-                'Province_State' => $serviceAgreement->billing_state,
-            ]);
-        }
+        $client->business_name = $request->company_name;
+        $client->name = $request->contact_name;
+        $client->phone = $request->phone_number;
+        $client->email = $request->email;
+        $client->address = $request->billing_address_1;
+        $client->Province_State = $request->billing_state;
+        $client->zip = $request->billing_postal_code;
+        $client->city = $request->billing_city;
+        $client->save();
 
         $existingCard = ClientCreditCard::where('client_id', $client_id)
             ->where('card_number', $request->credit_card_number)
@@ -404,7 +413,8 @@ class ServiceAgreementController extends Controller {
             $condition_list_array[] = [
                 'agreement_id' => $agreement->id,
                 'terms_and_condition_id' => $condition->id,
-                'terms_and_condition' => $condition->title,
+                'terms_and_condition_name' => $condition->name,
+                'terms_and_condition_title' => $condition->title,
                 'is_active' => $existing ? $existing->is_active : false,
             ];
         }
@@ -489,13 +499,16 @@ class ServiceAgreementController extends Controller {
 
     public function storeCondition(Request $request)
     {
+
         $request->validate([
+            'name' => 'required',
             'title' => 'required',
             'categorie_id' => 'required',
             'industry_id' => 'required',
         ]);
 
         $condition = new TermsAndCondition();
+        $condition->name = $request->name;
         $condition->title = $request->title;
         $condition->categorie_id = $request->categorie_id;
         $condition->status = $request->status ?? 'active';
@@ -518,7 +531,7 @@ class ServiceAgreementController extends Controller {
 
         // Duplicate the condition
         $newCondition = $condition->replicate();
-        $newCondition->title = $condition->title;
+        $newCondition->name = $condition->name;
         $newCondition->save();
 
         return redirect('/admin/terms_conditions_list')->with('message', 'Terms and Conditions duplicated successfully.');
@@ -527,6 +540,7 @@ class ServiceAgreementController extends Controller {
     public function updateCondition(Request $request)
     {
         $request->validate([
+            'name' => 'required',
             'title' => 'required',
             'categorie_id' => 'required',
             'industry_id' => 'required',
@@ -534,6 +548,7 @@ class ServiceAgreementController extends Controller {
 
         $condition = TermsAndCondition::findOrFail($request->id);
         $condition->title = $request->title;
+        $condition->name = $request->name;
         $condition->categorie_id = $request->categorie_id;
         $condition->industry_id = $request->industry_id;  
         $condition->status = $request->status;      
@@ -563,35 +578,33 @@ class ServiceAgreementController extends Controller {
         return redirect('/admin/terms_conditions_list')->with('message', 'Terms and Conditions deleted successfully.');
     }
 
-    public function getConditionSearchResults()
+    public function getConditionSearchResults(Request $request)
     {
         $query = TermsAndCondition::query();
-
-        // Search by title or other fields
-        if ($search = request('search')) {
+        if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
-            $q->where('title', 'like', "%{$search}%")
+            $q->where('name', 'like', "%{$search}%")
               ->orWhere('id', $search);
             });
         }
 
         // Filter by category
-        if ($category = request('category')) {
+        if ($category = $request->input('category')) {
             $query->where('categorie_id', $category);
         }
 
         // Filter by industry
-        if ($industry = request('industry')) {
+        if ($industry = $request->input('industry')) {
             $query->where('industry_id', $industry);
         }
 
         // Filter by status (assuming 'status' is a column, e.g., active/inactive)
-        if (!is_null(request('status'))) {
-            $query->where('status', request('status'));
+        if (!is_null($request->input('status'))) {
+            $query->where('status', $request->input('status'));
         }
 
         // Filter by ID
-        if ($id = request('id')) {
+        if ($id = $request->input('id')) {
             $query->where('id', $id);
         }
 

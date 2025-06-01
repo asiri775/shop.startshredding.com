@@ -8,7 +8,7 @@ class TermsAndCondition extends Model {
     protected $table = "terms_and_conditions";
 
     protected $fillable = [
-        'id', "title", "categorie_id", "industry_id", "status", "created_at", "updated_at"
+        'id',"name", "title", "categorie_id", "industry_id", "status", "created_at", "updated_at"
     ];
 
     public function category()
