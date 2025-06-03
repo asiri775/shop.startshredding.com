@@ -1,6 +1,7 @@
 @extends('vendor.includes.master-vendor')
 
 @section('content')
+<script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
 <style>
      @media (max-width: 575.98px) {
         .d-flex {
@@ -154,16 +155,29 @@
 @stop
 
 @section('footer')
-<script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
     <script>
-       ClassicEditor
-            .create(document.querySelector('#title'), {
-            toolbar: [
-                
-            ]
-            })
-            .catch(error => {
-            console.error(error);
-            });
+         document.addEventListener('DOMContentLoaded', function() {
+            var titleTextarea = document.querySelector('#title');
+            if (titleTextarea) {
+                ClassicEditor
+                    .create(titleTextarea, {
+                        toolbar: [
+                            'heading', '|',
+                            'bold', 'italic', 'underline', 'strikethrough', '|',
+                            'bulletedList', 'numberedList', '|',
+                            'blockQuote', 'link', '|',
+                            'undo', 'redo'
+                        ]
+                    })
+                    .then(editor => {
+                        editor.editing.view.change(writer => {
+                            writer.setStyle('min-height', '300px', editor.editing.view.document.getRoot());
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+        });
     </script>
 @stop

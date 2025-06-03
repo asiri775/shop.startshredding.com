@@ -1,7 +1,7 @@
 @extends('vendor.includes.master-vendor')
 
 @section('content')
-
+<script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
     <div id="page-wrapper">
         <div class="container-fluid">
             <div class="row" id="main">
@@ -42,7 +42,13 @@
                                 <div class="col-md-8 col-sm-8 col-xs-12"> <!-- Increased width from 6 to 8 -->
                                     <input  type="text" id="name" class="form-control col-md-7 col-xs-12" name="name" required="required">
                                     <input type="checkbox" name="is_default" value="0" id="is_default_checkbox"> <span> Is Default</span>
-                                    
+                                </div>
+                            </div>
+
+                            <div class="item form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">Main Condition<span class="required">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <textarea id="content" name="content" class="form-control col-md-7 col-xs-12" rows="10" required></textarea>
                                 </div>
                             </div>
 
@@ -54,8 +60,8 @@
                                             <label style="font-weight: bold;">
                                                 <input type="checkbox" name="condition_list[]" value="{{$condition->id}}"> {!! strip_tags($condition->name) !!}
                                             </label>
-                                            </br></br>
-                                            <p>{!! strip_tags($condition->title) !!}</p>
+                                            </br>
+                                            <p>{!! $condition->title !!}</p>
                                         </div>
                                     @endforeach
                                 </div>
@@ -85,6 +91,30 @@
 
         checkbox.addEventListener('change', function () {
             this.value = this.checked ? true : false;
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var titleTextarea = document.querySelector('#content');
+            if (titleTextarea) {
+                ClassicEditor
+                    .create(titleTextarea, {
+                        toolbar: [
+                            'heading', '|',
+                            'bold', 'italic', 'underline', 'strikethrough', '|',
+                            'bulletedList', 'numberedList', '|',
+                            'blockQuote', 'link', '|',
+                            'undo', 'redo'
+                        ]
+                    })
+                    .then(editor => {
+                       
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+
+        
         });
 </script>
 @stop

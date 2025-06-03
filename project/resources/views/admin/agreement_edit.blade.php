@@ -44,10 +44,16 @@
                                 <div class="col-md-8 col-sm-8 col-xs-12"> <!-- Increased width from 6 to 8 -->
                                     <input  type="text" id="name" class="form-control col-md-7 col-xs-12" name="name" value="{{$agreement->name}}" required="required">
                                     <input type="checkbox" name="is_default" value="{{$agreement->is_default}}" id="is_default_checkbox" {{ $agreement->is_default ? 'checked' : '' }}> <span> Is Default</span>
-
-                                    
                                 </div>
                             </div>
+
+                            <div class="item form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">Main Condition<span class="required">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <textarea id="content" name="content" class="form-control col-md-7 col-xs-12" rows="10" required>{{$agreement->content}}</textarea>
+                                </div>
+                            </div>
+
 
                             <div class="item form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Conditions<span class="required">*</span></label>
@@ -57,9 +63,10 @@
                                             <label style="font-weight: bold;">
                                                 <input type="checkbox" name="condition_list[]" {{ $condition['is_active'] ? 'checked' : '' }} value="{{$condition['terms_and_condition_id']}}"> {!! strip_tags( $condition['terms_and_condition_name'] ) !!}
                                             </label>
-                                        </br></br>
-                                            <p>{!! strip_tags( $condition['terms_and_condition_title'] ) !!}</p>
+                                        </br>
+                                            <p>{!! $condition['terms_and_condition_title'] !!}</p>
                                         </div>
+
                                     @endforeach
                                 </div>
                             </div>
@@ -83,11 +90,35 @@
 @stop
 
 @section('footer')
+<script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
     <script>
         const checkbox = document.getElementById('is_default_checkbox');
 
         checkbox.addEventListener('change', function () {
             this.value = this.checked ? true : false;
         });
+
+         document.addEventListener('DOMContentLoaded', function() {
+            var titleTextarea = document.querySelector('#content');
+            if (titleTextarea) {
+                ClassicEditor
+                    .create(titleTextarea, {
+                        toolbar: [
+                            'heading', '|',
+                            'bold', 'italic', 'underline', 'strikethrough', '|',
+                            'bulletedList', 'numberedList', '|',
+                            'blockQuote', 'link', '|',
+                            'undo', 'redo'
+                        ]
+                    })
+                    .then(editor => {
+                       
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+        });
+
 </script>
 @stop

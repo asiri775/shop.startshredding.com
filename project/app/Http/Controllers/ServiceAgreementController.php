@@ -35,6 +35,22 @@ class ServiceAgreementController extends Controller {
     {
         Session::put('tab', 'client_info');
        // $this->middleware('auth:profile', ['except' => 'checkout', 'cashondelivery']);
+
+        $this->middleware('auth')->only(
+            'getAllAgreement',
+            'createAgreement',
+            'storeAgreement',
+            'editAgreement',
+            'updateAgreement',
+            'destroyAgreement',
+            'getAllTermsAndConditions',
+            'createCondition',
+            'storeCondition',
+            'editCondition',
+            'updateCondition',
+            'destroyCondition',
+            'duplicateCondition',
+            'getConditionSearchResults');
     }
 
     public function view($id) {
@@ -182,14 +198,14 @@ class ServiceAgreementController extends Controller {
                     if ($condition->is_active) {
                         $termsAndCondition = TermsAndCondition::where('status', 'active')->find($condition->terms_and_condition_id);
                         if ($termsAndCondition) {
-                            array_push($condition_list, $termsAndCondition->title);
+                            array_push($condition_list, $termsAndCondition);
                         }
                     }
                 }
             }
 
             $terms_and_conditions=$condition_list;
-            return view('home.service-agreements', compact('user', 'customer','documents', 'order','order_details','card_details','terms_and_conditions','client_information','credit_card_infromation'));
+            return view('home.service-agreements', compact('user', 'customer','documents', 'order','order_details','card_details','terms_and_conditions','client_information','credit_card_infromation','agreement'));
         }
         else {
             return "You have alreday confirmed the Service Agreement";
@@ -358,10 +374,12 @@ class ServiceAgreementController extends Controller {
  
         $request->validate([
             'name' => 'required',
+            'content' => 'required'
         ]);
 
         $agreement = new Agreement();
         $agreement->name = $request->name;
+        $agreement->content = $request->content;
 
         if($request->is_default == true){
             $is_default_agreement= Agreement::where('is_default',true)->first();
@@ -430,11 +448,12 @@ class ServiceAgreementController extends Controller {
 
         $request->validate([
             'name' => 'required',
+            'content' => 'required'
         ]);
 
         $agreement = Agreement::find($request->id);
         $agreement->name = $request['name'];
-
+        $agreement->content = $request['content'];
         if($request->is_default == true){
             $is_default_agreement= Agreement::where('is_default',true)->first();
             if($is_default_agreement == true){
@@ -553,8 +572,8 @@ class ServiceAgreementController extends Controller {
         $condition->industry_id = $request->industry_id;  
         $condition->status = $request->status;      
         $condition->save();
+        return redirect('/admin/terms_conditions_list')->with('message', 'Terms and Conditions updated successfully.');
 
-        return redirect('/admin/condition/edit/' . $condition->id)->with('message', 'Terms and Conditions updated successfully.');
     }
 
 

@@ -540,13 +540,17 @@
                           <div class="row row-same-height">
                            <div class="col-md-12">
                               <h3 class="font-montserrat">Terms and Conditions</h3>
+                              <p>{!! $agreement->content !!}</p><br>
+
                               @if(is_array($terms_and_conditions))
                                 @foreach($terms_and_conditions as $index => $term)
-                                  <div class="mb-2"><strong>{{ $index + 1 }}.</strong> {!! $term !!}</div>
+                                  <div class="mb-2"><strong>{{ $index + 1 }}. {!! $term->name !!}</strong></div>
+                                  <div class="mb-2"> {!! $term->title !!}</div>
                                 @endforeach
-                              @else
-                                {!! $terms_and_conditions !!}
+                                @else
+                               
                               @endif
+
                              <div class="row">
                               <div class="col-12 mt-3">
                                 <div class="form-check primary m-t-0 ml-2 text-right">
