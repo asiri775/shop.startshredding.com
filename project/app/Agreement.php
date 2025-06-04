@@ -8,7 +8,7 @@ class Agreement extends Model {
     protected $table = "agreements";
 
     protected $fillable = [
-        'id',"name","is_default",
+        'id',"name","is_default",'content',
         "created_at", "updated_at"
     ];
 
