@@ -62,7 +62,7 @@
                         </div>
                         <div class="mt-2 col-md-4">
                             <p><strong>Job Type:</strong></p>
-                            <p>{{$job_type->TYPE_NAME}}</p>
+                            <p>{{ $job_type->TYPE_NAME ?? 'N/A' }}</p>
                         </div>
 
                         <div class="mt-2 col-md-4">
@@ -115,6 +115,27 @@
                          <div class="mt-2 col-md-4">
                             <p><strong>Categories:</strong></p>
                             <p>{{ $category['main_category'] ?? 'N/A' }} / {{ $category['sub_category'] ?? 'N/A' }} /  {{ $category['child_category'] ?? 'N/A' }}</p>
+                        </div>
+                        <div class="mt-2 col-md-4">
+                            <p><strong>Repeat:</strong></p>
+                            @if($orderTemplate->repeat == 'Daily' || $orderTemplate->repeat == 'Weekly' || $orderTemplate->repeat == 'Monthly')
+                                <strong>{{ $orderTemplate->repeat }}</strong>
+                                <span>
+                                    Every 
+                                    <strong>
+                                        @if($orderTemplate->repeat == 'Daily')
+                                            {{ $orderTemplate->days_apart }}
+                                        @elseif($orderTemplate->repeat == 'Weekly')
+                                            {{ $orderTemplate->weeks_apart }}
+                                        @elseif($orderTemplate->repeat == 'Monthly')
+                                            {{ $orderTemplate->months_apart }}
+                                        @endif
+                                    </strong>
+                                    {{ $orderTemplate->repeat == 'Daily' ? 'day(s)' : ($orderTemplate->repeat == 'Weekly' ? 'week(s)' : 'month(s)') }}
+                                </span>
+                            @else
+                                <strong>{{ $orderTemplate->repeat }}</strong>
+                            @endif
                         </div>
 
 
