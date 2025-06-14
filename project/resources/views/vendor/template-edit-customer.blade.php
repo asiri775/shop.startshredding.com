@@ -55,7 +55,7 @@
                             <div class="col-xs-12 mt-2">
                                 <label for="CustomerTemplate" class="control-label col-sm-3">Template Name *</label>
                                 <div class="col-sm-4">
-                                    <input class="w-100" type="text" name="name" id="name" placeholder="Name" value="{{$orderTemplate->name}}">
+                                    <input class="w-100" type="text" name="name" id="name" placeholder="Name" value="{{$orderTemplate->name}}" required>
                                     @if($errors->has('name'))
                                         <div class="error text-danger">{{ $errors->first('name') }}</div>
                                     @endif
@@ -70,19 +70,6 @@
                                     <select class="w-100" type="text" name="category_id" id="category_id" placeholder="Main Category">
                                         @foreach($categories as $category)
                                             <option value="{{$category['id']}}" @if(($category['id']==old('category_id'))) selected @endif>{{$category['name']}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-
-                            <div class="col-xs-12 mt-2">
-                                <label class="control-label col-sm-3" for="unit">Main Category</label>
-                                <div class="col-sm-4">
-                                    <select class="w-100" type="text" name="category_id" id="category_id" placeholder="Main Category">
-                                        @foreach($categories as $category)
-                                            <option value="{{$category['id']}}" @if(($category['id']==$orderTemplate->category_id))) selected @endif>{{$category['name']}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -122,7 +109,7 @@
                             <div class="col-xs-12 mt-2">
                                 <label class="control-label col-sm-3" for="unit">Job type ID * </label>
                                 <div class="col-sm-4">
-                                    <select class="w-100" type="text" name="job_type_id" id="job_type_id" placeholder="Job type ID">
+                                    <select class="w-100" type="text" name="job_type_id" id="job_type_id" placeholder="Job type ID" required>
                                         <option value="">Select Job type ID</option>
 
                                         @foreach($job_type as $type )
@@ -238,7 +225,7 @@
                                         }
 
                                     ?>
-                                    <select name="days_allowed[]" placeholder="Please Select" class="form-control custom-select" multiple id="days_allowed">
+                                    <select name="days_allowed[]" placeholder="Please Select" class="form-control custom-select" multiple id="days_allowed" required>
                                         <option value="1" <?php if(array_key_exists(1, $days_allowed) && $days_allowed[1]) {?>selected<?php }?> @if(is_array(old('days_allowed')) && in_array(1,old('days_allowed'))) selected @endif>Monday</option>
                                         <option value="2" <?php if(array_key_exists(2, $days_allowed) && $days_allowed[2]) {?>selected<?php }?> @if(is_array(old('days_allowed')) && in_array(2,old('days_allowed'))) selected @endif>Tuesday</option>
                                         <option value="3" <?php if(array_key_exists(3, $days_allowed) && $days_allowed[3]) {?>selected<?php }?> @if(is_array(old('days_allowed')) && in_array(3,old('days_allowed'))) selected @endif>Wednesday</option>

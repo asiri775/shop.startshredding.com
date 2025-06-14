@@ -56,7 +56,7 @@
                             <div class="col-xs-12 mt-2">
                                 <label for="CustomerTemplate" class="control-label col-sm-3">Template Name *</label>
                                 <div class="col-sm-4">
-                                    <input class="w-100" type="text" name="name" id="name" placeholder="Name" style="padding-left: 5px;" value="{{old('name')}}">
+                                    <input class="w-100" type="text" name="name" id="name" placeholder="Name" style="padding-left: 5px;" value="{{old('name')}}" required>
                                     @if($errors->has('name'))
                                         <div class="error text-danger">{{ $errors->first('name') }}</div>
                                     @endif
@@ -126,7 +126,7 @@
                             <div class="col-xs-12 mt-2">
                                 <label class="control-label col-sm-3" for="unit">Order Type * </label>
                                 <div class="col-sm-4">
-                                    <select class="w-100" type="text" name="job_type_id" id="job_type_id" placeholder="Job type ID">
+                                    <select class="w-100" type="text" name="job_type_id" id="job_type_id" placeholder="Job type ID" required>
                                         <option value="">Select Order Type</option>
 
                                         @foreach($job_type as $type )
@@ -252,7 +252,7 @@
                             <div class="col-xs-12 mt-2">
                                 <label class="control-label col-sm-3" for="unit">Schedule From *</label>
                                 <div class="col-sm-4">
-                                    <input class="w-100 datepicker" type="text" name="schedule_from" id="schedule_from" value="{{old('schedule_from')}}" placeholder="mm-dd-yyyy" data-date-format="mm-dd-yyyy">
+                                    <input class="w-100 datepicker" type="text" name="schedule_from" id="schedule_from" value="{{old('schedule_from')}}" placeholder="mm-dd-yyyy" data-date-format="mm-dd-yyyy" required>
                                     @if($errors->has('schedule_from'))
                                         <div class="error text-danger">{{ $errors->first('schedule_from') }}</div>
                                     @endif
