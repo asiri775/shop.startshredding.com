@@ -492,81 +492,81 @@ class OrderTemplateController extends Controller
         return $input['deleteids_arr'];
     }
 
-    public function getJobDates($template, $startDate, $endDate)
-    {
-        $jobDates = [];
-        $repeatType = $template->repeat;
-        $daysAllowed = $template->days_allowed ?? [];
-        $scheduleFrom = Carbon::parse($template->schedule_from);
-        $start = Carbon::parse($startDate);
-        $end = Carbon::parse($endDate);
+   public function getJobDates($template, $startDate, $endDate)
+{
+    $jobDates = [];
+    $repeatType = strtolower($template->repeat); // Normalize to lowercase
+    $daysAllowed = $template->days_allowed ?? [];
+    $scheduleFrom = Carbon::parse($template->schedule_from);
+    $start = Carbon::parse($startDate);
+    $end = Carbon::parse($endDate);
 
-        // Use the later of schedule_from or startDate
-        $current = $scheduleFrom->gt($start) ? $scheduleFrom->copy() : $start->copy();
+    // Use the later of schedule_from or startDate
+    $current = $scheduleFrom->gt($start) ? $scheduleFrom->copy() : $start->copy();
 
-        // For Daily/Weekly/Monthly, handle repeat as a max number of days, not interval
-        if (in_array($repeatType, ['Daily', 'Weekly', 'Monthly'])) {
-            // Determine repeat interval in days based on repeatType
-            if ($repeatType === 'Daily') {
-                $repeat = (int)($template->days_apart ?? 1);
-            } elseif ($repeatType === 'Weekly') {
-                $repeat = 7 * (int)($template->weeks_apart ?? 1);
-            } elseif ($repeatType === 'Monthly') {
-                $repeat = 28 * (int)($template->months_apart ?? 1);
-            } else {
-                $repeat = 1;
-            }
-            // If repeat is 0 or less, treat as 1
-            if ($repeat <= 0) $repeat = 1;
+    // Normalize interval based on type
+    $interval = 1;
+    $unit = 'days'; // default
 
-            // Calculate the last allowed date based on repeat count
-            $lastDate = $current->copy()->addDays($repeat - 1);
-            if ($lastDate->gt($end)) {
-                $lastDate = $end->copy();
-            }
+    if ($repeatType === 'daily' || $repeatType === 'days' || $repeatType === 'Daily') {
+        $interval = max(1, (int)($template->days_apart ?? 1));
+        $unit = 'days';
+    } elseif ($repeatType === 'weekly' || $repeatType === 'weeks' || $repeatType === 'Weekly') {
+        $interval = 7 * max(1, (int)($template->weeks_apart ?? 1));
+        $unit = 'days';
+    } elseif ($repeatType === 'monthly' || $repeatType === 'months' || $repeatType === 'Monthly') {
+        $interval = max(1, (int)($template->months_apart ?? 1));
+        $unit = 'months';
+    } elseif ($repeatType === 'quarterly') {
+        $interval = 3;
+        $unit = 'months';
+    } elseif ($repeatType === 'semi-annual') {
+        $interval = 6;
+        $unit = 'months';
+    } elseif ($repeatType === 'yearly') {
+        $interval = 1;
+        $unit = 'years';
+    } else {
+        return []; // Unknown repeat type
+    }
 
-            while ($current->lte($lastDate)) {
-                if ($current->gte($scheduleFrom) && (empty($daysAllowed) || in_array($current->dayOfWeek, $daysAllowed))) {
-                    $jobDates[] = $current->format('Y-m-d');
-                }
-                $current->addDay();
-            }
-        } elseif ($repeatType === 'Monthly') {
-            $monthsApart = (int)($template->months_apart ?? 1);
-            if ($monthsApart <= 0) $monthsApart = 1;
-            while ($current->lte($end)) {
-                if ($current->gte($scheduleFrom) && (empty($daysAllowed) || in_array($current->dayOfWeek, $daysAllowed))) {
-                    $jobDates[] = $current->format('Y-m-d');
-                }
-                $current->addMonthsNoOverflow($monthsApart);
-            }
-        } elseif ($repeatType === 'Quarterly') {
-            while ($current->lte($end)) {
-                if ($current->gte($scheduleFrom) && (empty($daysAllowed) || in_array($current->dayOfWeek, $daysAllowed))) {
-                    $jobDates[] = $current->format('Y-m-d');
-                }
-                $current->addMonthsNoOverflow(3);
-            }
-        } elseif ($repeatType === 'Semi-Annual') {
-            while ($current->lte($end)) {
-                if ($current->gte($scheduleFrom) && (empty($daysAllowed) || in_array($current->dayOfWeek, $daysAllowed))) {
-                    $jobDates[] = $current->format('Y-m-d');
-                }
-                $current->addMonthsNoOverflow(6);
-            }
-        } elseif ($repeatType === 'Yearly') {
-            while ($current->lte($end)) {
-                if ($current->gte($scheduleFrom) && (empty($daysAllowed) || in_array($current->dayOfWeek, $daysAllowed))) {
-                    $jobDates[] = $current->format('Y-m-d');
-                }
-                $current->addYear();
-            }
-        } else {
-            return [];
+    while ($current->lte($end)) {
+        $blockStart = $current->copy();
+        $blockEnd = $current->copy();
+        if ($unit === 'days') {
+            $blockEnd->addDays($interval - 1);
+        } elseif ($unit === 'months') {
+            $blockEnd->addMonthsNoOverflow($interval)->subDay();
+        } elseif ($unit === 'years') {
+            $blockEnd->addYear()->subDay();
         }
 
-        return $jobDates;
+        // Ensure blockEnd doesn't exceed end date
+        if ($blockEnd->gt($end)) {
+            $blockEnd = $end->copy();
+        }
+
+        $dateCursor = $blockStart->copy();
+        while ($dateCursor->lte($blockEnd)) {
+            if ($dateCursor->gte($scheduleFrom) &&
+                (empty($daysAllowed) || in_array($dateCursor->dayOfWeek, $daysAllowed))) {
+                $jobDates[] = $dateCursor->format('Y-m-d');
+            }
+            $dateCursor->addDay();
+        }
+
+        // Move current to the next interval block (skip one)
+        if ($unit === 'days') {
+            $current->addDays($interval * 2); // Skip next interval block
+        } elseif ($unit === 'months') {
+            $current->addMonthsNoOverflow($interval * 2);
+        } elseif ($unit === 'years') {
+            $current->addYears(2);
+        }
     }
+
+    return $jobDates;
+}
 
 
     public function makeRecurringOrder(Request $request)
