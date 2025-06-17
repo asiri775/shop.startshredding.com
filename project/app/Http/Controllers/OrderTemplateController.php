@@ -492,81 +492,204 @@ class OrderTemplateController extends Controller
         return $input['deleteids_arr'];
     }
 
-   public function getJobDates($template, $startDate, $endDate)
-{
-    $jobDates = [];
-    $repeatType = strtolower($template->repeat); // Normalize to lowercase
-    $daysAllowed = $template->days_allowed ?? [];
-    $scheduleFrom = Carbon::parse($template->schedule_from);
-    $start = Carbon::parse($startDate);
-    $end = Carbon::parse($endDate);
 
-    // Use the later of schedule_from or startDate
-    $current = $scheduleFrom->gt($start) ? $scheduleFrom->copy() : $start->copy();
+ 
+    public function getJobDates($template, $startDate, $endDate)
+    {
 
-    // Normalize interval based on type
-    $interval = 1;
-    $unit = 'days'; // default
+        $jobDates = [];
+        $daysAllowed = is_array($template->days_allowed) ? $template->days_allowed : explode(',', $template->days_allowed);
+        $scheduleFrom = \Carbon\Carbon::parse($template->schedule_from);
+        $start = \Carbon\Carbon::parse($startDate);
+        $end = \Carbon\Carbon::parse($endDate);
 
-    if ($repeatType === 'daily' || $repeatType === 'days' || $repeatType === 'Daily') {
-        $interval = max(1, (int)($template->days_apart ?? 1));
-        $unit = 'days';
-    } elseif ($repeatType === 'weekly' || $repeatType === 'weeks' || $repeatType === 'Weekly') {
-        $interval = 7 * max(1, (int)($template->weeks_apart ?? 1));
-        $unit = 'days';
-    } elseif ($repeatType === 'monthly' || $repeatType === 'months' || $repeatType === 'Monthly') {
-        $interval = max(1, (int)($template->months_apart ?? 1));
-        $unit = 'months';
-    } elseif ($repeatType === 'quarterly') {
-        $interval = 3;
-        $unit = 'months';
-    } elseif ($repeatType === 'semi-annual') {
-        $interval = 6;
-        $unit = 'months';
-    } elseif ($repeatType === 'yearly') {
-        $interval = 1;
-        $unit = 'years';
-    } else {
-        return []; // Unknown repeat type
+        // Always start from the later of schedule_from or startDate
+        $current = $start->copy();
+        if ($current->lt($scheduleFrom)) {
+            $current = $scheduleFrom->copy();
+        }
+
+        switch (strtolower($template->repeat)) {
+            
+            case 'daily':
+                $jobDates = [];
+
+                $interval = (int)($template->days_apart ?? 1);
+                $daysAllowed = is_array($template->days_allowed) ? $template->days_allowed : explode(',', $template->days_allowed);
+
+                // Start from the later of startDate or schedule_from
+                $current = \Carbon\Carbon::parse($startDate);
+                $scheduleFrom = \Carbon\Carbon::parse($template->schedule_from);
+                if ($current->lt($scheduleFrom)) {
+                    $current = $scheduleFrom->copy();
+                }
+
+                $first = true;
+
+                while ($current <= $end) {
+                    // Determine start of this cycle
+                    $periodStart = $first ? $current->copy() : $current->copy()->startOfMonth();
+                    $periodEnd = $periodStart->copy()->addDays($interval - 1);
+
+                    // Don't go past end date
+                    if ($periodEnd->gt($end)) {
+                        $periodEnd = $end->copy();
+                    }
+
+                    // Only stay within the current month
+                    if ($periodEnd->month != $periodStart->month) {
+                        $periodEnd = $periodStart->copy()->endOfMonth();
+                    }
+
+                    // Collect valid days
+                    for ($date = $periodStart->copy(); $date <= $periodEnd; $date->addDay()) {
+                        if (in_array($date->dayOfWeek, $daysAllowed)) {
+                            $jobDates[] = $date->toDateString();
+                        }
+                    }
+
+                    // Move to next month
+                    $current = $current->copy()->addMonth()->startOfMonth();
+                    $first = false;
+                }
+
+                break;
+
+            case 'weekly':
+                $interval = (int)($template->weeks_apart ?? 1);
+                $startWeek = $start->copy()->startOfWeek();
+                $startMonth = $start->format('Y-m');
+                $scheduleWeekStart = $scheduleFrom->copy()->startOfWeek();
+
+                $current = $start->copy();
+
+                while ($current <= $end) {
+                    $currentWeekStart = $current->copy()->startOfWeek();
+                    $currentMonth = $current->format('Y-m');
+
+                    if ($currentMonth === $startMonth) {
+                        // In start month, allow only start week's days
+                        if (
+                            $current->between($startWeek, $startWeek->copy()->addDays(6)) &&
+                            in_array($current->dayOfWeek, $daysAllowed)
+                        ) {
+                            $jobDates[] = $current->toDateString();
+                        }
+                    } else {
+                        // In later months, allow only first week: 1st to first Saturday
+                        $firstOfMonth = $current->copy()->startOfMonth();
+                        $firstWeekStart = $firstOfMonth->copy();
+
+                        $firstSaturday = $firstWeekStart->copy()->next(Carbon::SATURDAY);
+                        if ($firstOfMonth->isSaturday()) {
+                            $firstSaturday = $firstOfMonth->copy(); // edge case
+                        }
+
+                        $firstWeekEnd = $firstSaturday;
+
+                        if ($current->between($firstWeekStart, $firstWeekEnd)) {
+                            $weeksDiff = $scheduleWeekStart->diffInWeeks($currentWeekStart);
+                            if (
+                                $weeksDiff % $interval === 0 &&
+                                in_array($current->dayOfWeek, $daysAllowed)
+                            ) {
+                                $jobDates[] = $current->toDateString();
+                            }
+                        }
+                    }
+
+                    $current->addDay();
+                }
+
+                break;
+    
+
+
+
+            case 'monthly':
+                $interval = (int)($template->months_apart ?? 1);
+                $monthStart = $current->copy()->startOfMonth();
+                while ($monthStart <= $end) {
+                    $monthEnd = $monthStart->copy()->endOfMonth();
+                    $periodStart = $monthStart->copy();
+                    if ($periodStart < $current) $periodStart = $current->copy();
+                    for ($day = $periodStart->copy(); $day <= $monthEnd && $day <= $end; $day->addDay()) {
+                        if (in_array($day->dayOfWeek, $daysAllowed)) {
+                            $jobDates[] = $day->toDateString();
+                        }
+                    }
+                    $monthStart->addMonths($interval);
+                }
+                break;
+
+            case 'quarterly':
+                // Every 3 months
+                $interval = 3;
+                $quarterStart = $current->copy()->startOfQuarter();
+                while ($quarterStart <= $end) {
+                    $quarterEnd = $quarterStart->copy()->endOfQuarter();
+                    $periodStart = $quarterStart->copy();
+                    if ($periodStart < $current) $periodStart = $current->copy();
+                    for ($day = $periodStart->copy(); $day <= $quarterEnd && $day <= $end; $day->addDay()) {
+                        if (in_array($day->dayOfWeek, $daysAllowed)) {
+                            $jobDates[] = $day->toDateString();
+                        }
+                    }
+                    $quarterStart->addMonths($interval);
+                }
+                break;
+
+            case 'semi-annual':
+                // Every 6 months
+                $interval = 6;
+                $semiStart = $current->copy();
+                while ($semiStart <= $end) {
+                    $semiEnd = $semiStart->copy()->addMonths($interval)->subDay();
+                    $periodStart = $semiStart->copy();
+                    if ($periodStart < $current) $periodStart = $current->copy();
+                    for ($day = $periodStart->copy(); $day <= $semiEnd && $day <= $end; $day->addDay()) {
+                        if (in_array($day->dayOfWeek, $daysAllowed)) {
+                            $jobDates[] = $day->toDateString();
+                        }
+                    }
+                    $semiStart->addMonths($interval);
+                }
+                break;
+
+            case 'yearly':
+                $interval = 12;
+                $yearStart = $current->copy()->startOfYear();
+                while ($yearStart <= $end) {
+                    $yearEnd = $yearStart->copy()->endOfYear();
+                    $periodStart = $yearStart->copy();
+                    if ($periodStart < $current) $periodStart = $current->copy();
+                    for ($day = $periodStart->copy(); $day <= $yearEnd && $day <= $end; $day->addDay()) {
+                        if (in_array($day->dayOfWeek, $daysAllowed)) {
+                            $jobDates[] = $day->toDateString();
+                        }
+                    }
+                    $yearStart->addYears(1);
+                }
+                break;
+
+            case 'on call':
+                // Only schedule_from date if in range and allowed
+                if ($scheduleFrom >= $start && $scheduleFrom <= $end && in_array($scheduleFrom->dayOfWeek, $daysAllowed)) {
+                    $jobDates[] = $scheduleFrom->toDateString();
+                }
+                break;
+
+            default:
+                // Not supported
+                break;
+        }
+
+        // Remove duplicates and sort
+        $jobDates = array_unique($jobDates);
+        sort($jobDates);
+
+        return $jobDates;
     }
-
-    while ($current->lte($end)) {
-        $blockStart = $current->copy();
-        $blockEnd = $current->copy();
-        if ($unit === 'days') {
-            $blockEnd->addDays($interval - 1);
-        } elseif ($unit === 'months') {
-            $blockEnd->addMonthsNoOverflow($interval)->subDay();
-        } elseif ($unit === 'years') {
-            $blockEnd->addYear()->subDay();
-        }
-
-        // Ensure blockEnd doesn't exceed end date
-        if ($blockEnd->gt($end)) {
-            $blockEnd = $end->copy();
-        }
-
-        $dateCursor = $blockStart->copy();
-        while ($dateCursor->lte($blockEnd)) {
-            if ($dateCursor->gte($scheduleFrom) &&
-                (empty($daysAllowed) || in_array($dateCursor->dayOfWeek, $daysAllowed))) {
-                $jobDates[] = $dateCursor->format('Y-m-d');
-            }
-            $dateCursor->addDay();
-        }
-
-        // Move current to the next interval block (skip one)
-        if ($unit === 'days') {
-            $current->addDays($interval * 2); // Skip next interval block
-        } elseif ($unit === 'months') {
-            $current->addMonthsNoOverflow($interval * 2);
-        } elseif ($unit === 'years') {
-            $current->addYears(2);
-        }
-    }
-
-    return $jobDates;
-}
 
 
     public function makeRecurringOrder(Request $request)
@@ -605,7 +728,8 @@ class OrderTemplateController extends Controller
                 }
 
                 $nextMonthStart = Carbon::now()->addMonthNoOverflow()->startOfMonth();
-                $nextMonthEnd = Carbon::now()->addMonthNoOverflow()->startOfMonth()->addDays(28);
+                $nextMonthEnd = Carbon::now()->addMonthNoOverflow()->endOfMonth();
+
 
 
                 
