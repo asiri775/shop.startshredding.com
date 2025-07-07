@@ -306,11 +306,18 @@
                             </button>
                         </div>
                         <div class="modal-body">
+                            <?php 
+                            $date = DateTime::createFromFormat('m-d-Y', $schedule_from);
+                            $schedule_from = $date->format('m/d/Y');
+                            ?>
+                            <label>From: {{$schedule_from}}</label><br/>
                             <form id="genDateRangeForm" action="/vendor/order-template/generate" method="POST">
                                 <input type="hidden" name="order_template_id" value="{{$orderTemplate->id}}">
                                 {{ csrf_field() }}
-                                <input type="text" name="dates" class="w-100"/>
+                                <label><b>To:&nbsp;<b><input type="text" name="date" class="w-50" value="{{date('m/d/Y')}}"/></label>
                                 <input type="hidden" name="order_template_type" value="2">
+                                <input type="hidden" name="genDateFormDate" value="{{$schedule_from}}">
+                                <i class="glyphicon glyphicon-calendar"></i>
                             </form>
                         </div>
                         <div class="modal-footer">
