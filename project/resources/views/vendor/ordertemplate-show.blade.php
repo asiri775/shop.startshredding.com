@@ -295,39 +295,53 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="genDateRange" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content" style="text-align: center;">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Generate for Date Range</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <?php 
-                            $date = DateTime::createFromFormat('m-d-Y', $schedule_from);
-                            $schedule_from = $date->format('m/d/Y');
-                            ?>
-                            <label>From: {{$schedule_from}}</label><br/>
-                            <form id="genDateRangeForm" action="/vendor/order-template/generate" method="POST">
-                                <input type="hidden" name="order_template_id" value="{{$orderTemplate->id}}">
-                                {{ csrf_field() }}
-                                <label><b>To:&nbsp;<b><input type="text" name="date" class="w-50" value="{{date('m/d/Y')}}"/></label>
-                                <input type="hidden" name="order_template_type" value="2">
-                                <input type="hidden" name="genDateFormDate" value="{{$schedule_from}}">
-                                <i class="glyphicon glyphicon-calendar"></i>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="button" onclick="$('#genDateRangeForm').submit();" class="btn btn-primary">
-                                Yes
-                            </button>
-                        </div>
+           <div class="modal fade" id="genDateRange" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content text-center">
+
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Generate for Date Range</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+
+                  <form id="genDateRangeForm" action="/vendor/order-template/generate" method="POST">
+                    <div class="modal-body">
+                      @php
+                          $date = DateTime::createFromFormat('m-d-Y', $schedule_from);
+                          $schedule_from = $date->format('m/d/Y');
+                      @endphp
+                     {{ csrf_field() }}
+                      <div class="form-group">
+                        <label class="d-block"><strong>From:</strong> {{ $schedule_from }}</label>
+                      </div>
+
+                      <div class="form-group d-flex justify-content-center align-items-center" style="max-width: 200px;">
+                        <label for="date" class="mb-0 mr-2"><strong>To:</strong></label>
+                        <input 
+                          type="text" 
+                          name="date" 
+                          id="date" 
+                          class="form-control text-center" 
+                          value="{{ date('m/d/Y') }}" 
+                          placeholder="mm/dd/yyyy"
+                        />
+                      </div>
+
+                      <input type="hidden" name="order_template_id" value="{{ $orderTemplate->id }}">
+                      <input type="hidden" name="order_template_type" value="2">
+                      <input type="hidden" name="genDateFormDate" value="{{ $schedule_from }}">
                     </div>
+
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                      <button type="submit" class="btn btn-primary">Yes</button>
+                    </div>
+                  </form>
+
                 </div>
+              </div>
             </div>
             <div class="modal fade" id="genSingleDate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">

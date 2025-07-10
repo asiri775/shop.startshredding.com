@@ -493,29 +493,32 @@ class OrderTemplateController extends Controller
     }
 
 
-   public function getJobDates($template, $startDate, $endDate)
+ public function getJobDates($template, $startDate, $endDate)
 {
     $jobDates = [];
 
-    // Parse and sanitize allowed weekdays
+    // Normalize allowed days (0 = Sun, 6 = Sat)
     $daysAllowed = is_array($template->days_allowed)
         ? $template->days_allowed
         : explode(',', $template->days_allowed);
     $daysAllowed = array_map('intval', $daysAllowed);
 
-    // Setup Carbon dates
+    // Parse schedule_from and endDate
     $scheduleFrom = Carbon::parse($template->schedule_from);
-    $start = Carbon::parse($startDate);
     $end = Carbon::parse($endDate);
 
-    // Ensure start is not before schedule_from
-    $start = $start->greaterThan($scheduleFrom) ? $start : $scheduleFrom;
+    // Always add first date as schedule_from
+    if ($scheduleFrom <= $end) {
+        $jobDates[] = $scheduleFrom->toDateString();
+    } else {
+        return []; // No schedule possible
+    }
 
     $repeat = strtolower($template->repeat);
 
-    // Helper: Get next allowed weekday from a given date
-    $findNextAllowedDate = function ($fromDate) use ($daysAllowed, $end) {
-        for ($i = 0; $i < 7; $i++) {
+    // Helper: Find next allowed day ON or AFTER given date
+    $findNextAllowedDate = function (Carbon $fromDate) use ($daysAllowed, $end) {
+        for ($i = 0; $i <= 7; $i++) {
             $check = $fromDate->copy()->addDays($i);
             if ($check > $end) break;
             if (in_array($check->dayOfWeek, $daysAllowed)) {
@@ -525,56 +528,65 @@ class OrderTemplateController extends Controller
         return null;
     };
 
-    // Helper: Repeating interval logic (in days)
-    $processRepeat = function ($baseStart, $intervalDays, $end, $daysAllowed, $findNextAllowedDate) use (&$jobDates) {
-        $current = $findNextAllowedDate($baseStart);
-        while ($current && $current <= $end) {
-            $jobDates[] = $current->toDateString();
-            $next = $current->copy()->addDays($intervalDays);
-            $current = $findNextAllowedDate($next);
+    // Daily/Weekly/Quarterly/etc. handler
+    $processIntervalRepeat = function ($baseStart, $intervalDays, $end, $findNextAllowedDate) use (&$jobDates) {
+        $current = $baseStart->copy();
+        while (true) {
+            $nextBase = $current->copy()->addDays($intervalDays);
+            if ($nextBase > $end) break;
+
+            $nextValid = $findNextAllowedDate($nextBase);
+            if ($nextValid && $nextValid <= $end) {
+                $jobDates[] = $nextValid->toDateString();
+                $current = $nextValid->copy();
+            } else {
+                break;
+            }
         }
     };
 
     switch ($repeat) {
         case 'on call':
-            if ($scheduleFrom >= $start && $scheduleFrom <= $end && in_array($scheduleFrom->dayOfWeek, $daysAllowed)) {
-                $jobDates[] = $scheduleFrom->toDateString();
-            }
+            // Already added schedule_from
             break;
 
         case 'daily':
-            $interval = max(1, (int)($template->days_apart ?? 1));
-            $processRepeat($start, $interval, $end, $daysAllowed, $findNextAllowedDate);
+            $intervalDays = max(1, (int)($template->days_apart ?? 1));
+            $processIntervalRepeat($scheduleFrom, $intervalDays, $end, $findNextAllowedDate);
             break;
 
         case 'weekly':
-            $interval = max(1, (int)($template->weeks_apart ?? 1)) * 7;
-            $processRepeat($start, $interval, $end, $daysAllowed, $findNextAllowedDate);
+            $intervalDays = max(1, (int)($template->weeks_apart ?? 1)) * 7;
+            $processIntervalRepeat($scheduleFrom, $intervalDays, $end, $findNextAllowedDate);
             break;
 
         case 'monthly':
-            $interval = max(1, (int)($template->months_apart ?? 1));
-            $current = $findNextAllowedDate($start);
-            while ($current && $current <= $end) {
-                $jobDates[] = $current->toDateString();
-                $nextMonthStart = $current->copy()->addMonthsNoOverflow($interval);
-                $current = $findNextAllowedDate($nextMonthStart);
+            $monthsApart = max(1, (int)($template->months_apart ?? 1));
+            $current = $scheduleFrom->copy();
+            while (true) {
+                $nextMonthBase = $current->copy()->addMonthsNoOverflow($monthsApart);
+                if ($nextMonthBase > $end) break;
+
+                $nextValid = $findNextAllowedDate($nextMonthBase);
+                if ($nextValid && $nextValid <= $end) {
+                    $jobDates[] = $nextValid->toDateString();
+                    $current = $nextValid->copy();
+                } else {
+                    break;
+                }
             }
             break;
 
         case 'quarterly':
-            $intervalDays = 84;
-            $processRepeat($start, $intervalDays, $end, $daysAllowed, $findNextAllowedDate);
+            $processIntervalRepeat($scheduleFrom, 84, $end, $findNextAllowedDate);
             break;
 
         case 'semi-annual':
-            $intervalDays = 168;
-            $processRepeat($start, $intervalDays, $end, $daysAllowed, $findNextAllowedDate);
+            $processIntervalRepeat($scheduleFrom, 168, $end, $findNextAllowedDate);
             break;
 
         case 'yearly':
-            $intervalDays = 336;
-            $processRepeat($start, $intervalDays, $end, $daysAllowed, $findNextAllowedDate);
+            $processIntervalRepeat($scheduleFrom, 336, $end, $findNextAllowedDate);
             break;
     }
 
@@ -582,18 +594,6 @@ class OrderTemplateController extends Controller
     sort($jobDates);
     return $jobDates;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
