@@ -555,9 +555,27 @@ class OrderTemplateController extends Controller
             $processIntervalRepeat($scheduleFrom, $intervalDays, $end, $findNextAllowedDate);
             break;
 
-        case 'weekly':
-            $intervalDays = max(1, (int)($template->weeks_apart ?? 1)) * 7;
-            $processIntervalRepeat($scheduleFrom, $intervalDays, $end, $findNextAllowedDate);
+       case 'weekly':
+            $weeksApart = max(1, (int)($template->weeks_apart ?? 1));
+            $current = $scheduleFrom->copy();
+            $allAllowedDates = [];
+
+            while ($current <= $end) {
+                if (in_array($current->dayOfWeek, $daysAllowed)) {
+                    $allAllowedDates[] = $current->copy()->toDateString();
+                }
+                $current->addDay();
+            }
+
+            // Pick every (weeksApart × number of allowed days per week)
+            $interval = $weeksApart * count($daysAllowed);
+
+            // Always include first date
+            foreach (array_keys($allAllowedDates) as $index) {
+                if ($index === 0 || $index % $interval === 0) {
+                    $jobDates[] = $allAllowedDates[$index];
+                }
+            }
             break;
 
         case 'monthly':
