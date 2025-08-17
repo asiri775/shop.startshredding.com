@@ -1907,7 +1907,7 @@ body.sidebar-visible .page-sidebar .sidebar-header .sidebar-header-controls {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 65%;
+  width: 85%;
 }
 
 .page-sidebar .sidebar-menu .menu-items > li {
@@ -1930,6 +1930,7 @@ body.sidebar-visible .page-sidebar .sidebar-header .sidebar-header-controls {
   line-height: 40px;
   font-size: 14px;
   clear: both;
+  margin-left: 14px;
 }
 
 .page-sidebar .sidebar-menu .menu-items > li > a.open {
@@ -2087,14 +2088,13 @@ body.sidebar-visible .page-sidebar .sidebar-header .sidebar-header-controls {
   justify-content: center;
   background: transparent;
   height: 40px;
-  width: 40px;
+  width: 50px;
   line-height: 40px;
   text-align: center;
   vertical-align: middle;
   position: relative;
   left: 0;
   float: right;
-  margin-right: 14px;
   color: #929aac;
   -webkit-transition: -webkit-transform 0 0.4s cubic-bezier(0.05, 0.74, 0.27, 0.99);
   transition: transform 0 0.4s cubic-bezier(0.05, 0.74, 0.27, 0.99);
