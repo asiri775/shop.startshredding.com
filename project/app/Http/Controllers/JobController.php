@@ -19,7 +19,6 @@ use App\OrderTemplateItem;
 use App\Mail\ServiceAgreementMail;
 use App\Mail\ServiceAgreementPDFMail;
 use App\Models\Upload_document;
-use App\AddressMultiple;
 use PDF;
 use function GuzzleHttp\Promise\all;
 use Illuminate\Http\Request;
@@ -33,7 +32,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Crypt;
 
-class VendorController extends Controller
+class JobController extends Controller
 {
     public function __construct()
     {
@@ -343,7 +342,7 @@ class VendorController extends Controller
         $customers = VendorCustomers::where('vendor_customers.vendor_id', Auth::user()->id)
             ->where('vendor_customers.status', 1)
             ->join('clients', 'vendor_customers.customer_id', '=', 'clients.id')
-            ->get(['clients.*'])->sortByDesc('clients.id');
+            ->get(['clients.*']);
 
         $customer_array = [];
         foreach ($customers as $customer) {
@@ -374,26 +373,11 @@ class VendorController extends Controller
     public function customer()
     {
         $query = "SELECT * FROM `orders`";
+
         $customers = DB::select(DB::raw($query));
-        $tax_groups = DB::connection('mysql2')->table('TAX_GROUP')->get();
-        $account_managers = DB::connection('mysql2')->table('EMPLOYEE')->where('POSITION', 'Account Manager')->get();
 
-        return view('vendor.customer', compact('customers','tax_groups','account_managers'));
 
-    }
-
-    public function edit_customer($id)
-    {
-          $client = Clients::whereId($id)->first();
-
-        if (!empty($client)) {
-            $tax_groups = DB::connection('mysql2')->table('TAX_GROUP')->get();
-            $account_managers = DB::connection('mysql2')->table('EMPLOYEE')->where('POSITION', 'Account Manager')->get();
-
-            return view('vendor.edit-customer', compact('client', 'tax_groups','account_managers'));
-        } else {
-            return NULL;
-        }
+        return view('vendor.customer', compact('customers'));
 
     }
 
@@ -565,10 +549,7 @@ class VendorController extends Controller
         $client = Clients::whereId($id)->first();
 
         if (!empty($client)) {
-            $tax_groups = DB::connection('mysql2')->table('TAX_GROUP')->get();
-            $account_managers = DB::connection('mysql2')->table('EMPLOYEE')->where('POSITION', 'Account Manager')->get();
-
-            return view('vendor.customer-details', compact('client', 'tax_groups','account_managers'));
+            return view('vendor.customer-details', compact('client'));
         } else {
             return NULL;
         }
@@ -758,7 +739,7 @@ class VendorController extends Controller
             }
 
         } else {
-            $orders = OrderedProducts::where('vendorid', 43)->orderBy('created_at', 'desc')->get();
+            $orders = OrderedProducts::where('vendorid', 43)->orderBy('id', 'desc')->get();
         }
         $query = "SELECT * FROM `job_type`";
         $jobType = DB::select(DB::raw($query));
@@ -1005,8 +986,6 @@ class VendorController extends Controller
                 // return redirect()->back()->with('message', 'Service Agreement link Sent Successfully.');
                 return json_encode(['message' => 'Service Agreement link Sent Successfully.']);
             } catch (\Exception $e) {
-
-                print_r($e);die;
                 // Error occurred while sending email
                 // return redirect()->back()->with('errors', 'Service Agreement link Sent Failed.');
                 return json_encode(['errors' => 'Service Agreement link Sent Failed.']);
@@ -1047,22 +1026,19 @@ class VendorController extends Controller
         if ($order != null) {
 
         }
-        $user = Clients::find($order->customerid);
         $model = DB::select("select * from ordered_products where orderid='$id'");
         $orderCheck=Order::where("id",$id)->where("order_type",3)->first();
         view()->share('model', $model);
         view()->share('order', $order);
-        $multiple_address = AddressMultiple::where('user_id', $user->id)
-        ->where('address_alias', "Default")
-        ->first();
-        return view('home.shop.order_pdf_print',compact('user','multiple_address'));
+        
+        return view('home.shop.order_pdf_print');
         if($orderCheck){
             $orderinquiry=OrderInquiry::where("order_id",$id)->first();
             view()->share('orderinquiry', $orderinquiry);
-             return view('vendor.order_print', compact('model', 'order','orderinquiry','user'));
+             return view('vendor.order_print', compact('model', 'order','orderinquiry'));
         }
         else {
-             return view('vendor.order_print', compact('model', 'order','user'));
+             return view('vendor.order_print', compact('model', 'order'));
         }
     }
 
@@ -1243,10 +1219,6 @@ class VendorController extends Controller
     public function orderDownload($id)
     {
         $order = Order::findOrFail($id);
-        $user = Clients::find($order->customerid);
-        $multiple_address = AddressMultiple::where('user_id', $user->id)
-        ->where('address_alias', "Default")
-        ->first();
         if ($order != null) {
             return false;
         }
@@ -1254,8 +1226,6 @@ class VendorController extends Controller
         $orderCheck=Order::where("id",$id)->where("order_type",3)->first();
         view()->share('model', $model);
         view()->share('order', $order);
-
-       
         if($orderCheck){
             $orderinquiry=OrderInquiry::where("order_id",$id)->first();
             view()->share('orderinquiry', $orderinquiry);
@@ -1266,8 +1236,7 @@ class VendorController extends Controller
             $pdf = PDF::loadView('vendor.order_pdf');
             return $pdf->download('order' . $order->id . '.pdf');
         }
-        
-        return view('shop.order_pdf',compact('user','order','multiple_address'))->render();
+        //return view('shop.order_pdf',compact('user','order','multiple_address'))->render();
     }
 
     public function customer_orderDownload($id)

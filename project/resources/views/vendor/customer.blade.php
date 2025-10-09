@@ -390,7 +390,7 @@
                                                                 <select name="customer_type" class="form-control" placeholder="Customer Type" id="customer_type" required>
                                                                     <option value="">Select Customer Type</option>
                                                                     <option value="Contract">Contract</option>
-                                                                    <option value="Purge">Purge</option>
+                                                                    <option value="Purge" selected>Purge</option>
                                                                     <option value="Drop Off">Drop Off</option>
                                                                 </select>
                                                             </div>
@@ -410,7 +410,7 @@
                                                                 <select name="status_stages" class="form-control" placeholder="Status" id="status_stages" required>
                                                                     <option value="">Select Status</option>
                                                                     <option value="Prospect">Prospect</option>
-                                                                    <option value="Lead">Lead</option>
+                                                                    <option value="Lead" selected>Lead</option>
                                                                     <option value="Customer">Customer</option>
                                                                 </select>
                                                             </div>
@@ -421,7 +421,7 @@
                                                             <div class="col-sm-9">
                                                                 <select name="payment_method" class="form-control" placeholder="Payment Method" id="payment_method" required>
                                                                     <option value="">Select Payment Method</option>
-                                                                    <option value="Credit Card">Credit Card</option>
+                                                                    <option selected value="Credit Card">Credit Card</option>
                                                                     <option value="Cash">Cash</option>
                                                                     <option value="Credit">Credit</option>
                                                                     <option value="Cheque">Cheque</option>
@@ -439,7 +439,7 @@
                                                                 <select name="tax_group" class="form-control" id="tax_group" required>
                                                                     <option value="">Select Tax Group</option>
                                                                     @foreach($tax_groups as $group)
-                                                                        <option value="{{ $group->GROUP_NAME }}">{{ $group->GROUP_NAME }}</option>
+                                                                        <option value="{{ $group->GROUP_NAME }}" {{$group->GROUP_NAME == 'HST' ? 'selected' : ''}}>{{ $group->GROUP_NAME }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -452,7 +452,7 @@
                                                                     <option value="">Select Source</option>
                                                                     <option value="Online">Online</option>
                                                                     <option value="Referral">Referral</option>
-                                                                    <option value="Phone">Phone</option>
+                                                                    <option value="Phone" selected>Phone</option>
                                                                     <option value="Other">Other</option>
                                                                 </select>
                                                             </div>

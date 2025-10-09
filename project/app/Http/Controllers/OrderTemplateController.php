@@ -69,7 +69,6 @@ class OrderTemplateController extends Controller
                 ->leftjoin('clients', 'order_templates.client_id', '=', 'clients.id')
                 ->leftjoin('job_type', 'job_type.id', '=', 'order_templates.job_type_id')
                 ->get();
-
         }
         return view('vendor.repeat-templates-list', compact('orders'));
     }
@@ -83,16 +82,16 @@ class OrderTemplateController extends Controller
     public function create($id)
     {
 
-        $child = Category::where('role','child')->get();
-        $subs = Category::where('role','sub')->get();
-        $categories = Category::where('role','main')->get();
+        $child = Category::where('role', 'child')->get();
+        $subs = Category::where('role', 'sub')->get();
+        $categories = Category::where('role', 'main')->get();
         $accountManagers = DB::connection('mysql2')->table('EMPLOYEE')
             ->join('employee_company_details', 'EMPLOYEE.UID', '=', 'employee_company_details.employee_id')
             ->where('employee_company_details.department_id', 3)
             ->get();
         $vendor_id = Auth::user()->id;
         $job_type = DB::connection('mysql2')->table('JOB_TYPE')->get();
-        return view('vendor.template-create-customer', compact('id', 'accountManagers', 'job_type', 'vendor_id','child','subs','categories'));
+        return view('vendor.template-create-customer', compact('id', 'accountManagers', 'job_type', 'vendor_id', 'child', 'subs', 'categories'));
     }
 
     /**
@@ -123,19 +122,18 @@ class OrderTemplateController extends Controller
                 ->withInput();
 
             $input = $request->all();
-
         }
         $input = $request->all();
-        $dateFromat=explode("-",$input['schedule_from']);
-        $dateFromated=$dateFromat[2]."-".$dateFromat[0]."-".$dateFromat[1];
+        $dateFromat = explode("-", $input['schedule_from']);
+        $dateFromated = $dateFromat[2] . "-" . $dateFromat[0] . "-" . $dateFromat[1];
         $template = OrderTemplate::create(
             [
-                'client_id'=> $input['client_id'],
-                'vendor_id'=> $input['vendor_id'],
+                'client_id' => $input['client_id'],
+                'vendor_id' => $input['vendor_id'],
                 'name' => $input['name'],
                 'manager_id' => $input['manager_id'],
                 'job_type_id' => $input['job_type_id'],
-                'repeat' =>$input['repeat'],
+                'repeat' => $input['repeat'],
                 'days_apart' => $input['days_apart'],
                 'weeks_apart' => $input['weeks_apart'],
                 'months_apart' => $input['months_apart'],
@@ -152,7 +150,7 @@ class OrderTemplateController extends Controller
 
             ]
         );
-         return redirect('vendor/customer/' . $template->client_id . '/templates')->with('message', 'Template has been successfully created');
+        return redirect('vendor/customer/' . $template->client_id . '/templates')->with('message', 'Template has been successfully created');
     }
 
     /**
@@ -190,11 +188,11 @@ class OrderTemplateController extends Controller
 
         // echo '<pre>';
         // print_r($category);die;
-      
+
         $job_type = DB::connection('mysql2')->table('JOB_TYPE')->where('UID', $orderTemplate->job_type_id)->first();
         $accountManager = DB::connection('mysql2')->table('EMPLOYEE')->where('UID', $orderTemplate->manager_id)->first();
         $orderTemplateItems = OrderTemplateItem::whereOrderTemplateId($orderTemplate->id)->get();
-        return view('vendor.ordertemplate-show', compact('orderTemplate', 'products', 'orderTemplateItems', 'job_type', 'accountManager','category'));
+        return view('vendor.ordertemplate-show', compact('orderTemplate', 'products', 'orderTemplateItems', 'job_type', 'accountManager', 'category'));
     }
 
     /**
@@ -214,8 +212,7 @@ class OrderTemplateController extends Controller
             'child_category' => $orderTemplate->child_category_id,
         ];
 
-        foreach ($categoryMappings as $key => $categoryId) 
-        {
+        foreach ($categoryMappings as $key => $categoryId) {
             if (!empty($categoryId)) {
                 // Ensure it's initialized as an array
                 if (!isset($category[$key])) {
@@ -228,9 +225,9 @@ class OrderTemplateController extends Controller
             }
         }
 
-        $child = Category::where('role','child')->get();
-        $subs = Category::where('role','sub')->get();
-        $categories = Category::where('role','main')->get();
+        $child = Category::where('role', 'child')->get();
+        $subs = Category::where('role', 'sub')->get();
+        $categories = Category::where('role', 'main')->get();
 
         $accountManagers = DB::connection('mysql2')->table('EMPLOYEE')
             ->join('employee_company_details', 'EMPLOYEE.UID', '=', 'employee_company_details.employee_id')
@@ -239,7 +236,7 @@ class OrderTemplateController extends Controller
 
         $job_type = DB::connection('mysql2')->table('JOB_TYPE')->get();
 
-        return view('vendor.template-edit-customer', compact('orderTemplate', 'id', 'accountManagers', 'job_type','category','child','subs','categories'));
+        return view('vendor.template-edit-customer', compact('orderTemplate', 'id', 'accountManagers', 'job_type', 'category', 'child', 'subs', 'categories'));
     }
 
     /**
@@ -268,13 +265,12 @@ class OrderTemplateController extends Controller
                 ->withErrors($validator)
                 ->withInput();
             $input = $request->all();
-
         }
         if ($request->input('template_id')) {
 
-            $dateFromat=explode("-",$request->input('schedule_from'));
-            $dateFromated=$dateFromat[2]."-".$dateFromat[0]."-".$dateFromat[1];
-            $template = OrderTemplate::where('id', $request->input('template_id'))->first(); 
+            $dateFromat = explode("-", $request->input('schedule_from'));
+            $dateFromated = $dateFromat[2] . "-" . $dateFromat[0] . "-" . $dateFromat[1];
+            $template = OrderTemplate::where('id', $request->input('template_id'))->first();
             $template->name = $request->input('name');
             $template->job_type_id = $request->input('job_type_id');
             $template->repeat = $request->input('repeat');
@@ -295,9 +291,7 @@ class OrderTemplateController extends Controller
             $template->update();
         }
 
-       return redirect('vendor/customer/' . $template->client_id . '/templates')->with('message', 'Template has been successfully updated');
-
-
+        return redirect('vendor/customer/' . $template->client_id . '/templates')->with('message', 'Template has been successfully updated');
     }
 
     /**
@@ -306,10 +300,7 @@ class OrderTemplateController extends Controller
      * @param \App\OrderTemplate $orderTemplate
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-
-    }
+    public function destroy($id) {}
 
     public function repeatTemplateDelete($id)
     {
@@ -325,7 +316,7 @@ class OrderTemplateController extends Controller
         $templates = OrderTemplate::join('clients', 'order_templates.client_id', '=', 'clients.id')
             ->join('vendor_customers', 'vendor_customers.customer_id', '=', 'order_templates.client_id')
             ->join('job_type', 'order_templates.job_type_id', '=', 'job_type.id')
-            ->select('order_templates.*','job_type.name AS typeName')
+            ->select('order_templates.*', 'job_type.name AS typeName')
             ->where('vendor_customers.vendor_id', Auth::user()->id)->where('order_templates.client_id', $client_id);
 
         if ($_GET['template_name']) {
@@ -344,7 +335,7 @@ class OrderTemplateController extends Controller
 
         return Datatables::of($templates)
             ->addColumn('last_date', function ($template) {
-                return (!empty($template->last_updated_date))?date('m-d-Y', strtotime($template->last_updated_date)):'N/A';
+                return (!empty($template->last_updated_date)) ? date('m-d-Y', strtotime($template->last_updated_date)) : 'N/A';
             })
             ->addColumn('action', function ($template) {
                 return '<a href="/vendor/order-template/' . $template->id . '/edit" class="btn btn-xs btn-info"><i class="glyphicon glyphicon-edit"></i>&nbsp;Edit</a>'
@@ -370,101 +361,110 @@ class OrderTemplateController extends Controller
             ->make(true);
     }
 
-    public function getTemplateOrderAjax($client_id)
+    public function getTemplateOrderAjax(Request $request, $client_id)
     {
-        $orders = Order::select('orders.*', 'job_type.name as type','clients.name as customer_name')
+        // Debug: check all incoming request values
+        // dd($request->all());
+
+        $orders = Order::select('orders.*', 'job_type.name as type', 'clients.name as customer_name')
             ->leftJoin('job_type', 'orders.job_type', '=', 'job_type.id')
             ->leftJoin('clients', 'orders.customerid', '=', 'clients.id')
             ->where('orders.customerid', $client_id);
 
-        if ($_GET['orderId']) {
-            $orders->where('orders.id', $_GET['orderId']);
+        if ($request->filled('orderId')) {
+            $orders->where('orders.id', $request->orderId);
         }
 
-        if ($_GET['quickdate']) {
+        if ($request->filled('quickdate')) {
             $all = false;
-            switch ($_GET['quickdate']) {
+            switch ($request->quickdate) {
                 case 'today':
-                    $start = date('Y-m-d');
-                    $end = date('Y-m-d');
+                    $start = now()->toDateString();
+                    $end   = now()->toDateString();
                     break;
                 case 'yesterday':
-                    $start = date('Y-m-d', strtotime('yesterday'));
-                    $end = date('Y-m-d', strtotime('yesterday'));
+                    $start = now()->subDay()->toDateString();
+                    $end   = now()->subDay()->toDateString();
                     break;
                 case 'tomorrow':
-                    $start = date('Y-m-d');
-                    $end = date('Y-m-d', strtotime('tomorrow'));
+                    $start = now()->toDateString();
+                    $end   = now()->addDay()->toDateString();
                     break;
                 case 'wholeweek':
-                    $start = date('Y-m-d', strtotime('monday this week'));
-                    $end = date('Y-m-d', strtotime('sunday this week'));
+                    $start = now()->startOfWeek()->toDateString();
+                    $end   = now()->endOfWeek()->toDateString();
                     break;
                 case 'weekday':
-                    $start = date('Y-m-d', strtotime('monday this week'));
-                    $end = date('Y-m-d', strtotime('friday this week'));
+                    $start = now()->startOfWeek()->toDateString();
+                    $end   = now()->startOfWeek()->addDays(4)->toDateString();
                     break;
                 case 'nextweek':
-                    $start = date('Y-m-d', strtotime('monday next week'));
-                    $end = date('Y-m-d', strtotime('sunday next week'));
+                    $start = now()->addWeek()->startOfWeek()->toDateString();
+                    $end   = now()->addWeek()->endOfWeek()->toDateString();
                     break;
                 case 'thismonth':
-                    $start = date('Y-m-d', strtotime('first day of this month'));
-                    $end = date('Y-m-d', strtotime('last day of this month'));
+                    $start = now()->startOfMonth()->toDateString();
+                    $end   = now()->endOfMonth()->toDateString();
                     break;
                 case 'nextmonth':
-                    $start = date('Y-m-d', strtotime('first day of next month'));
-                    $end = date('Y-m-d', strtotime('last day of next month'));
+                    $start = now()->addMonth()->startOfMonth()->toDateString();
+                    $end   = now()->addMonth()->endOfMonth()->toDateString();
                     break;
                 case 'thisyear':
-                    $start = date('Y-m-d', strtotime('first day of January'));
-                    $end = date('Y-m-d', strtotime('last day of December'));
+                    $start = now()->startOfYear()->toDateString();
+                    $end   = now()->endOfYear()->toDateString();
                     break;
                 case 'yeartodate':
-                    $start = date('Y-m-d', strtotime('first day of January'));
-                    $end = date('Y-m-d');
+                    $start = now()->startOfYear()->toDateString();
+                    $end   = now()->toDateString();
                     break;
                 default:
                     $all = true;
             }
+
             if (!$all) {
                 $orders->whereBetween('orders.booking_date', [$start, $end]);
             }
+        }
 
+        if ($request->filled('clientName')) {
+            $orders->where('clients.name', 'like', '%' . $request->clientName . '%');
         }
-        if (isset($_GET['clientName']) && $_GET['clientName'] != "") {
-            $orders->where('clients.name', 'like','%'.$_GET['clientName'].'%');
+
+        if ($request->filled('fromTime') && $request->filled('toTime')) {
+            $orders->whereBetween('orders.booking_date', [
+                date('Y-m-d', strtotime($request->fromTime)),
+                date('Y-m-d', strtotime($request->toTime))
+            ]);
         }
-        if (($_GET['fromTime']) && $_GET['toTime']) {
-            $orders->whereBetween('orders.booking_date', [date('Y-m-d', strtotime($_GET['fromTime'])), date('Y-m-d', strtotime($_GET['toTime']))]);
+
+        if ($request->filled('status')) {
+            $orders->where('orders.status', $request->status);
         }
-        if ($_GET['status']) {
-            $orders->where('orders.status', $_GET['status']);
+
+        if ($request->filled('method')) {
+            $orders->where('orders.method', $request->method);
         }
-        if ($_GET['method']) {
-            $orders->where('orders.method', $_GET['method']);
+
+        if ($request->filled('type')) {
+            $orders->where('orders.job_type', $request->type);
         }
-        $type = str_replace('=', '', $_GET['type']);
-        if ($type) {
-            $orders->where('orders.job_type', $type);
-        }
+
         return Datatables::of($orders)
             ->addColumn('action', function ($orders) {
-                if($orders->order_type==3){
+                if ($orders->order_type == 3) {
                     return '<a href="/vendor/order-template-order-repeat/' . $orders->id . '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>'
-                        . '&nbsp;<a href="#" class="ml-2 btn btn-xs btn-success" onclick="modalSend('.$orders->id.')" data-toggle="modal" data-target="#send"  data-orderid="'.$orders->id.'"><i class="fa fa-send"></i></a>'
+                        . '&nbsp;<a href="#" class="ml-2 btn btn-xs btn-success" onclick="modalSend(' . $orders->id . ')" data-toggle="modal" data-target="#send" data-orderid="' . $orders->id . '"><i class="fa fa-send"></i></a>'
                         . '&nbsp;<a href="/vendor/order-template-delete/' . $orders->id . '" class="ml-2 btn btn-xs btn-danger"><i class="fa fa-remove"></i></a>';
-                }
-                else {
+                } else {
                     return '<a href="/vendor/order-template-order/' . $orders->id . '" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>'
-                        . '&nbsp;<a href="#" class="ml-2 btn btn-xs btn-success" onclick="modalSend('.$orders->id.')" data-toggle="modal" data-target="#send"  data-orderid="'.$orders->id.'"><i class="fa fa-send"></i></a>'
+                        . '&nbsp;<a href="#" class="ml-2 btn btn-xs btn-success" onclick="modalSend(' . $orders->id . ')" data-toggle="modal" data-target="#send" data-orderid="' . $orders->id . '"><i class="fa fa-send"></i></a>'
                         . '&nbsp;<a href="/vendor/order-template-delete/' . $orders->id . '" class="ml-2 btn btn-xs btn-danger"><i class="fa fa-remove"></i></a>';
                 }
-
             })
             ->make(true);
-
     }
+
 
     public function OrderTemplateOrderViewRepeat($id)
     {
@@ -476,7 +476,7 @@ class OrderTemplateController extends Controller
     public function getOrderTemplateActivate(Request $request)
     {
         $input = $request->all();
-        foreach ($input['isActive_arr'] AS $arr) {
+        foreach ($input['isActive_arr'] as $arr) {
             $orders = OrderTemplate::where('id', $arr);
             $orders->update(['is_active' => 1]);
         }
@@ -486,88 +486,54 @@ class OrderTemplateController extends Controller
     public function getTemplateOrderDelete(Request $request)
     {
         $input = $request->all();
-        foreach ($input['deleteids_arr'] AS $arr) {
+        foreach ($input['deleteids_arr'] as $arr) {
             $this->OrderTemplateOrderDelete($arr);
         }
         return $input['deleteids_arr'];
     }
 
 
- public function getJobDates($template, $startDate, $endDate)
-{
-    $jobDates = [];
+    public function getJobDates($template, $startDate, $endDate)
+    {
+        $jobDates = [];
 
-    // Normalize allowed days (0 = Sun, 6 = Sat)
-    $daysAllowed = is_array($template->days_allowed)
-        ? $template->days_allowed
-        : explode(',', $template->days_allowed);
-    $daysAllowed = array_map('intval', $daysAllowed);
+        // Normalize allowed days (0 = Sun, 6 = Sat)
+        $daysAllowed = is_array($template->days_allowed)
+            ? $template->days_allowed
+            : explode(',', $template->days_allowed);
+        $daysAllowed = array_map('intval', $daysAllowed);
 
-    // Parse schedule_from and endDate
-    $scheduleFrom = Carbon::parse($template->schedule_from);
-    $end = Carbon::parse($endDate);
+        // Parse schedule_from and endDate
+        $scheduleFrom = Carbon::parse($template->schedule_from);
+        $end = Carbon::parse($endDate);
 
-    // Always add first date as schedule_from
-    if ($scheduleFrom <= $end) {
-        $jobDates[] = $scheduleFrom->toDateString();
-    } else {
-        return []; // No schedule possible
-    }
-
-    $repeat = strtolower($template->repeat);
-
-    // Helper: Find next allowed day ON or AFTER given date
-    $findNextAllowedDate = function (Carbon $fromDate) use ($daysAllowed, $end) {
-        for ($i = 0; $i <= 7; $i++) {
-            $check = $fromDate->copy()->addDays($i);
-            if ($check > $end) break;
-            if (in_array($check->dayOfWeek, $daysAllowed)) {
-                return $check;
-            }
+        // If start is after end, return empty
+        if ($scheduleFrom > $end) {
+            return [];
         }
-        return null;
-    };
 
-    // Daily/Weekly/Quarterly/etc. handler
-    $processIntervalRepeat = function ($baseStart, $intervalDays, $end, $findNextAllowedDate) use (&$jobDates) {
-        $current = $baseStart->copy();
-        while (true) {
-            $nextBase = $current->copy()->addDays($intervalDays);
-            if ($nextBase > $end) break;
+        $repeat = strtolower($template->repeat);
 
-            $nextValid = $findNextAllowedDate($nextBase);
-            if ($nextValid && $nextValid <= $end) {
-                $jobDates[] = $nextValid->toDateString();
-                $current = $nextValid->copy();
-            } else {
-                break;
+        // Helper: Find next allowed day strictly AFTER given date
+        $findNextAllowedDate = function (Carbon $fromDate) use ($daysAllowed, $end) {
+            for ($i = 1; $i <= 7; $i++) { // Skip current day
+                $check = $fromDate->copy()->addDays($i);
+                if ($check > $end) break;
+                if (in_array($check->dayOfWeek, $daysAllowed)) {
+                    return $check;
+                }
             }
-        }
-    };
+            return null;
+        };
 
-    switch ($repeat) {
-        case 'on call':
-            // Already added schedule_from
-            break;
-
-        case 'daily':
-            $intervalDays = max(1, (int)($template->days_apart ?? 1));
-            $processIntervalRepeat($scheduleFrom, $intervalDays, $end, $findNextAllowedDate);
-            break;
-
-        case 'weekly':
-            $intervalDays = max(1, (int)($template->weeks_apart ?? 1)) * 7;
-            $processIntervalRepeat($scheduleFrom, $intervalDays, $end, $findNextAllowedDate);
-            break;
-
-        case 'monthly':
-            $monthsApart = max(1, (int)($template->months_apart ?? 1));
-            $current = $scheduleFrom->copy();
+        // Helper: Repeat interval processing
+        $processIntervalRepeat = function ($baseStart, $intervalDays, $end, $findNextAllowedDate) use (&$jobDates) {
+            $current = $baseStart->copy();
             while (true) {
-                $nextMonthBase = $current->copy()->addMonthsNoOverflow($monthsApart);
-                if ($nextMonthBase > $end) break;
+                $nextBase = $current->copy()->addDays($intervalDays);
+                if ($nextBase > $end) break;
 
-                $nextValid = $findNextAllowedDate($nextMonthBase);
+                $nextValid = $findNextAllowedDate($nextBase);
                 if ($nextValid && $nextValid <= $end) {
                     $jobDates[] = $nextValid->toDateString();
                     $current = $nextValid->copy();
@@ -575,37 +541,138 @@ class OrderTemplateController extends Controller
                     break;
                 }
             }
-            break;
+        };
 
-        case 'quarterly':
-            $processIntervalRepeat($scheduleFrom, 84, $end, $findNextAllowedDate);
-            break;
+        switch ($repeat) {
+            case 'on call':
+                // No repeats, nothing to do
+                break;
 
-        case 'semi-annual':
-            $processIntervalRepeat($scheduleFrom, 168, $end, $findNextAllowedDate);
-            break;
+            case 'daily':
+                $firstValid = $findNextAllowedDate($scheduleFrom);
+                if (!$firstValid) break;
 
-        case 'yearly':
-            $processIntervalRepeat($scheduleFrom, 336, $end, $findNextAllowedDate);
-            break;
+                $intervalDays = max(1, (int)($template->days_apart ?? 1));
+                $jobDates[] = $firstValid->toDateString();
+                $processIntervalRepeat($firstValid, $intervalDays, $end, $findNextAllowedDate);
+                break;
+
+            case 'weekly':
+                $weeksApart = max(1, (int)($template->weeks_apart ?? 1));
+                $current = Carbon::parse($template->schedule_from);
+                $end = Carbon::parse($endDate);
+
+                // Find first allowed day on or after the start date
+                $firstAllowed = null;
+                for ($i = 0; $i <= 6; $i++) {
+                    $check = $current->copy()->addDays($i);
+                    if ($check > $end) break;
+                    if (in_array($check->dayOfWeek, $daysAllowed)) {
+                        $firstAllowed = $check;
+                        break;
+                    }
+                }
+
+                if (!$firstAllowed) {
+                    break; // No valid starting date found
+                }
+
+                // Use the first allowed day as base date
+                $jobDates[] = $firstAllowed->toDateString();
+                $baseDate = $firstAllowed->copy();
+
+                while (true) {
+                    // Next interval base = last base date + X weeks
+                    $nextBase = $baseDate->copy()->addWeeks($weeksApart);
+                    if ($nextBase > $end) break;
+
+                    // Find next allowed day on or after nextBase
+                    $nextAllowed = null;
+                    for ($i = 0; $i <= 6; $i++) {
+                        $check = $nextBase->copy()->addDays($i);
+                        if ($check > $end) break;
+                        if (in_array($check->dayOfWeek, $daysAllowed)) {
+                            $nextAllowed = $check;
+                            break;
+                        }
+                    }
+
+                    if ($nextAllowed) {
+                        $jobDates[] = $nextAllowed->toDateString();
+                        $baseDate = $nextAllowed->copy(); // Set new base
+                    } else {
+                        break; // No allowed day found in this week
+                    }
+                }
+                break;
+
+
+            case 'monthly':
+
+                $monthsApart = max(1, (int)($template->months_apart ?? 1));
+                $firstValid = $findNextAllowedDate($scheduleFrom);
+                if (!$firstValid) break;
+
+                $jobDates[] = $firstValid->toDateString();
+                $current = $firstValid->copy();
+
+                while (true) {
+                    $nextMonthBase = $current->copy()->addMonthsNoOverflow($monthsApart);
+                    if ($nextMonthBase > $end) break;
+
+                    $nextValid = $findNextAllowedDate($nextMonthBase);
+                    if ($nextValid && $nextValid <= $end) {
+                        $jobDates[] = $nextValid->toDateString();
+                        $current = $nextValid->copy();
+                    } else {
+                        break;
+                    }
+                }
+                break;
+
+            case 'quarterly':
+                $firstValid = $findNextAllowedDate($scheduleFrom);
+                if (!$firstValid) break;
+
+                $jobDates[] = $firstValid->toDateString();
+                $processIntervalRepeat($firstValid, 84, $end, $findNextAllowedDate);
+                break;
+
+            case 'semi-annual':
+                $firstValid = $findNextAllowedDate($scheduleFrom);
+                if (!$firstValid) break;
+
+                $jobDates[] = $firstValid->toDateString();
+                $processIntervalRepeat($firstValid, 168, $end, $findNextAllowedDate);
+                break;
+
+            case 'yearly':
+                $firstValid = $findNextAllowedDate($scheduleFrom);
+                if (!$firstValid) break;
+
+                $jobDates[] = $firstValid->toDateString();
+                $processIntervalRepeat($firstValid, 336, $end, $findNextAllowedDate);
+                break;
+        }
+
+        $jobDates = array_unique($jobDates);
+        sort($jobDates);
+        return $jobDates;
     }
 
-    $jobDates = array_unique($jobDates);
-    sort($jobDates);
-    return $jobDates;
-}
+
+
 
 
 
     public function makeRecurringOrder(Request $request)
     {
         $template = OrderTemplate::whereId($request->order_template_id)->first();
-        $scheduleFrom=date('Y-m-d', strtotime($template->schedule_from));
-        $today=date('Y-m-d',time());
+        $scheduleFrom = date('Y-m-d', strtotime($template->schedule_from));
+        $today = date('Y-m-d', time());
         $items = OrderTemplateItem::whereOrderTemplateId($request->order_template_id)->get();
 
-        if (count($items) > 0) 
-        {
+        if (count($items) > 0) {
             $products = [];
             $quantities = [];
             $prices = [];
@@ -664,23 +731,20 @@ class OrderTemplateController extends Controller
 
                 Session::flash('message', 'Jobs for next month generated successfully.');
                 return Redirect('/vendor/order-template-history/' . $template->client_id . '/' . $template->id);
-            }
-
-
-            elseif ($request->order_template_type == OrderTemplate::RANGE) {
+            } elseif ($request->order_template_type == OrderTemplate::RANGE) {
                 // puvii added
                 if ($template->repeat === 'On Call') {
                     Session::flash('error', 'You can only create jobs on a single date for "On Call" templates.');
                     return redirect('/vendor/order-template/' . $template->id);
                 }
 
-                $toDate=$request->date;
-                $fromDate=$request->genDateFormDate;
+                $toDate = $request->date;
+                $fromDate = $request->genDateFormDate;
                 $nextMonthStart = Carbon::parse($fromDate);
                 $nextMonthEnd = Carbon::parse($toDate);
 
-                
-                
+
+
                 // Check if schedule_from is before or equal to the start date of the next month
                 $scheduleFrom = Carbon::parse($template->schedule_from);
 
@@ -698,9 +762,7 @@ class OrderTemplateController extends Controller
 
                 Session::flash('message', 'Jobs for selected range generated successfully.');
                 return Redirect('/vendor/order-template-history/' . $template->client_id . '/' . $template->id);
-                
-            }
-            elseif ($request->order_template_type == OrderTemplate::SINGlE_DATE) {
+            } elseif ($request->order_template_type == OrderTemplate::SINGlE_DATE) {
                 $date = explode('/', $request->date); // 06/30/2024
                 $date = $date[2] . "-" . $date[0] . "-" . $date[1]; // 2024-06-26 => Y-m-d
 
@@ -720,17 +782,14 @@ class OrderTemplateController extends Controller
                     Session::flash('error', 'Please select date after schedule from date.');
                     return Redirect('/vendor/order-template/' . $template->id);
                 }
-            	
-            }
-            else {
+            } else {
                 Session::flash('message', 'Order creation failed.');
-                return Redirect('/vendor/order-template/'.$template->id);
+                return Redirect('/vendor/order-template/' . $template->id);
             }
         } else {
             Session::flash('error', 'No products were assigned or not a active templates.');
-            return Redirect('/vendor/order-template/'.$template->id);
+            return Redirect('/vendor/order-template/' . $template->id);
         }
-
     }
 
     public function generateRepeatOrders($template, $quantities, $products, $dateIncrement, $cost, $prices)
@@ -788,7 +847,6 @@ class OrderTemplateController extends Controller
             $quant['stock'] = $stocks;
             $product->update($quant);
         }
-
     }
 
     public function OrderTemplateOrderView($id)
@@ -818,7 +876,7 @@ class OrderTemplateController extends Controller
         return Redirect('/vendor/customer/' . $customerid . '/orders?orderId=&quickdate=&fromTime=&toTime=&status=&method=&type=&orderForm=Search');
     }
 
-    public function getMonthRange($start_date, $end_date, $months_apart,$days_allowed)
+    public function getMonthRange($start_date, $end_date, $months_apart, $days_allowed)
     {
         $startMonth = date('Y-m-d', strtotime($start_date));
         $startDate = Carbon::parse($startMonth);
@@ -845,25 +903,23 @@ class OrderTemplateController extends Controller
             $i = $number;
         }
 
-        foreach ($monthList AS $value) {
-            $finalOut[] = $this->getMonthRangeByNext($value['start'],$value['end']);
+        foreach ($monthList as $value) {
+            $finalOut[] = $this->getMonthRangeByNext($value['start'], $value['end']);
         }
 
 
         $finalList = $this->putOneList($finalOut);
-        foreach ($finalList As $days)
-        {
+        foreach ($finalList as $days) {
             $day = Carbon::parse($days);
-            $allow=$day->dayOfWeek;
-            if(in_array($allow,$days_allowed))
-            {
-                $list[]=$days;
+            $allow = $day->dayOfWeek;
+            if (in_array($allow, $days_allowed)) {
+                $list[] = $days;
             }
         }
-       return $list;
+        return $list;
     }
 
-    public function getMonthRangeByNext($first,$last)
+    public function getMonthRangeByNext($first, $last)
     {
         $i = 0;
         while (end($datesFirst) < $last) {
@@ -874,9 +930,9 @@ class OrderTemplateController extends Controller
         return $datesFirst;
     }
 
-    public function getDateRange($start_date, $end_date, $days_apart,$days_allowed)
+    public function getDateRange($start_date, $end_date, $days_apart, $days_allowed)
     {
-        $list=[];
+        $list = [];
         $i = $days_apart;
         $dates = array($start_date);
         while (end($dates) < $end_date) {
@@ -887,13 +943,11 @@ class OrderTemplateController extends Controller
             $dates[] = $incrementDate;
             $i = +$days_apart;
         }
-        foreach ($dates As $days)
-        {
+        foreach ($dates as $days) {
             $day = Carbon::parse($days);
-            $allow=$day->dayOfWeek;
-            if(in_array($allow,$days_allowed))
-            {
-                $list[]=$days;
+            $allow = $day->dayOfWeek;
+            if (in_array($allow, $days_allowed)) {
+                $list[] = $days;
             }
         }
         return $list;
@@ -928,17 +982,16 @@ class OrderTemplateController extends Controller
 
     public function putOneList($finalList)
     {
-        foreach ($finalList AS $key => $val) {
+        foreach ($finalList as $key => $val) {
             foreach ($val as $value) {
                 $flat[] = $value;
             }
         }
 
         return $flat;
-
     }
 
-    public function getWeeklyDateRange($start, $end, $weeks_apart,$days_allowed,$next=null)
+    public function getWeeklyDateRange($start, $end, $weeks_apart, $days_allowed, $next = null)
     {
         $start = date('Y-m-d', strtotime($start));
         $end = date('Y-m-d', strtotime($end));
@@ -947,15 +1000,13 @@ class OrderTemplateController extends Controller
         //print_r($start." ".$end);die;
         $dayWeek = $startDate->dayOfWeek;
 
-        if($next)
-        {
+        if ($next) {
             $i = 0;
             while ($i < 7) {
                 $incrementDate = date('Y-m-d', strtotime($start . '+' . $i . ' days'));
                 $datesFirst[] = $incrementDate;
                 $i++;
             }
-
         } else {
             $dif = 7 - $dayWeek;
             $i = 0;
@@ -979,24 +1030,23 @@ class OrderTemplateController extends Controller
             $startNext = end($next);
         }
 
-      //print_r($this->putOneList($datesRest));die;
+        //print_r($this->putOneList($datesRest));die;
         if ($datesRest) {
             $lastList = array_merge($datesFirst, $this->putOneList($datesRest));
         } else {
             $lastList = $datesFirst;
         }
 
-        foreach ($lastList As $days)
-        {
+        foreach ($lastList as $days) {
             $day = Carbon::parse($days);
-            $allow=$day->dayOfWeek;
-            if(in_array($allow,$days_allowed))
-            {
-                $list[]=$days;
+            $allow = $day->dayOfWeek;
+            if (in_array($allow, $days_allowed)) {
+                $list[] = $days;
             }
         }
 
-        print_r($list);die;
+        print_r($list);
+        die;
         return $list;
     }
 
@@ -1015,15 +1065,13 @@ class OrderTemplateController extends Controller
     public function getQuarterlyRange($start_date, $end_date, $days_allowed)
     {
         $start_date = date('Y-m-d', strtotime($start_date));
-        for ( $i = 0; $i < 60; $i++ ) {
-            $incrementDate =  date('Y-m-d', strtotime(' +'.$i.' days', strtotime($start_date)));
+        for ($i = 0; $i < 60; $i++) {
+            $incrementDate =  date('Y-m-d', strtotime(' +' . $i . ' days', strtotime($start_date)));
             $day = Carbon::parse($incrementDate);
-            $allow=$day->dayOfWeek;
-            if(in_array($allow,$days_allowed) AND $incrementDate>$end_date)
-            {
-                $list[]=$incrementDate;
+            $allow = $day->dayOfWeek;
+            if (in_array($allow, $days_allowed) and $incrementDate > $end_date) {
+                $list[] = $incrementDate;
             }
-
         }
         return $list;
     }
@@ -1031,42 +1079,39 @@ class OrderTemplateController extends Controller
     public function getSemiAnnualRange($start_date, $end_date, $days_allowed)
     {
         $start_date = date('Y-m-d', strtotime($start_date));
-        for ( $i = 0; $i < 180; $i++ ) {
-            $incrementDate =  date('Y-m-d', strtotime(' +'.$i.' days', strtotime($start_date)));
+        for ($i = 0; $i < 180; $i++) {
+            $incrementDate =  date('Y-m-d', strtotime(' +' . $i . ' days', strtotime($start_date)));
             $day = Carbon::parse($incrementDate);
-            $allow=$day->dayOfWeek;
-            if(in_array($allow,$days_allowed) AND $incrementDate>$end_date)
-            {
-                $list[]=$incrementDate;
+            $allow = $day->dayOfWeek;
+            if (in_array($allow, $days_allowed) and $incrementDate > $end_date) {
+                $list[] = $incrementDate;
             }
         }
         return $list;
-
     }
 
     public function getYearlyRange($start_date, $end_date, $days_allowed)
     {
         $start_date = date('Y-m-d', strtotime($start_date));
-        for ( $i = 0; $i < 360; $i++ ) {
-            $incrementDate =  date('Y-m-d', strtotime(' +'.$i.' days', strtotime($start_date)));
+        for ($i = 0; $i < 360; $i++) {
+            $incrementDate =  date('Y-m-d', strtotime(' +' . $i . ' days', strtotime($start_date)));
             $day = Carbon::parse($incrementDate);
-            $allow=$day->dayOfWeek;
-            if(in_array($allow,$days_allowed) AND $incrementDate>$end_date)
-            {
-                $list[]=$incrementDate;
+            $allow = $day->dayOfWeek;
+            if (in_array($allow, $days_allowed) and $incrementDate > $end_date) {
+                $list[] = $incrementDate;
             }
         }
         return $list;
     }
 
-    public function history($id,$temp_id)
+    public function history($id, $temp_id)
     {
         $orders = Order::select('orders.*', 'job_type.name as type')
             ->leftJoin('job_type', 'orders.job_type', '=', 'job_type.id')
             ->leftJoin('order_templates', 'order_templates.id', '=', 'orders.template_id')
-            ->where('orders.customerid', $id)->where('orders.template_id',$temp_id)->where('order_templates.vendor_id', Auth::user()->id);
-        $client_id=$id;
-        $template_id=$temp_id;
+            ->where('orders.customerid', $id)->where('orders.template_id', $temp_id)->where('order_templates.vendor_id', Auth::user()->id);
+        $client_id = $id;
+        $template_id = $temp_id;
         if (isset($_GET['orderId'])) {
             $orders->where('orders.id', $_GET['orderId']);
         }
@@ -1120,7 +1165,6 @@ class OrderTemplateController extends Controller
             if (!$all) {
                 $orders->whereBetween('orders.booking_date', [$start, $end]);
             }
-
         }
         if (isset($_GET['fromTime']) && isset($_GET['toTime'])) {
             $orders->whereBetween('orders.booking_date', [date('Y-m-d', strtotime($_GET['fromTime'])), date('Y-m-d', strtotime($_GET['toTime']))]);
@@ -1128,50 +1172,46 @@ class OrderTemplateController extends Controller
         if (isset($_GET['status'])) {
             $orders->where('orders.status', $_GET['status']);
         }
-		
-	    if(isset($_GET['orderType']))
-		{
-			// $jobType = str_replace('=', '', $_GET['jobType']);
+
+        if (isset($_GET['orderType'])) {
+            // $jobType = str_replace('=', '', $_GET['jobType']);
             $jobType = str_replace('=', '', $_GET['jobType'] ?? '');
-			if ($jobType) {
-			   $orders->where('orders.job_type', $jobType);
-			}
-		}	
-		if(isset($_GET['jobName']))
-		{
-			// $jobName = str_replace('=', '', $_GET['jobName']);
+            if ($jobType) {
+                $orders->where('orders.job_type', $jobType);
+            }
+        }
+        if (isset($_GET['jobName'])) {
+            // $jobName = str_replace('=', '', $_GET['jobName']);
             $jobName = str_replace('=', '', $_GET['jobName'] ?? '');
-			if ($jobName) {
-				$orders->whereRaw('LOWER(orders.job_name) LIKE  "%'.trim(strtolower($jobName)).'%"');  
-			}
-		}
-		
-		if(isset($_GET['orderType']))
-		{
-			// $orderType = str_replace('=', '', $_GET['orderType']);
+            if ($jobName) {
+                $orders->whereRaw('LOWER(orders.job_name) LIKE  "%' . trim(strtolower($jobName)) . '%"');
+            }
+        }
+
+        if (isset($_GET['orderType'])) {
+            // $orderType = str_replace('=', '', $_GET['orderType']);
             $orderType = str_replace('=', '', $_GET['orderType'] ?? '');
-			if ($orderType) {
-				$orders->where('orders.order_type', $orderType);
-			}
-		}
-      
-         $orders->orderBy('orders.id', 'desc')->get();
-         $template=OrderTemplate::where('id',$template_id)->first();
-         $query = "SELECT * FROM `job_type`";
-         $jobType = DB::select(DB::raw($query));
+            if ($orderType) {
+                $orders->where('orders.order_type', $orderType);
+            }
+        }
+
+        $orders->orderBy('orders.id', 'desc')->get();
+        $template = OrderTemplate::where('id', $template_id)->first();
+        $query = "SELECT * FROM `job_type`";
+        $jobType = DB::select(DB::raw($query));
         if (!empty($orders)) {
-            return view('vendor.ordertemplate-history', compact('orders','template','jobType','template_id','client_id'));
+            return view('vendor.ordertemplate-history', compact('orders', 'template', 'jobType', 'template_id', 'client_id'));
         } else {
             return NULL;
         }
-
     }
 
-    public function getTemplateHistoryAjax($client_id,$temp_id)
+    public function getTemplateHistoryAjax($client_id, $temp_id)
     {
         $orders = Order::select('orders.*', 'job_type.name as type')
             ->leftJoin('job_type', 'orders.job_type', '=', 'job_type.id')
-            ->where('orders.customerid', $client_id)->where('template_id',$temp_id);
+            ->where('orders.customerid', $client_id)->where('template_id', $temp_id);
 
         if ($_GET['orderId']) {
             $orders->where('orders.id', $_GET['orderId']);
@@ -1226,7 +1266,6 @@ class OrderTemplateController extends Controller
             if (!$all) {
                 $orders->whereBetween('orders.booking_date', [$start, $end]);
             }
-
         }
         if (($_GET['fromTime']) && $_GET['toTime']) {
             $orders->whereBetween('orders.booking_date', [date('Y-m-d', strtotime($_GET['fromTime'])), date('Y-m-d', strtotime($_GET['toTime']))]);
@@ -1236,11 +1275,11 @@ class OrderTemplateController extends Controller
         }
         $jobType = str_replace('=', '', $_GET['jobType']);
         if ($jobType) {
-           $orders->where('orders.job_type', $jobType);
+            $orders->where('orders.job_type', $jobType);
         }
         $jobName = str_replace('=', '', $_GET['jobName']);
         if ($jobName) {
-            $orders->whereRaw('LOWER(orders.job_name) LIKE  "%'.trim(strtolower($jobName)).'%"');  
+            $orders->whereRaw('LOWER(orders.job_name) LIKE  "%' . trim(strtolower($jobName)) . '%"');
         }
         $orderType = str_replace('=', '', $_GET['orderType']);
         if ($orderType) {
@@ -1250,9 +1289,8 @@ class OrderTemplateController extends Controller
         return Datatables::of($orders)
             ->addColumn('action', function ($orders) {
                 return '<a href="/vendor/order-template-order-view/' . $orders->id . '" class="btn btn-xs btn-info"><i class="glyphicon glyphicon-eye"></i> View</a>'
-                    . '&nbsp;<a href="#" class="ml-2 btn btn-xs btn-success" onclick="modalSend('.$orders->id.')" data-toggle="modal" data-target="#send"  data-orderid="'.$orders->id.'"><i class="glyphicon glyphicon-send"></i> Email</a>'
+                    . '&nbsp;<a href="#" class="ml-2 btn btn-xs btn-success" onclick="modalSend(' . $orders->id . ')" data-toggle="modal" data-target="#send"  data-orderid="' . $orders->id . '"><i class="glyphicon glyphicon-send"></i> Email</a>'
                     . '&nbsp;<a href="/vendor/order-template-history-delete/' . $orders->id . '" class="ml-2 btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</a>';
-
             })
             ->make(true);
     }
@@ -1274,14 +1312,13 @@ class OrderTemplateController extends Controller
             $product->delete();
         }
         Session::flash('message', 'Order has been successfully Deleted');
-        return Redirect('/vendor/order-template-history/' . $customerid . '/'.$order->template_id.'/');
+        return Redirect('/vendor/order-template-history/' . $customerid . '/' . $order->template_id . '/');
     }
 
     public function notify(Request $request)
     {
         //find booking
-        if ($request->order_id)
-        {
+        if ($request->order_id) {
             $order = Order::where('id', $request->order_id)->first();
             $customerid = $order->customerid;
             $client = Clients::whereId($customerid)->first();
@@ -1291,48 +1328,39 @@ class OrderTemplateController extends Controller
                 // customer email
                 $EmailSubjectCustomer = EmailSubject::where('token', 'Kc0zS251')->first();
                 $EmailTemplate = EmailTemplate::where('domain', 2)->where('subject_id', $EmailSubjectCustomer['id'])->first();
-                $status=Mail::to($request->send_email)->send(new ScheduleOrderPlaced($client->name, $order, $EmailSubjectCustomer['subject'], $EmailTemplate));
-               
-
+                $status = Mail::to($request->send_email)->send(new ScheduleOrderPlaced($client->name, $order, $EmailSubjectCustomer['subject'], $EmailTemplate));
             } catch (\Exception $ex) {
-               // print_r($ex);
+                // print_r($ex);
             }
             //set success message and redirect to bookings.show
             Session::flash('message', __('Vendor repeat order invoice successfully sent.'));
-            return Redirect('/vendor/order-template-history/' . $customerid . '/'.$order->template_id.'/');
+            return Redirect('/vendor/order-template-history/' . $customerid . '/' . $order->template_id . '/');
         }
     }
 
     public function notifyAll(Request $request)
     {
         //find booking
-        if ($request->order_ids)
-        {
-            $order_ids=explode(',',$request->order_ids);
-            $orders = Order::whereIn('id',$order_ids)->get();
+        if ($request->order_ids) {
+            $order_ids = explode(',', $request->order_ids);
+            $orders = Order::whereIn('id', $order_ids)->get();
             $customerid = $orders[0]->customerid;
             $client = Clients::whereId($customerid)->first();
             //send email to customer - refund true
             try {
                 // Send Booking Cancelled email
-                foreach ($orders As $order)
-                {
+                foreach ($orders as $order) {
                     // customer email
                     $EmailSubjectCustomer = EmailSubject::where('token', 'Kc0zS251')->first();
                     $EmailTemplate = EmailTemplate::where('domain', 2)->where('subject_id', $EmailSubjectCustomer['id'])->first();
                     Mail::to($request->send_email)->send(new ScheduleOrderPlaced($client->name, $order, $EmailSubjectCustomer['subject'], $EmailTemplate));
                 }
-
             } catch (\Exception $ex) {
-               //print_r($ex);
+                //print_r($ex);
             }
             //set success message and redirect to bookings.show
             Session::flash('message', __('Vendor repeat orders invoices successfully sent.'));
-            return Redirect('/vendor/order-template-history/' .$customerid. '/'.$order->template_id.'/');
+            return Redirect('/vendor/order-template-history/' . $customerid . '/' . $order->template_id . '/');
         }
     }
-
-
-
-
 }

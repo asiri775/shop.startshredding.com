@@ -186,7 +186,8 @@ class ClientController extends Controller
         $city = empty($input['txt_city']) ? "" : $input['txt_city'];
         $province = empty($input['cmb_province']) ? "" : $input['cmb_province'];
         $zip = $input['txt_fsa1'] . $input['txt_fsa2'];
-
+        $longi = empty($input['lontude']) ? 0 : $input['lontude'];
+        $lat = empty($input['latude']) ? 0 : $input['latude'];
 
         $department = $input['txt_department'];
         $payment_method = $input['txt_payment_method'];
@@ -202,7 +203,7 @@ class ClientController extends Controller
         $qry .= "UPDATE clients set name='" . $name . "', first_name='" . $first_name . "', last_name='" . $last_name . "',";
         $qry .= " phone='" . $phone . "', email='" . $email . "', address='" . $address . "', city='" . $city . "',";
         $qry .= " department='" . $department . "', payment_method='" . $payment_method . "', TAX_GROUP='" . $tax_group . "', source='" . $source . "' , Account_Manager='" . $manager . "', customer_type='" . $customer_type . "', status_stages='" . $status_stages . "', invoicing_type='" . $txt_invoicing_type . "',";
-        $qry .= " Province_State='" . $province . "', Country='" . $country . "', zip='" . $zip . "', business_name='" . $business_name . "'";
+        $qry .= " Province_State='" . $province . "', Country='" . $country . "', longitude='" . $longi . "', latitude='" . $lat . "', zip='" . $zip . "', business_name='" . $business_name . "'";
 
 
         $qry .= " WHERE id = ?";

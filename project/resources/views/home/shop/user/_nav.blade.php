@@ -67,44 +67,41 @@
             <li class="m-t-30" {!! (Request::is('/shop-user-dashboard') ? 'class="active"' : '' ) !!}>
                 <a href="{{route("home.user-dashboard")}}" class="detailed">
                     <span class="title">My Dashboard</span>
-                </a>
-                <span class="icon-thumbnail"><i class="fa fa-tachometer" aria-hidden="true"></i></span>
+                <span class="icon-thumbnail"><i class="fa fa-tachometer" aria-hidden="true"></i></span> </a>
             </li>
             <li {!! (Request::is('user-orders') ? 'class="active"' : '' ) !!}>
                 <a href="{{route("home.user-myorders")}}" class="detailed">
                     <span class="title">My Orders</span>
-                </a>
-                <span class="icon-thumbnail"><i class="fa fa-first-order" aria-hidden="true"></i></span>
+                
+                <span class="icon-thumbnail"><i class="fa fa-first-order" aria-hidden="true"></i></span></a>
             </li>
             <li {!! (Request::is('user-orders') ? 'class="active"' : '' ) !!}>
                 <a href="{{route("home.user-my-transactions")}}" class="detailed">
                     <span class="title">My Transactions</span>
-                </a>
-                <span class="icon-thumbnail"><i class="fa fa-first-order" aria-hidden="true"></i></span>
+              
+                <span class="icon-thumbnail"><i class="fa fa-first-order" aria-hidden="true"></i></span></a>
             </li>
             <li {!! (Request::is('shop-account-details') ? 'class="active"' : '' ) !!}>
                 <a href="{{route("home.account-details")}}" class="detailed">
                     <span class="title">My Account</span>
-                </a>
-                <span class="icon-thumbnail"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+                
+                <span class="icon-thumbnail"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span></a>
             </li>
             <li {!! (Request::is('shop-refer-friend') ? 'class="active"' : '' ) !!}>
                 <a href="{{route("home.user-refer-friend")}}" class="detailed">
                     <span class="title">Refer a Friend</span>
-                </a>
-                <span class="icon-thumbnail"><i class="fa fa-location-arrow" aria-hidden="true"></i></span>
+               
+                <span class="icon-thumbnail"><i class="fa fa-location-arrow" aria-hidden="true"></i></span></a>
             </li>
             <li {!! (Request::is('shop-billing-setting') ? 'class="active"' : '' ) !!}>
                 <a href="{{route("home.credit.index")}}" class="detailed">
                     <span class="title">Billing Setting</span>
-                </a>
-                <span class="icon-thumbnail"><i class="fa fa-money" aria-hidden="true"></i></span>
+                <span class="icon-thumbnail"><i class="fa fa-money" aria-hidden="true"></i></span></a>
             </li>
             <li {!! (Request::is('shop-documents-list') ? 'class="active"' : '' ) !!}>
                 <a href="{{route("home.user-documents-list")}}" class="detailed">
                     <span class="title">Documents</span>
-                </a>
-                <span class="icon-thumbnail"><i class="fa fa-file" aria-hidden="true"></i></span>
+                <span class="icon-thumbnail"><i class="fa fa-file" aria-hidden="true"></i></span></a>
             </li>
             {{--            <li {!! (Request::is('shop-product-favourite') ? 'class="active"' : '' ) !!}>--}}
             {{--                <a href="{{route("shop.user-product-favourite")}}" class="detailed">--}}
@@ -115,8 +112,7 @@
             <li>
                 <a href="{{route("home.logout")}}" class="detailed">
                     <span class="title">Logout</span>
-                </a>
-                <span class="icon-thumbnail"><i class="pg-power" aria-hidden="true"></i></span>
+                <span class="icon-thumbnail"><i class="pg-power" aria-hidden="true"></i></span></a>
             </li>
         </ul>
 
